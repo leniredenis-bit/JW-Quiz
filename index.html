@@ -16,18 +16,18 @@
         <!-- TELA INICIAL -->
         <section id="home-view" class="view active" role="main" aria-labelledby="home-title">
             <header class="app-header">
-                <div class="header-controls">
-                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">🌙</button>
-                </div>
                 <h1 id="home-title">JW Quiz</h1>
-                <p>Teste seus conhecimentos e desafie seus amigos!</p>
             </header>
 
             <main class="menu" role="navigation" aria-label="Menu principal">
                 <div class="buttons-row">
                     <button id="start-quick-quiz-btn" class="btn btn-primary" aria-label="Iniciar quiz rápido com perguntas aleatórias">▶️ Iniciar Quiz Rápido</button>
                     <button id="start-study-mode-btn" class="btn btn-secondary" aria-label="Iniciar modo estudo sem timer">📚 Modo Estudo</button>
-                    <button id="start-multiplayer-btn" class="btn btn-secondary" aria-label="Entrar no modo multiplayer online" disabled>⚔️ Jogar Online</button>
+                    <button id="start-multiplayer-btn" class="btn btn-secondary" aria-label="Entrar no modo partida em grupo online">🏆 Partida em Grupo</button>
+                </div>
+
+                <div class="stats-row">
+                    <button id="show-stats-btn" class="btn btn-link" aria-label="Ver minhas estatísticas pessoais">📊 Minhas Estatísticas</button>
                 </div>
 
                 <div class="filter-section" role="region" aria-labelledby="theme-title">
@@ -49,6 +49,7 @@
 
                 <footer>
                     <button id="manage-content-btn" class="btn btn-link" aria-label="Acessar painel de gerenciamento de perguntas" disabled>Gerenciar Perguntas</button>
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">modo escuro</button>
                 </footer>
             </main>
         </section>
@@ -93,59 +94,290 @@
             </div>
         </section>
 
-        <!-- TELA MULTIPLAYER -->
-        <section id="multiplayer-view" class="view">
+        <!-- TELA DE PARTIDA EM GRUPO -->
+        <section id="group-view" class="view" role="main" aria-labelledby="group-title">
             <div class="quiz-card">
-                <h2 style="text-align: center; margin-bottom: 1rem;">Modo Multiplayer</h2>
+                <header class="stats-header">
+                    <h2 id="group-title">🏆 Partida em Grupo</h2>
+                    <button id="back-from-group" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+                </header>
 
-                <div id="multiplayer-menu" class="menu">
-                    <div class="buttons-row">
-                        <button id="create-room-btn" class="btn btn-primary">Criar Sala</button>
-                        <button id="join-room-btn" class="btn btn-secondary">Entrar na Sala</button>
-                    </div>
-
-                    <div id="room-creation" class="filter-section" style="display: none;">
-                        <h3>Criar Nova Sala</h3>
-                        <input type="text" id="room-name" placeholder="Nome da sala" maxlength="20" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">
+                <div class="group-content">
+                    <!-- Menu Inicial -->
+                    <div id="group-menu" class="menu">
                         <div class="buttons-row">
-                            <button id="confirm-create-btn" class="btn btn-primary">Criar</button>
-                            <button id="cancel-create-btn" class="btn btn-link">Cancelar</button>
+                            <button id="create-group-btn" class="btn btn-primary">🎯 Criar Partida</button>
+                            <button id="join-group-btn" class="btn btn-secondary">🔗 Entrar na Partida</button>
                         </div>
                     </div>
 
-                    <div id="room-join" class="filter-section" style="display: none;">
-                        <h3>Entrar na Sala</h3>
-                        <input type="text" id="room-code" placeholder="Código da sala" maxlength="6" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 8px; border: 1px solid #ddd; text-transform: uppercase;">
-                        <div class="buttons-row">
-                            <button id="confirm-join-btn" class="btn btn-primary">Entrar</button>
-                            <button id="cancel-join-btn" class="btn btn-link">Cancelar</button>
+                    <!-- Criar Partida -->
+                    <div id="create-group" class="filter-section" style="display: none;">
+                        <h3>🎯 Criar Nova Partida</h3>
+                        <div class="group-form">
+                            <div class="form-group">
+                                <label for="group-name">Nome da Partida:</label>
+                                <input type="text" id="group-name" placeholder="Ex: Quiz Bíblico da Família" maxlength="30" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
+                            <div class="form-group">
+                                <label for="host-name">Seu Nome:</label>
+                                <input type="text" id="host-name" placeholder="Digite seu nome" maxlength="20" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
+                            <div class="buttons-row" style="margin-top: 1rem;">
+                                <button id="confirm-create-group" class="btn btn-primary">🚀 Criar Partida</button>
+                                <button id="cancel-create-group" class="btn btn-link">Cancelar</button>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="room-lobby" class="filter-section" style="display: none;">
-                        <h3 id="lobby-title">Sala: Carregando...</h3>
-                        <div id="players-list" style="margin: 1rem 0;">
-                            <p>Jogadores:</p>
-                            <ul id="players-ul" style="list-style: none; padding: 0;"></ul>
-                        </div>
-                        <div class="buttons-row">
-                            <button id="start-game-btn" class="btn btn-primary" style="display: none;">Iniciar Jogo</button>
-                            <button id="leave-room-btn" class="btn btn-link">Sair da Sala</button>
+                    <!-- Entrar na Partida -->
+                    <div id="join-group" class="filter-section" style="display: none;">
+                        <h3>🔗 Entrar na Partida</h3>
+                        <div class="group-form">
+                            <div class="form-group">
+                                <label for="group-code">Código da Partida:</label>
+                                <input type="text" id="group-code" placeholder="Cole o código aqui" maxlength="8" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ddd; text-transform: uppercase;">
+                            </div>
+                            <div class="form-group">
+                                <label for="player-name">Seu Nome:</label>
+                                <input type="text" id="player-name" placeholder="Digite seu nome" maxlength="20" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
+                            <div class="buttons-row" style="margin-top: 1rem;">
+                                <button id="confirm-join-group" class="btn btn-primary">🎮 Entrar</button>
+                                <button id="cancel-join-group" class="btn btn-link">Cancelar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="quiz-footer">
-                    <button class="btn btn-link" onclick="window.showView('home-view')">Voltar ao Menu</button>
+                    <!-- Sala de Espera (Anfitrião) -->
+                    <div id="group-lobby-host" class="filter-section" style="display: none;">
+                        <h3 id="lobby-host-title">🎯 Sala de Espera</h3>
+                        <div class="group-info">
+                            <div class="group-code-display">
+                                <span class="code-label">Código da Partida:</span>
+                                <span id="group-code-display" class="code-value">XXXX-XXXX</span>
+                                <button id="copy-code-btn" class="btn btn-link" style="font-size: 0.8rem;">📋 Copiar</button>
+                            </div>
+                            <div class="group-link-display" style="margin-top: 1rem;">
+                                <span class="link-label">Link para Convidados:</span>
+                                <div class="link-container">
+                                    <input type="text" id="group-link-display" readonly style="width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd; background: var(--bg-secondary);">
+                                    <button id="copy-link-btn" class="btn btn-link" style="margin-left: 0.5rem;">📋 Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="players-section" style="margin-top: 2rem;">
+                            <h4>👥 Jogadores ({!!window.groupPlayers ? window.groupPlayers.length : 0!!}/10)</h4>
+                            <div id="players-list-host" class="players-list">
+                                <!-- Jogadores serão listados aqui -->
+                            </div>
+                        </div>
+
+                        <div class="lobby-actions" style="margin-top: 2rem;">
+                            <button id="start-group-game" class="btn btn-primary" disabled>▶️ Iniciar Partida</button>
+                            <button id="cancel-group-lobby" class="btn btn-link">❌ Cancelar Partida</button>
+                        </div>
+                    </div>
+
+                    <!-- Sala de Espera (Participante) -->
+                    <div id="group-lobby-player" class="filter-section" style="display: none;">
+                        <h3 id="lobby-player-title">🎮 Aguardando Início</h3>
+                        <div class="waiting-info">
+                            <div class="waiting-message">
+                                <p>🎯 Aguardando o anfitrião iniciar a partida...</p>
+                                <div class="waiting-spinner" style="margin: 1rem 0;">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                            <div class="players-section" style="margin-top: 2rem;">
+                                <h4>👥 Jogadores na Partida</h4>
+                                <div id="players-list-player" class="players-list">
+                                    <!-- Jogadores serão listados aqui -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lobby-actions" style="margin-top: 2rem;">
+                            <button id="leave-group-lobby" class="btn btn-link">🚪 Sair da Partida</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TELA DE GERENCIAMENTO (placeholder) -->
-        <section id="admin-view" class="view">
-            <h2>Painel de Gerenciamento</h2>
-            <p>Em breve: CRUD de perguntas, moderação e import/export.</p>
-            <button class="btn btn-link" onclick="window.showView('home-view')">Voltar</button>
+        <!-- TELA DE ANALYTICS (Desenvolvedor) -->
+        <section id="analytics-view" class="view" role="main" aria-labelledby="analytics-title">
+            <div class="quiz-card">
+                <header class="stats-header">
+                    <h2 id="analytics-title">📊 Analytics (Desenvolvedor)</h2>
+                    <button id="back-from-analytics" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+                </header>
+
+                <div class="stats-content">
+                    <!-- Métricas Gerais -->
+                    <div class="stats-section">
+                        <h3>👥 Usuários e Sessões</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-users">0</div>
+                                <div class="stat-label">Usuários Únicos</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-sessions">0</div>
+                                <div class="stat-label">Total de Sessões</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-avg-session">0s</div>
+                                <div class="stat-label">Tempo Médio/Sessão</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-completion">0%</div>
+                                <div class="stat-label">Taxa de Conclusão</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atividade -->
+                    <div class="stats-section">
+                        <h3>🎮 Atividade</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-quizzes">0</div>
+                                <div class="stat-label">Quizzes Iniciados</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-questions">0</div>
+                                <div class="stat-label">Perguntas Respondidas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-light-theme">0</div>
+                                <div class="stat-label">Usam Tema Claro</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="analytics-dark-theme">0</div>
+                                <div class="stat-label">Usam Tema Escuro</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dispositivos -->
+                    <div class="stats-section">
+                        <h3>📱 Dispositivos</h3>
+                        <div id="device-stats" class="category-stats">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Uso por Hora -->
+                    <div class="stats-section">
+                        <h3>🕐 Uso por Hora do Dia</h3>
+                        <div class="hourly-chart" id="hourly-chart">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Ações do Desenvolvedor -->
+                    <div class="stats-actions">
+                        <button id="export-analytics" class="btn btn-primary">📤 Exportar Dados Completos</button>
+                        <button id="clear-analytics" class="btn btn-secondary">🗑️ Limpar Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA DE ESTATÍSTICAS -->
+        <section id="stats-view" class="view" role="main" aria-labelledby="stats-title">
+
+                <div class="stats-content">
+                    <!-- Estatísticas Gerais -->
+                    <div class="stats-section">
+                        <h3>🎯 Estatísticas Gerais</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-games">0</div>
+                                <div class="stat-label">Jogos Jogados</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-questions">0</div>
+                                <div class="stat-label">Perguntas Respondidas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="accuracy-rate">0%</div>
+                                <div class="stat-label">Taxa de Acerto</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="best-streak">0</div>
+                                <div class="stat-label">Melhor Sequência</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas de Tempo -->
+                    <div class="stats-section">
+                        <h3>⏱️ Estatísticas de Tempo</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="avg-time">0s</div>
+                                <div class="stat-label">Tempo Médio/Pergunta</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="total-time">0min</div>
+                                <div class="stat-label">Tempo Total Jogado</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="fastest-answer">0s</div>
+                                <div class="stat-label">Resposta Mais Rápida</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="study-sessions">0</div>
+                                <div class="stat-label">Sessões de Estudo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas por Categoria -->
+                    <div class="stats-section">
+                        <h3>📂 Desempenho por Categoria</h3>
+                        <div id="category-stats" class="category-stats">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas por Dificuldade -->
+                    <div class="stats-section">
+                        <h3>🎚️ Desempenho por Dificuldade</h3>
+                        <div class="difficulty-stats">
+                            <div class="difficulty-bar">
+                                <span class="difficulty-label">Fácil</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill easy-fill" id="easy-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="difficulty-rate" id="easy-rate">0%</span>
+                            </div>
+                            <div class="difficulty-bar">
+                                <span class="difficulty-label">Médio</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill medium-fill" id="medium-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="difficulty-rate" id="medium-rate">0%</span>
+                            </div>
+                            <div class="difficulty-bar">
+                                <span class="difficulty-label">Difícil</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill hard-fill" id="hard-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="difficulty-rate" id="hard-rate">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="stats-actions">
+                        <button id="reset-stats" class="btn btn-secondary">🔄 Resetar Estatísticas</button>
+                        <button id="export-stats" class="btn btn-link">📤 Exportar Dados</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </div>
