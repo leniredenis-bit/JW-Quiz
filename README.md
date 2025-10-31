@@ -1,5 +1,5 @@
 [README.md](https://github.com/user-attachments/files/23267193/README.md)
-# Quiz Bíblico Social
+# JW Quiz 
 
 Um quiz interativo sobre conhecimentos bíblicos com sistema de pontuação avançado, modo multiplayer e PWA.
 
@@ -56,7 +56,7 @@ quiz-biblico/
 O quiz pode ser instalado como um aplicativo nativo:
 1. Abra no navegador Chrome/Edge
 2. Clique no botão "Instalar" na barra de endereço
-3. Ou vá em Menu → "Instalar Quiz Bíblico Social"
+3. Ou vá em Menu → "Instalar JW Quiz"
 
 ## 🔧 Desenvolvimento Local
 
