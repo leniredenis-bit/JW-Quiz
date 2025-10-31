@@ -1,0 +1,162 @@
+[
+  {
+    "id": "10001",
+    "pergunta": "Quem recebeu a ordem de Deus para construir uma arca?",
+    "opcoes": ["Noé", "Moisés", "Abraão", "Davi"],
+    "resposta_correta": "Noé",
+    "tags": ["gênesis", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Gênesis 6:13-14",
+    "texto_biblico": "(13) Depois disso Deus disse a Noé: “Decidi pôr um fim a toda a humanidade... (14) Faça para você uma arca de madeira resinosa.”"
+  },
+  {
+    "id": "10002",
+    "pergunta": "Que profeta foi lançado na cova dos leões por continuar a orar ao seu Deus?",
+    "opcoes": ["Daniel", "José", "Elias", "Paulo"],
+    "resposta_correta": "Daniel",
+    "tags": ["daniel", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Daniel 6:16",
+    "texto_biblico": "Então o rei deu a ordem, e eles trouxeram Daniel e o lançaram na cova dos leões."
+  },
+  {
+    "id": "10003",
+    "pergunta": "Quem traiu Jesus por 30 moedas de prata?",
+    "opcoes": ["Judas Iscariotes", "Pedro", "Tiago", "Tomé"],
+    "resposta_correta": "Judas Iscariotes",
+    "tags": ["mateus", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Mateus 26:14-15",
+    "texto_biblico": "(14) Então um dos Doze, chamado Judas Iscariotes, foi aos principais sacerdotes (15) e lhes disse: “O que me darão para que eu o traia a vocês?” Eles lhe estipularam 30 moedas de prata."
+  },
+  {
+    "id": "10004",
+    "pergunta": "Qual foi o primeiro milagre de Jesus registrado no livro de João?",
+    "opcoes": ["Transformar água em vinho", "Curar um cego", "Andar sobre as águas", "Multiplicar pães"],
+    "resposta_correta": "Transformar água em vinho",
+    "tags": ["joão", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "João 2:9",
+    "texto_biblico": "Quando o encarregado da festa provou a água que tinha sido transformada em vinho..."
+  },
+  {
+    "id": "10005",
+    "pergunta": "Quem Jeová usou para dividir as águas do Mar Vermelho?",
+    "opcoes": ["Moisés", "Josué", "Elias", "Noé"],
+    "resposta_correta": "Moisés",
+    "tags": ["êxodo", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Êxodo 14:21",
+    "texto_biblico": "Moisés estendeu então a mão sobre o mar, e Jeová fez o mar retroceder..."
+  },
+  {
+    "id": "10006",
+    "pergunta": "Que profeta, ao fugir de sua designação, foi engolido por um grande peixe?",
+    "opcoes": ["Jonas", "Elias", "Daniel", "Abraão"],
+    "resposta_correta": "Jonas",
+    "tags": ["jonas", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Jonas 1:17",
+    "texto_biblico": "Então Jeová fez com que um grande peixe engolisse Jonas, e Jonas ficou no ventre do peixe por três dias e três noites."
+  },
+  {
+    "id": "10007",
+    "pergunta": "Quem foi o primeiro homem a ser ungido como rei sobre a nação de Israel?",
+    "opcoes": ["Saul", "Davi", "Salomão", "Ezequias"],
+    "resposta_correta": "Saul",
+    "tags": ["1samuel", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "1 Samuel 10:1",
+    "texto_biblico": "Samuel pegou o frasco de óleo e o derramou sobre a cabeça de Saul. Então o beijou e disse: “Não foi Jeová que te ungiu como líder sobre a sua herança?”"
+  },
+  {
+    "id": "10008",
+    "pergunta": "Quem interpretou os sonhos de Faraó sobre as vacas e as espigas de grãos?",
+    "opcoes": ["José", "Moisés", "Elias", "Daniel"],
+    "resposta_correta": "José",
+    "tags": ["gênesis", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Gênesis 41:25",
+    "texto_biblico": "Então José disse a Faraó: “Os sonhos de Faraó têm um só significado. O verdadeiro Deus anunciou a Faraó o que ele está para fazer.”"
+  },
+  {
+    "id": "10009",
+    "pergunta": "No Monte Sinai, quem recebeu de Deus as duas tábuas de pedra com os Dez Mandamentos?",
+    "opcoes": ["Moisés", "Josué", "Arão", "Elias"],
+    "resposta_correta": "Moisés",
+    "tags": ["êxodo", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Êxodo 31:18",
+    "texto_biblico": "Assim que tinha acabado de falar com ele no monte Sinai, deu a Moisés as duas Tábuas do Testemunho, tábuas de pedra, escritas pelo dedo de Deus."
+  },
+  {
+    "id": "10010",
+    "pergunta": "Que apóstolo, anteriormente conhecido como Saulo, foi chamado de 'vaso escolhido' para levar o nome de Jesus às nações?",
+    "opcoes": ["Paulo", "Pedro", "João", "Tiago"],
+    "resposta_correta": "Paulo",
+    "tags": ["atos", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Atos 9:15",
+    "texto_biblico": "Mas o Senhor lhe disse: “Vá, porque esse homem é para mim um vaso escolhido para levar o meu nome às nações, bem como a reis e aos filhos de Israel.”"
+  },
+  {
+    "id": "10011",
+    "pergunta": "Quem foi escolhido por Jeová para suceder Moisés e liderar Israel?",
+    "opcoes": ["Josué", "Calebe", "Arão", "Samuel"],
+    "resposta_correta": "Josué",
+    "tags": ["josué", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Josué 1:1-2",
+    "texto_biblico": "(1) Depois da morte de Moisés, servo de Jeová, Jeová disse a Josué, filho de Num, ajudante de Moisés: (2) “...agora, levante-se, atravesse este Jordão, você e todo este povo, e entre na terra que dou a eles, aos israelitas.”"
+  },
+  {
+    "id": "10012",
+    "pergunta": "As muralhas de que cidade caíram depois que os israelitas marcharam ao seu redor e tocaram as buzinas?",
+    "opcoes": ["Jericó", "Jerusalém", "Babilônia", "Nínive"],
+    "resposta_correta": "Jericó",
+    "tags": ["josué", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Josué 6:20",
+    "texto_biblico": "Assim que o povo ouviu o som da buzina e o alto grito de guerra, as muralhas de Jericó ruíram totalmente."
+  },
+  {
+    "id": "10013",
+    "pergunta": "Qual juiz de Israel era conhecido por sua força extraordinária, que vinha de seu voto de nazireu?",
+    "opcoes": ["Sansão", "Gideão", "Jefté", "Samuel"],
+    "resposta_correta": "Sansão",
+    "tags": ["juízes", "bíblia"],
+    "dificuldade": 2,
+    "referencia": "Juízes 14:6",
+    "texto_biblico": "Então o espírito de Jeová lhe deu poder, e ele rasgou o leão em dois..."
+  },
+  {
+    "id": "10014",
+    "pergunta": "Qual era o nome da esposa de Abraão, que deu à luz Isaque em sua velhice?",
+    "opcoes": ["Sara", "Rebeca", "Lia", "Raquel"],
+    "resposta_correta": "Sara",
+    "tags": ["gênesis", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Gênesis 21:2",
+    "texto_biblico": "E Sara ficou grávida e deu a Abraão um filho na sua velhice..."
+  },
+  {
+    "id": "10015",
+    "pergunta": "Em que cidade Jesus nasceu, cumprindo uma profecia?",
+    "opcoes": ["Belém", "Nazaré", "Jerusalém", "Cafarnaum"],
+    "resposta_correta": "Belém",
+    "tags": ["mateus", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Mateus 2:1",
+    "texto_biblico": "Depois de Jesus ter nascido em Belém da Judeia, nos dias do Rei Herodes..."
+  },
+  {
+    "id": "10150",
+    "pergunta": "Qual livro narra a história da criação dos céus e da terra?",
+    "opcoes": ["Gênesis", "Êxodo", "Salmos", "Isaías"],
+    "resposta_correta": "Gênesis",
+    "tags": ["gênesis", "bíblia"],
+    "dificuldade": 1,
+    "referencia": "Gênesis 1:1",
+    "texto_biblico": "No princípio Deus criou os céus e a terra."
+  }
+]
