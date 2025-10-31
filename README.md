@@ -72,6 +72,12 @@ python -m http.server 8000
 # Abra http://localhost:8000 no navegador
 ```
 
+## 🌐 Acesse Online
+
+O quiz está disponível online em: **https://leniredenis-bit.github.io/JW-Quiz/**
+
+*Nota: Pode levar 2-10 minutos para as atualizações aparecerem após mudanças no código.*
+
 ## 📊 Analytics
 
 O app inclui analytics básico para:
