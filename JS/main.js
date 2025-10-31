@@ -1232,6 +1232,269 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verificar parâmetros da URL ao carregar
     checkUrlParams();
 
+    // === JOGO DA MEMÓRIA ===
+    let memoryGame = {
+        cards: [],
+        flippedCards: [],
+        matchedPairs: 0,
+        attempts: 0,
+        timer: null,
+        timeElapsed: 0,
+        gameStarted: false,
+        animals: [
+            { name: 'cachorro', emoji: '🐕', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'gato', emoji: '🐱', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'coelho', emoji: '🐰', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'urso', emoji: '🐻', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'leão', emoji: '🦁', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'tigre', emoji: '🐯', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'elefante', emoji: '🐘', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'macaco', emoji: '🐵', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'panda', emoji: '🐼', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'girafa', emoji: '🦒', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'zebra', emoji: '🦓', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'cavalo', emoji: '🐎', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'vaca', emoji: '🐄', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'porco', emoji: '🐖', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'ovelha', emoji: '🐑', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'galinha', emoji: '🐔', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'pato', emoji: '🦆', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'pinguim', emoji: '🐧', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'tartaruga', emoji: '🐢', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
+            { name: 'cobra', emoji: '🐍', image: 'https://i.imgur.com/9Q3Z3Z3.png' }
+        ]
+    };
+
+    function showMemoryView() {
+        showView('memory-view');
+        initializeMemoryGame();
+    }
+
+    function initializeMemoryGame() {
+        resetMemoryGame();
+        createMemoryBoard();
+        updateMemoryDisplay();
+    }
+
+    function resetMemoryGame() {
+        memoryGame.cards = [];
+        memoryGame.flippedCards = [];
+        memoryGame.matchedPairs = 0;
+        memoryGame.attempts = 0;
+        memoryGame.timeElapsed = 0;
+        memoryGame.gameStarted = false;
+
+        if (memoryGame.timer) {
+            clearInterval(memoryGame.timer);
+            memoryGame.timer = null;
+        }
+
+        document.getElementById('memory-victory').classList.add('hidden');
+        document.getElementById('start-memory-btn').disabled = false;
+        document.getElementById('reset-memory-btn').disabled = true;
+    }
+
+    function createMemoryBoard() {
+        const board = document.getElementById('memory-board');
+        board.innerHTML = '';
+
+        // Criar pares de cartas (20 animais = 40 cartas)
+        const cardPairs = [];
+        memoryGame.animals.forEach(animal => {
+            // Criar duas cartas para cada animal
+            cardPairs.push({ ...animal, id: `${animal.name}-1` });
+            cardPairs.push({ ...animal, id: `${animal.name}-2` });
+        });
+
+        // Embaralhar as cartas
+        shuffleArray(cardPairs);
+
+        // Criar elementos das cartas
+        cardPairs.forEach(cardData => {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.dataset.animal = cardData.name;
+            card.dataset.id = cardData.id;
+
+            card.innerHTML = `
+                <div class="memory-card-back">?</div>
+                <div class="memory-card-front">
+                    <div class="memory-animal">${cardData.emoji}</div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => flipMemoryCard(card));
+            board.appendChild(card);
+            memoryGame.cards.push(card);
+        });
+    }
+
+    function flipMemoryCard(card) {
+        // Não permitir virar cartas se o jogo não começou
+        if (!memoryGame.gameStarted) return;
+
+        // Não permitir virar cartas já viradas ou combinadas
+        if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+        // Não permitir virar mais de 2 cartas
+        if (memoryGame.flippedCards.length >= 2) return;
+
+        // Virar a carta
+        card.classList.add('flipped');
+        memoryGame.flippedCards.push(card);
+
+        // Efeito sonoro
+        playMemorySound('flip');
+
+        // Se duas cartas estão viradas, verificar combinação
+        if (memoryGame.flippedCards.length === 2) {
+            memoryGame.attempts++;
+            setTimeout(checkMemoryMatch, 1000);
+        }
+
+        updateMemoryDisplay();
+    }
+
+    function checkMemoryMatch() {
+        const [card1, card2] = memoryGame.flippedCards;
+        const animal1 = card1.dataset.animal;
+        const animal2 = card2.dataset.animal;
+
+        if (animal1 === animal2) {
+            // Par encontrado!
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            memoryGame.matchedPairs++;
+
+            // Efeito sonoro de sucesso
+            playMemorySound('match');
+        } else {
+            // Não é par, virar de volta
+            setTimeout(() => {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+            }, 500);
+        }
+
+        memoryGame.flippedCards = [];
+
+        // Verificar se o jogo acabou
+        if (memoryGame.matchedPairs === 20) {
+            endMemoryGame();
+        }
+
+        updateMemoryDisplay();
+    }
+
+    function startMemoryGame() {
+        if (memoryGame.gameStarted) return;
+
+        memoryGame.gameStarted = true;
+        memoryGame.timeElapsed = 0;
+
+        document.getElementById('start-memory-btn').disabled = true;
+        document.getElementById('reset-memory-btn').disabled = false;
+
+        // Iniciar timer
+        memoryGame.timer = setInterval(() => {
+            memoryGame.timeElapsed++;
+            updateMemoryDisplay();
+        }, 1000);
+
+        // Analytics
+        window.analytics.track('memory_game_started');
+    }
+
+    function endMemoryGame() {
+        clearInterval(memoryGame.timer);
+        memoryGame.gameStarted = false;
+
+        // Calcular pontuação (menos tempo e tentativas = melhor pontuação)
+        const timeBonus = Math.max(0, 300 - memoryGame.timeElapsed); // Máximo 5 minutos
+        const attemptPenalty = memoryGame.attempts * 5;
+        const score = Math.max(0, timeBonus - attemptPenalty + 1000);
+
+        // Mostrar tela de vitória
+        document.getElementById('victory-time').textContent = formatMemoryTime(memoryGame.timeElapsed);
+        document.getElementById('victory-attempts').textContent = memoryGame.attempts;
+        document.getElementById('victory-score').textContent = score;
+        document.getElementById('memory-victory').classList.remove('hidden');
+
+        // Analytics
+        window.analytics.track('memory_game_completed', {
+            time: memoryGame.timeElapsed,
+            attempts: memoryGame.attempts,
+            score: score
+        });
+    }
+
+    function updateMemoryDisplay() {
+        // Atualizar timer
+        document.getElementById('memory-timer').textContent = formatMemoryTime(memoryGame.timeElapsed);
+
+        // Atualizar tentativas
+        document.getElementById('memory-attempts').textContent = memoryGame.attempts;
+
+        // Atualizar pares
+        document.getElementById('memory-pairs').textContent = `${memoryGame.matchedPairs}/20`;
+    }
+
+    function formatMemoryTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    function playMemorySound(type) {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            if (type === 'match') {
+                // Som de sucesso
+                oscillator.frequency.setValueAtTime(523, audioContext.currentTime); // Dó
+                oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1); // Mi
+                oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2); // Sol
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'flip') {
+                // Som de virar carta
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            }
+        } catch (e) {
+            // Silently fail if audio not supported
+        }
+    }
+
+    // Função utilitária para embaralhar array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Event listeners para o jogo da memória
+    document.getElementById('start-memory-game-btn').addEventListener('click', showMemoryView);
+    document.getElementById('back-from-memory').addEventListener('click', () => showView('home-view'));
+    document.getElementById('start-memory-btn').addEventListener('click', startMemoryGame);
+    document.getElementById('reset-memory-btn').addEventListener('click', initializeMemoryGame);
+    document.getElementById('play-again-memory').addEventListener('click', () => {
+        document.getElementById('memory-victory').classList.add('hidden');
+        initializeMemoryGame();
+    });
+
     function loadAndDisplayAnalytics() {
         const analytics = calculateAnalytics();
 

@@ -539,6 +539,257 @@ footer {
     font-size: 0.9rem;
 }
 
+/* === JOGO DA MEMÓRIA === */
+.memory-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.memory-info {
+    width: 100%;
+    max-width: 600px;
+}
+
+.memory-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-accent);
+}
+
+.memory-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.5rem;
+    max-width: 600px;
+    width: 100%;
+    aspect-ratio: 2;
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.memory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-secondary);
+}
+
+.memory-card.flipped {
+    background: var(--bg-tertiary);
+    border-color: var(--border-accent);
+}
+
+.memory-card.matched {
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+    cursor: default;
+    animation: matched 0.6s ease;
+}
+
+.memory-card-front,
+.memory-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    transition: transform 0.6s ease;
+}
+
+.memory-card-front {
+    transform: rotateY(180deg);
+}
+
+.memory-card.flipped .memory-card-front {
+    transform: rotateY(0deg);
+}
+
+.memory-card.flipped .memory-card-back {
+    transform: rotateY(-180deg);
+}
+
+.memory-card-back {
+    background: linear-gradient(135deg, var(--btn-primary), var(--btn-primary-hover));
+    color: white;
+    font-size: 2rem;
+}
+
+.memory-card-front {
+    background: white;
+    border-radius: 10px;
+}
+
+.memory-animal {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.memory-controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.memory-victory {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease;
+}
+
+.victory-content {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 2px solid var(--border-accent);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 32px var(--shadow-secondary);
+}
+
+.victory-content h3 {
+    color: var(--text-accent);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.victory-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.victory-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.victory-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.victory-value {
+    font-weight: 700;
+    color: var(--text-accent);
+    font-size: 1.1rem;
+}
+
+@keyframes matched {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Responsividade para jogo da memória */
+@media (max-width: 768px) {
+    .memory-board {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.4rem;
+        max-width: 400px;
+        aspect-ratio: 1.25;
+    }
+
+    .memory-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .memory-card {
+        font-size: 1.2rem;
+    }
+
+    .memory-card-back {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .memory-board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.3rem;
+        max-width: 320px;
+        aspect-ratio: 1.25;
+    }
+
+    .victory-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .victory-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .memory-card {
+        font-size: 1rem;
+    }
+
+    .memory-card-back {
+        font-size: 1rem;
+    }
+}
+
 /* === PARTIDA EM GRUPO === */
 .group-content {
     display: flex;
