@@ -32,16 +32,23 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadQuestions() {
         try {
             console.log('Tentando carregar perguntas do JSON...');
-            const res = await fetch('/JW-Quiz/DATA/perguntas.json');
+            const res = await fetch('DATA/perguntas.json');
             console.log('Resposta do fetch:', res.status, res.statusText);
-            if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+            if (!res.ok) {
+                throw new Error(`HTTP error ${res.status}`);
+            }
             const data = await res.json();
+            console.log('Perguntas carregadas com sucesso:', data.length);
             window.allQuestions = data;
-            console.log('Perguntas carregadas:', data.length);
             populateFilters();
+            console.log('Filtros populados, botões devem funcionar agora');
         } catch (err) {
-            console.error('Erro ao carregar perguntas', err);
-            tagsContainer.innerHTML = '<p>Erro ao carregar temas.</p>';
+            console.error('Erro ao carregar perguntas:', err);
+            alert('Erro ao carregar perguntas: ' + err.message);
+            // Mostrar botões desabilitados ou mensagem de erro
+            document.getElementById('start-quick-quiz-btn').disabled = true;
+            document.getElementById('start-study-mode-btn').disabled = true;
+            document.getElementById('start-memory-game-btn').disabled = true;
         }
     }
 
@@ -743,7 +750,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Registrar service worker para PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/JW-Quiz/sw.js')
+        navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('Service Worker registrado'))
             .catch(err => console.log('Erro no SW:', err));
     }
@@ -1485,17 +1492,20 @@ document.addEventListener('DOMContentLoaded', function() {
         return array;
     }
 
-    // Event listeners para o jogo da memória
-    document.getElementById('start-memory-game-btn').addEventListener('click', showMemoryView);
-    document.getElementById('back-from-memory').addEventListener('click', () => showView('home-view'));
-    document.getElementById('start-memory-btn').addEventListener('click', startMemoryGame);
-    document.getElementById('reset-memory-btn').addEventListener('click', initializeMemoryGame);
-    document.getElementById('play-again-memory').addEventListener('click', () => {
-        document.getElementById('memory-victory').classList.add('hidden');
-        initializeMemoryGame();
+    // Event listeners para analytics
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'back-from-analytics') {
+            showView('home-view');
+        }
+        if (e.target.id === 'export-analytics') {
+            exportAnalyticsData();
+        }
+        if (e.target.id === 'clear-analytics') {
+            if (confirm('Tem certeza que deseja limpar TODOS os dados de analytics? Esta ação não pode ser desfeita.')) {
+                clearAnalyticsData();
+            }
+        }
     });
-
-    function loadAndDisplayAnalytics() {
         const analytics = calculateAnalytics();
 
         // Métricas gerais
@@ -1703,5 +1713,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirm('Acesso ao painel de analytics do desenvolvedor. Continuar?')) {
             showAnalyticsView();
         }
+    });
+
+    // Event listeners para o jogo da memória
+    document.getElementById('start-memory-game-btn').addEventListener('click', showMemoryView);
+    document.getElementById('back-from-memory').addEventListener('click', () => showView('home-view'));
+    document.getElementById('start-memory-btn').addEventListener('click', startMemoryGame);
+    document.getElementById('reset-memory-btn').addEventListener('click', initializeMemoryGame);
+    document.getElementById('play-again-memory').addEventListener('click', () => {
+        document.getElementById('memory-victory').classList.add('hidden');
+        initializeMemoryGame();
     });
 });

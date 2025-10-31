@@ -2,7 +2,7 @@
   "name": "JW Quiz",
   "short_name": "JW Quiz",
   "description": "Teste seus conhecimentos bíblicos e desafie seus amigos!",
-  "start_url": "/JW-Quiz/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#007bff",
