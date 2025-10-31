@@ -1,6 +1,6 @@
 {
-  "name": "Quiz Bíblico Social",
-  "short_name": "Quiz Bíblico",
+  "name": "JW Quiz",
+  "short_name": "JW Quiz",
   "description": "Teste seus conhecimentos bíblicos e desafie seus amigos!",
   "start_url": "/",
   "display": "standalone",
