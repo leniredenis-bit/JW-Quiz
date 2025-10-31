@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadQuestions() {
         try {
             console.log('Tentando carregar perguntas do JSON...');
-            const res = await fetch('/DATA/perguntas.json');
+            const res = await fetch('/JW-Quiz/DATA/perguntas.json');
             console.log('Resposta do fetch:', res.status, res.statusText);
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
             const data = await res.json();
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Registrar service worker para PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('/JW-Quiz/sw.js')
             .then(reg => console.log('Service Worker registrado'))
             .catch(err => console.log('Erro no SW:', err));
     }
