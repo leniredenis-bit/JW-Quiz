@@ -1,4 +1,4 @@
-# Quiz Bíblico Social
+# JW Quiz
 
 Um quiz interativo sobre conhecimentos bíblicos com sistema de pontuação avançado, modo multiplayer e PWA.
 
@@ -29,7 +29,7 @@ Um quiz interativo sobre conhecimentos bíblicos com sistema de pontuação avan
 ## 📁 Estrutura do Projeto
 
 ```
-quiz-biblico/
+JW-Quiz/
 ├── index.html          # Página principal
 ├── CSS/
 │   └── style.css       # Estilos responsivos
@@ -55,16 +55,16 @@ quiz-biblico/
 O quiz pode ser instalado como um aplicativo nativo:
 1. Abra no navegador Chrome/Edge
 2. Clique no botão "Instalar" na barra de endereço
-3. Ou vá em Menu → "Instalar Quiz Bíblico Social"
+3. Ou vá em Menu → "Instalar JW Quiz"
 
 ## 🔧 Desenvolvimento Local
 
 ```bash
 # Clone o repositório
-git clone [URL_DO_REPOSITORIO]
+git clone https://github.com/leniredenis-bit/JW-Quiz.git
 
 # Entre na pasta
-cd quiz-biblico
+cd JW-Quiz
 
 # Inicie um servidor local
 python -m http.server 8000
