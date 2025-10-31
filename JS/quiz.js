@@ -49,9 +49,13 @@
     let timeSpent = 0;
     let answeredQuestions = new Set(); // IDs já acertados
     let questionErrors = {}; // erros por pergunta ID
+    let autoNextTimeout = null; // timeout para próxima pergunta automática
+    let autoNextTimeLeft = 0; // tempo restante para próxima automática
+    let correctAnswers = 0; // contador de respostas corretas
+    let isStudyMode = false; // flag para modo estudo
 
     // DOM - só buscar quando necessário
-    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn;
+    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn, autoNextCounter, autoNextText;
 
     function getDOMElements() {
         if (!progressEl) {
@@ -66,6 +70,8 @@
             biblicalTextEl = document.getElementById('biblical-text');
             nextBtn = document.getElementById('next-btn');
             quitBtn = document.getElementById('quit-btn');
+            autoNextCounter = document.getElementById('auto-next-counter');
+            autoNextText = document.getElementById('auto-next-text');
         }
     }
 
@@ -127,13 +133,30 @@
     // Mostra resultados finais simples e volta para home em botão
     function showResults() {
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
+        stopAutoNextTimer(); // Parar temporizador automático
         // construir tela de resultados simples
         const total = totalQuestions;
-        const html = `
-            <div style="text-align:center;padding:1rem;">
+        let resultText = '';
+
+        if (isStudyMode) {
+            resultText = `
+                <h2>Modo Estudo Concluído</h2>
+                <p style="font-size:1rem; margin: 0.5rem 0;">Você estudou <strong>${total}</strong> perguntas.</p>
+                <p style="font-size:1rem; margin: 0.5rem 0;">Acertou <strong>${correctAnswers}/${total}</strong> perguntas</p>
+                <p style="font-size:0.9rem; color:#666;">Modo estudo - sem pressão de tempo!</p>
+            `;
+        } else {
+            resultText = `
                 <h2>Resultado</h2>
                 <p style="font-size:1.1rem">Você marcou <strong>${score.toFixed(2)}</strong> pontos em ${total} perguntas.</p>
+                <p style="font-size:1rem; margin: 0.5rem 0;">Acertou <strong>${correctAnswers}/${total}</strong> perguntas</p>
                 <p>Streak máximo: ${currentStreak}</p>
+            `;
+        }
+
+        const html = `
+            <div style="text-align:center;padding:1rem;">
+                ${resultText}
                 <button id="play-again" class="btn btn-primary">Jogar Novamente</button>
                 <button id="back-home" class="btn btn-link">Voltar</button>
             </div>
@@ -149,6 +172,7 @@
     function renderQuestion() {
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
 
+        stopAutoNextTimer(); // Parar temporizador automático da pergunta anterior
         referenceArea.classList.add('hidden');
         nextBtn.disabled = true;
 
@@ -178,9 +202,15 @@
             optionsContainer.appendChild(btn);
         });
 
-        // Calcula tempo e inicia countdown
-        const seconds = calculateTimeForQuestion(q.pergunta);
-        startTimer(seconds);
+        // Calcula tempo e inicia countdown (apenas se não for modo estudo)
+        if (!isStudyMode) {
+            const seconds = calculateTimeForQuestion(q.pergunta);
+            startTimer(seconds);
+        } else {
+            // No modo estudo, esconder o timer
+            const timerElement = document.getElementById('quiz-timer');
+            if (timerElement) timerElement.style.display = 'none';
+        }
     }
 
     // Lida com clique na opção (cinza -> 0.5s -> verde/vermelho)
@@ -197,14 +227,16 @@
 
         // aguarda 0.5s antes de revelar
         setTimeout(() => {
-            // parar timer
-            stopTimer();
+            // parar timer (apenas se não for modo estudo)
+            if (!isStudyMode) {
+                stopTimer();
+            }
 
             const chosen = btn.dataset.answer;
             const correct = q.resposta_correta;
             const isCorrect = chosen === correct;
-            const timeAllocated = calculateTimeForQuestion(q.pergunta);
-            const timeRemaining = timeLeft;
+            const timeAllocated = isStudyMode ? 0 : calculateTimeForQuestion(q.pergunta);
+            const timeRemaining = isStudyMode ? 0 : timeLeft;
             const qId = q.id;
 
             // colore botões
@@ -222,21 +254,26 @@
             // Calcular pontos avançados
             let pointsEarned = 0;
             if (isCorrect) {
+                correctAnswers += 1; // Incrementar contador de acertos
                 // Base: 1 ponto
                 pointsEarned += 1;
 
-                // Bônus velocidade: até 0.1, 0.01 por segundo restante (máx 10s)
-                const speedBonus = Math.min(10, timeRemaining) * 0.01;
-                pointsEarned += speedBonus;
+                // Bônus velocidade: apenas no modo normal
+                if (!isStudyMode) {
+                    const speedBonus = Math.min(10, timeRemaining) * 0.01;
+                    pointsEarned += speedBonus;
+                }
 
                 // Bônus streak: 0.01 por acerto consecutivo a partir do 2º
                 if (currentStreak >= 1) {
                     pointsEarned += currentStreak * 0.01;
                 }
 
-                // Bônus dificuldade: até 0.1 dependendo da dificuldade
-                const diffBonus = (q.dificuldade - 1) * 0.033; // 0 para fácil, ~0.066 para médio, ~0.1 para difícil
-                pointsEarned += diffBonus;
+                // Bônus dificuldade: apenas no modo normal
+                if (!isStudyMode) {
+                    const diffBonus = (q.dificuldade - 1) * 0.033; // 0 para fácil, ~0.066 para médio, ~0.1 para difícil
+                    pointsEarned += diffBonus;
+                }
 
                 // Verificar se já foi acertada antes
                 if (answeredQuestions.has(qId)) {
@@ -262,6 +299,9 @@
 
             referenceArea.classList.remove('hidden');
             nextBtn.disabled = false;
+
+            // Iniciar temporizador automático para próxima pergunta
+            startAutoNextTimer();
         }, 500);
     }
 
@@ -308,12 +348,48 @@
         }
     }
 
+    // Funções para temporizador automático
+    function startAutoNextTimer() {
+        getDOMElements(); // Garante que os elementos DOM estão disponíveis
+        stopAutoNextTimer();
+        autoNextTimeLeft = 10;
+        autoNextCounter.style.display = 'block';
+        autoNextText.textContent = autoNextTimeLeft;
+
+        autoNextTimeout = setInterval(() => {
+            autoNextTimeLeft -= 1;
+            autoNextText.textContent = autoNextTimeLeft;
+
+            if (autoNextTimeLeft <= 0) {
+                stopAutoNextTimer();
+                // Avançar automaticamente para próxima pergunta
+                currentIndex += 1;
+                if (currentIndex >= totalQuestions) {
+                    showResults();
+                } else {
+                    renderQuestion();
+                }
+            }
+        }, 1000);
+    }
+
+    function stopAutoNextTimer() {
+        if (autoNextTimeout) {
+            clearInterval(autoNextTimeout);
+            autoNextTimeout = null;
+        }
+        if (autoNextCounter) {
+            autoNextCounter.style.display = 'none';
+        }
+    }
+
     // Inicializar event listeners quando necessário
     function initEventListeners() {
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
 
         // Próxima pergunta
         nextBtn.addEventListener('click', () => {
+            stopAutoNextTimer(); // Cancelar temporizador automático
             currentIndex += 1;
             if (currentIndex >= totalQuestions) {
                 showResults();
@@ -325,6 +401,7 @@
         // Sair para home
         if (quitBtn) quitBtn.addEventListener('click', () => {
             stopTimer();
+            stopAutoNextTimer(); // Parar temporizador automático
             window.showView('home-view');
             // reset quiz view content to original HTML by reloading page or re-rendering minimal
             window.location.reload();
@@ -343,6 +420,9 @@
             selected = pool.filter(q => (q.tags || []).includes(filter.value));
         } else if (filter.type === 'difficulty') {
             selected = pool.filter(q => Number(q.dificuldade) === Number(filter.value));
+        } else if (filter.type === 'study') {
+            // Modo estudo: sem timer, todas as perguntas disponíveis
+            selected = shuffleArray(pool.slice()).slice(0, filter.value || 10);
         } else {
             selected = pool.slice();
         }
@@ -353,12 +433,14 @@
         }
 
         // limita a 10 se for grande (pode ser configurado)
-        if (filter.type !== 'random') selected = shuffleArray(selected).slice(0, 10);
+        if (filter.type !== 'random' && filter.type !== 'study') selected = shuffleArray(selected).slice(0, 10);
 
         questions = selected;
         currentIndex = 0;
         score = 0;
         currentStreak = 0;
+        correctAnswers = 0; // Reset contador de acertos
+        isStudyMode = filter.type === 'study'; // Flag para modo estudo
         totalQuestions = questions.length;
 
         // Inicializar event listeners

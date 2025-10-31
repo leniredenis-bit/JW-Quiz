@@ -111,6 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Quick quiz button clicked');
         window.startQuiz({ type: 'random', value: 10 });
     });
+    document.getElementById('start-study-mode-btn').addEventListener('click', () => {
+        console.log('Study mode button clicked');
+        window.startQuiz({ type: 'study', value: 10 });
+    });
     document.getElementById('start-multiplayer-btn').addEventListener('click', () => {
         console.log('Multiplayer button clicked');
         window.showView('multiplayer-view');
@@ -398,6 +402,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicialização
     loadQuestions();
+
+    // Sistema de Tema Escuro/Claro
+    function initTheme() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme') || 'dark'; // Tema escuro como padrão
+
+        // Aplicar tema salvo
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        // Event listener para alternar tema
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+
+            // Analytics
+            window.analytics.track('theme_changed', { theme: newTheme });
+        });
+
+        function updateThemeButton(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.setAttribute('aria-label', `Alternar para tema ${theme === 'dark' ? 'claro' : 'escuro'}`);
+        }
+    }
+
+    // Inicializar tema
+    initTheme();
 
     // Registrar service worker para PWA
     if ('serviceWorker' in navigator) {

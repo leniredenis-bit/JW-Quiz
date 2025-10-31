@@ -16,6 +16,9 @@
         <!-- TELA INICIAL -->
         <section id="home-view" class="view active" role="main" aria-labelledby="home-title">
             <header class="app-header">
+                <div class="header-controls">
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">🌙</button>
+                </div>
                 <h1 id="home-title">JW Quiz</h1>
                 <p>Teste seus conhecimentos e desafie seus amigos!</p>
             </header>
@@ -23,6 +26,7 @@
             <main class="menu" role="navigation" aria-label="Menu principal">
                 <div class="buttons-row">
                     <button id="start-quick-quiz-btn" class="btn btn-primary" aria-label="Iniciar quiz rápido com perguntas aleatórias">▶️ Iniciar Quiz Rápido</button>
+                    <button id="start-study-mode-btn" class="btn btn-secondary" aria-label="Iniciar modo estudo sem timer">📚 Modo Estudo</button>
                     <button id="start-multiplayer-btn" class="btn btn-secondary" aria-label="Entrar no modo multiplayer online" disabled>⚔️ Jogar Online</button>
                 </div>
 
@@ -75,6 +79,11 @@
                     <div id="reference-text" class="reference-text"></div>
                     <div class="reference-title">Texto Bíblico (TNM):</div>
                     <div id="biblical-text" class="biblical-text"></div>
+                    <div id="auto-next-counter" class="auto-next-counter" style="display: none;">
+                        <span>Próxima pergunta em </span>
+                        <span id="auto-next-text" class="auto-next-text">10</span>
+                        <span> segundos...</span>
+                    </div>
                 </div>
 
                 <div class="quiz-footer">
