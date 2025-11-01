@@ -1452,5 +1452,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('play-again-memory').addEventListener('click', () => {
         document.getElementById('memory-victory').classList.add('hidden');
         initializeMemoryGame();
+        startMemoryGame(); // Inicia o jogo automaticamente
     });
 });
