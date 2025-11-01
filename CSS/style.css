@@ -268,6 +268,14 @@ body, html {
     100% { transform: scale(1); }
 }
 
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
 /* Reference area (hidden until shown) */
 .reference-area { margin-top:1rem; background:var(--bg-quaternary); padding:.9rem; border-radius:8px; }
 .reference-title { font-weight:700; margin-top:.35rem; color:var(--text-secondary); }
@@ -1001,9 +1009,14 @@ button {
     font-size: 16px;
     cursor: pointer;
     border: none;
-    background-color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
     color: white;
     border-radius: 5px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
 }
 
 #status-display {
@@ -1019,7 +1032,7 @@ button {
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(85px, 100px)); /* Responsivo: mínimo 85px para ícones */
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas responsivas */
     grid-gap: 8px;
     max-width: 90vw; /* Ajusta à tela */
     width: auto;
@@ -1029,8 +1042,8 @@ button {
 
 @media (min-width: 768px) {
     .game-board {
-        grid-template-columns: repeat(6, 100px); /* PC: tamanho fixo */
-        max-width: 650px;
+        grid-template-columns: repeat(5, 100px); /* PC: 5 colunas fixas */
+        max-width: 520px; /* 5*100 + 4*8 */
     }
 }
 
@@ -1046,6 +1059,7 @@ button {
 
 .card.is-flipped {
     transform: rotateY(180deg);
+    animation: bounce 0.6s;
 }
 
 .card-face {
@@ -1068,7 +1082,7 @@ button {
 }
 
 .card-back {
-    background-color: #3498db;
+    background: linear-gradient(45deg, #3498db, #2980b9);
     border: 2px solid #2980b9;
 }
 
@@ -1078,4 +1092,69 @@ button {
     cursor: default; /* Não pode mais clicar */
     box-shadow: 0 0 20px rgba(150, 150, 150, 0.8); /* Efeito de brilho */
     filter: grayscale(30%) brightness(0.9); /* Cor cinza e leve brilho */
+}
+
+/* Botões de seleção de jogadores */
+.player-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.player-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.player-btn.active {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+@keyframes bounce {
+    0% { transform: rotateY(180deg) scale(1); }
+    50% { transform: rotateY(180deg) scale(1.1); }
+    100% { transform: rotateY(180deg) scale(1); }
+}
+
+/* Confetti styles */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ffd700;
+    animation: confetti-fall 3s linear infinite;
+}
+
+.confetti:nth-child(odd) {
+    background-color: #ff69b4;
+}
+
+.confetti:nth-child(3n) {
+    background-color: #00ff00;
+}
+
+@keyframes confetti-fall {
+    0% {
+        top: -10px;
+        transform: rotate(0deg);
+    }
+    100% {
+        top: 100vh;
+        transform: rotate(720deg);
+    }
 }

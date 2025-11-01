@@ -1,16 +1,22 @@
 // --- CONFIGURAÇÃO DOS TEMAS ---
-// Para adicionar um novo tema, basta adicionar uma nova entrada aqui com 15 itens.
+// Para adicionar um novo tema, basta adicionar uma nova entrada aqui com 20 itens.
 const THEMES = {
-    animais: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'],
-    frutas: ['🍎', '🍌', '🍇', '🍓', '🍈', '🍒', '🍑', '🍍', '🥝', '🥭', '🥥', '🍉', '🍊', '🍋', '🍐'],
-    transportes: ['🚗', '🚕', '🚌', '🚑', '🚓', '🚚', '🚜', '🚲', '🛵', '✈️', '🚀', '⛵️', '🛳️', '🚆', '🚁']
+    animais: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🦆', '🦉'],
+    frutas: ['🍎', '🍌', '🍇', '🍓', '🍈', '🍒', '🍑', '🥝', '🥭', '🥥', '🍉', '🍊', '🍋', '🍐', '🍍', '🍇', '🍓', '🍈', '🍒', '🍑'],
+    transportes: ['🚗', '🚕', '🚌', '🚑', '🚓', '🚚', '🚜', '🚲', '🛵', '✈️', '🚀', '⛵️', '🛳️', '🚆', '🚁', '🚗', '🚕', '🚌', '🚑', '🚓'],
+    peixes: ['🐟', '🐠', '🐡', '🦈', '🐙', '🦑', '🦞', '🦀', '🐚', '🐳', '🐋', '🦭', '🐢', '🐊', '🦎', '🐌', '🦋', '🐛', '🐜', '🦗'],
+    aves: ['🐦', '🦅', '🦉', '🦆', '🦜', '🐔', '🐧', '🦚', '🦢', '🦃', '🐓', '🦇', '🐦‍⬛', '🦤', '🐦‍🔥', '🦅', '🦉', '🦆', '🦜', '🐔'],
+    numeros: ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'],
+    objetos: ['📱', '💻', '⌚', '📷', '🎥', '📺', '📻', '💡', '🔋', '🔌', '🛠️', '🔧', '🔨', '🪜', '📏', '📐', '📎', '✂️', '🔒', '🗝️']
 };
 
 // --- ELEMENTOS DO DOM ---
 const gameBoard = document.getElementById('game-board');
 const statusDisplay = document.getElementById('status-display');
-const playerCountInput = document.getElementById('player-count');
+const playerButtons = document.querySelectorAll('.player-btn');
 const themeSelect = document.getElementById('theme-select');
+const difficultySelect = document.getElementById('difficulty-select');
+const soundToggle = document.getElementById('sound-toggle');
 const startButton = document.getElementById('start-game');
 
 // --- ESTADO DO JOGO ---
@@ -22,7 +28,9 @@ let gameState = {
     numPlayers: 1,
     currentPlayer: 0, // Índice do jogador atual (0 a 3)
     scores: [],
-    pairsFound: 0
+    pairsFound: 0,
+    timer: null,
+    timeLeft: 0
 };
 
 // --- FUNÇÕES DO JOGO ---
@@ -33,7 +41,9 @@ function createBoard() {
     gameBoard.innerHTML = ''; // Limpa o tabuleiro anterior
     
     const selectedTheme = themeSelect.value;
-    const themeIcons = THEMES[selectedTheme];
+    const selectedDifficulty = difficultySelect.value;
+    const pairsCount = {easy: 10, medium: 15, hard: 20}[selectedDifficulty];
+    const themeIcons = THEMES[selectedTheme].slice(0, pairsCount);
     const cardIcons = [...themeIcons, ...themeIcons]; // Duplica os ícones para formar os pares
 
     // Embaralha as cartas
@@ -89,7 +99,7 @@ function handleMatch() {
     gameState.scores[gameState.currentPlayer]++;
     gameState.pairsFound++;
 
-    playSound('correct'); // Som divertido para acerto
+    if (soundToggle.checked) playSound('correct'); // Som divertido para acerto
 
     gameState.firstCard.removeEventListener('click', flipCard);
     gameState.secondCard.removeEventListener('click', flipCard);
@@ -101,17 +111,20 @@ function handleMatch() {
     updateStatus();
 
     // Verifica se o jogo acabou
-    if (gameState.pairsFound === 15) {
+    const pairsCount = {easy: 10, medium: 15, hard: 20}[difficultySelect.value];
+    if (gameState.pairsFound === pairsCount) {
         setTimeout(endGame, 500);
     }
 }
 
 // Ação quando as cartas não formam um par
 function unflipCards() {
-    playSound('incorrect'); // Som grave para erro
+    if (soundToggle.checked) playSound('incorrect'); // Som grave para erro
+    gameState.firstCard.classList.add('shake');
+    gameState.secondCard.classList.add('shake');
     setTimeout(() => {
-        gameState.firstCard.classList.remove('is-flipped');
-        gameState.secondCard.classList.remove('is-flipped');
+        gameState.firstCard.classList.remove('is-flipped', 'shake');
+        gameState.secondCard.classList.remove('is-flipped', 'shake');
         
         nextPlayer();
         resetTurn();
@@ -145,12 +158,38 @@ function updateStatus() {
     statusDisplay.innerHTML = statusText;
 }
 
+// Atualiza o timer
+function updateTimer() {
+    const minutes = Math.floor(gameState.timeLeft / 60);
+    const seconds = gameState.timeLeft % 60;
+    document.getElementById('timer-text').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
 // Inicia um novo jogo
 function startGame() {
-    gameState.numPlayers = parseInt(playerCountInput.value);
+    const selectedDifficulty = difficultySelect.value;
+    gameState.numPlayers = gameState.numPlayers || 1;
     gameState.scores = Array(gameState.numPlayers).fill(0);
     gameState.currentPlayer = 0;
     gameState.lockBoard = false;
+
+    if (gameState.timer) clearInterval(gameState.timer);
+
+    if (selectedDifficulty === 'hard') {
+        gameState.timeLeft = 120; // 2 minutes
+        document.getElementById('timer-display').style.display = 'block';
+        updateTimer();
+        gameState.timer = setInterval(() => {
+            gameState.timeLeft--;
+            updateTimer();
+            if (gameState.timeLeft <= 0) {
+                clearInterval(gameState.timer);
+                endGame();
+            }
+        }, 1000);
+    } else {
+        document.getElementById('timer-display').style.display = 'none';
+    }
 
     createBoard();
     updateStatus();
@@ -158,6 +197,32 @@ function startGame() {
 
 // Finaliza o jogo e anuncia o vencedor
 function endGame() {
+    if (gameState.timer) clearInterval(gameState.timer);
+
+    // Salvar estatísticas
+    const selectedTheme = themeSelect.value;
+    const selectedDifficulty = difficultySelect.value;
+    const stats = JSON.parse(localStorage.getItem('memoryStats') || '{}');
+    stats[selectedTheme] = stats[selectedTheme] || {};
+    stats[selectedTheme][selectedDifficulty] = stats[selectedTheme][selectedDifficulty] || { bestTime: Infinity, bestScore: 0 };
+
+    if (gameState.numPlayers === 1 && selectedDifficulty === 'hard') {
+        const timeTaken = 120 - gameState.timeLeft;
+        if (timeTaken < stats[selectedTheme][selectedDifficulty].bestTime) {
+            stats[selectedTheme][selectedDifficulty].bestTime = timeTaken;
+        }
+    }
+
+    const totalScore = gameState.scores.reduce((a, b) => a + b, 0);
+    if (totalScore > stats[selectedTheme][selectedDifficulty].bestScore) {
+        stats[selectedTheme][selectedDifficulty].bestScore = totalScore;
+    }
+
+    localStorage.setItem('memoryStats', JSON.stringify(stats));
+
+    // Confetes
+    showConfetti();
+
     let winnerMsg = '';
     if (gameState.numPlayers > 1) {
         const maxScore = Math.max(...gameState.scores);
@@ -179,5 +244,30 @@ function endGame() {
 // Event Listeners
 startButton.addEventListener('click', startGame);
 
-// Inicia o jogo pela primeira vez ao carregar a página
-startGame();
+// Event listeners para botões de jogadores
+playerButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        playerButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        gameState.numPlayers = parseInt(btn.dataset.players);
+    });
+});
+
+// Mostra confetes
+function showConfetti() {
+    const confettiContainer = document.createElement('div');
+    confettiContainer.classList.add('confetti-container');
+    document.body.appendChild(confettiContainer);
+
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confettiContainer.appendChild(confetti);
+    }
+
+    setTimeout(() => {
+        document.body.removeChild(confettiContainer);
+    }, 3000);
+}
