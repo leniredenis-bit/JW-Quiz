@@ -247,6 +247,15 @@ body, html {
     animation: wrong 0.6s ease;
 }
 
+/* Estilos específicos para o quiz */
+#question-text, .correct-answer, .reference-text, .biblical-text {
+  color: var(--text-color) !important;
+}
+
+.option-btn {
+  color: var(--text-color) !important;
+}
+
 /* Animações */
 @keyframes pulse {
     0% { transform: scale(1); }
