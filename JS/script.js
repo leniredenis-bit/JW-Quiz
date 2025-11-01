@@ -89,6 +89,8 @@ function handleMatch() {
     gameState.scores[gameState.currentPlayer]++;
     gameState.pairsFound++;
 
+    playSound('correct'); // Som divertido para acerto
+
     gameState.firstCard.removeEventListener('click', flipCard);
     gameState.secondCard.removeEventListener('click', flipCard);
     
@@ -106,6 +108,7 @@ function handleMatch() {
 
 // Ação quando as cartas não formam um par
 function unflipCards() {
+    playSound('incorrect'); // Som grave para erro
     setTimeout(() => {
         gameState.firstCard.classList.remove('is-flipped');
         gameState.secondCard.classList.remove('is-flipped');

@@ -1019,18 +1019,29 @@ button {
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(6, 100px); /* 6 colunas */
-    grid-gap: 10px;
-    width: 650px; /* 6 * 100px + 5 * 10px */
+    grid-template-columns: repeat(auto-fit, minmax(85px, 100px)); /* Responsivo: mínimo 85px para ícones */
+    grid-gap: 8px;
+    max-width: 90vw; /* Ajusta à tela */
+    width: auto;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .game-board {
+        grid-template-columns: repeat(6, 100px); /* PC: tamanho fixo */
+        max-width: 650px;
+    }
 }
 
 .card {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.6s;
     cursor: pointer;
+    aspect-ratio: 1; /* Mantém quadrado */
 }
 
 .card.is-flipped {
@@ -1046,7 +1057,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
+    font-size: 70px; /* Ajustado para ~82% do tamanho da peça (85px min) */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
@@ -1063,7 +1074,8 @@ button {
 
 /* Estilo para quando um par é formado */
 .card.is-matched {
-    transform: rotateY(180deg);
+    transform: rotateY(0deg); /* Mantém virado para frente */
     cursor: default; /* Não pode mais clicar */
-    opacity: 0.5; /* Fica um pouco apagada para indicar que já foi */
+    box-shadow: 0 0 20px rgba(150, 150, 150, 0.8); /* Efeito de brilho */
+    filter: grayscale(30%) brightness(0.9); /* Cor cinza e leve brilho */
 }
