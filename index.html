@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="buttons-row">
-                    <button id="start-memory-game-btn" class="btn btn-secondary" aria-label="Jogar jogo da memória com animais">🧠 Jogo da Memória</button>
+                    <button id="start-memory-game-btn" class="btn btn-secondary" aria-label="Jogar jogo da memória com animais">🧠 Teste sem memória</button>
                 </div>
 
                 <div class="stats-row">
@@ -213,61 +213,37 @@
         <section id="memory-view" class="view" role="main" aria-labelledby="memory-title">
             <div class="quiz-card">
                 <header class="stats-header">
-                    <h2 id="memory-title">🧠 Jogo da Memória</h2>
+                    <h2 id="memory-title">🧠 Teste sem memória</h2>
                     <button id="back-from-memory" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
                 </header>
 
                 <div class="memory-content">
-                    <!-- Informações do jogo -->
-                    <div class="memory-info">
-                        <div class="memory-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">Tempo:</span>
-                                <span id="memory-timer" class="stat-value">00:00</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Tentativas:</span>
-                                <span id="memory-attempts" class="stat-value">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Pares:</span>
-                                <span id="memory-pairs" class="stat-value">0/8</span>
-                            </div>
+                    <h1>Teste sem memória</h1>
+
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="player-count">Jogadores (1-4):</label>
+                            <input type="number" id="player-count" value="1" min="1" max="4">
                         </div>
-                    </div>
-
-                    <!-- Tabuleiro do jogo -->
-                    <div class="memory-board" id="memory-board">
-                        <!-- As cartas serão geradas dinamicamente -->
-                    </div>
-
-                    <!-- Controles do jogo -->
-                    <div class="memory-controls">
-                        <button id="start-memory-btn" class="btn btn-primary">🎮 Iniciar Jogo</button>
-                        <button id="reset-memory-btn" class="btn btn-secondary" disabled>🔄 Jogar Novamente</button>
-                    </div>
-
-                    <!-- Mensagem de vitória -->
-                    <div id="memory-victory" class="memory-victory hidden">
-                        <div class="victory-content">
-                            <h3>🎉 Parabéns!</h3>
-                            <p>Você completou o jogo da memória!</p>
-                            <div class="victory-stats">
-                                <div class="victory-stat">
-                                    <span class="victory-label">Tempo:</span>
-                                    <span id="victory-time" class="victory-value"></span>
-                                </div>
-                                <div class="victory-stat">
-                                    <span class="victory-label">Tentativas:</span>
-                                    <span id="victory-attempts" class="victory-value"></span>
-                                </div>
-                                <div class="victory-stat">
-                                    <span class="victory-label">Pontuação:</span>
-                                    <span id="victory-score" class="victory-value"></span>
-                                </div>
-                            </div>
-                            <button id="play-again-memory" class="btn btn-primary">🎮 Jogar Novamente</button>
+                        <div class="control-group">
+                            <label for="theme-select">Escolha o Tema:</label>
+                            <select id="theme-select">
+                                <option value="animais">Animais</option>
+                                <option value="frutas">Frutas</option>
+                                <option value="transportes">Transportes</option>
+                            </select>
                         </div>
+                        <button id="start-game">Iniciar / Reiniciar Jogo</button>
+                    </div>
+
+                    <div id="status-display">
+                        <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
+                    </div>
+
+                    <div class="game-container">
+                        <section id="game-board" class="game-board">
+                            <!-- As cartas serão geradas aqui pelo JavaScript -->
+                        </section>
                     </div>
                 </div>
             </div>
@@ -459,5 +435,6 @@
     <script src="JS/main.js"></script>
     <script src="JS/unregister-sw.js"></script>
     <script src="JS/debug.js"></script>
+    <script src="JS/script.js"></script>
 </body>
 </html>
