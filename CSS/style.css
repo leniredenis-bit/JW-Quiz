@@ -1071,7 +1071,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 70px; /* Ajustado para ~82% do tamanho da peça (85px min) */
+    font-size: 70%; /* Responsivo ao tamanho da carta */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
