@@ -388,133 +388,6 @@ document.addEventListener('DOMContentLoaded', function() {
         focusFirstInteractive(viewId);
     };
 
-    // Multiplayer básico (local storage para salas)
-    window.multiplayerRooms = JSON.parse(localStorage.getItem('multiplayer_rooms') || '{}');
-
-    // Funções multiplayer
-    function generateRoomCode() {
-        return Math.random().toString(36).substring(2, 8).toUpperCase();
-    }
-
-    function saveRooms() {
-        localStorage.setItem('multiplayer_rooms', JSON.stringify(window.multiplayerRooms));
-    }
-
-    function showMultiplayerMenu() {
-        document.getElementById('multiplayer-menu').style.display = 'block';
-        document.getElementById('room-creation').style.display = 'none';
-        document.getElementById('room-join').style.display = 'none';
-        document.getElementById('room-lobby').style.display = 'none';
-    }
-
-    function showRoomCreation() {
-        document.getElementById('multiplayer-menu').style.display = 'none';
-        document.getElementById('room-creation').style.display = 'block';
-        document.getElementById('room-name').focus();
-    }
-
-    function showRoomJoin() {
-        document.getElementById('multiplayer-menu').style.display = 'none';
-        document.getElementById('room-join').style.display = 'block';
-        document.getElementById('room-code').focus();
-    }
-
-    function createRoom() {
-        const roomName = document.getElementById('room-name').value.trim();
-        if (!roomName) {
-            alert('Digite um nome para a sala');
-            return;
-        }
-
-        const roomCode = generateRoomCode();
-        const playerName = prompt('Seu nome:') || 'Jogador';
-
-        window.multiplayerRooms[roomCode] = {
-            name: roomName,
-            host: playerName,
-            players: [playerName],
-            created: Date.now(),
-            gameStarted: false
-        };
-
-        saveRooms();
-        joinRoomLobby(roomCode, playerName, true);
-    }
-
-    function joinRoom() {
-        const roomCode = document.getElementById('room-code').value.trim().toUpperCase();
-        if (!roomCode || roomCode.length !== 6) {
-            alert('Digite um código válido de 6 caracteres');
-            return;
-        }
-
-        if (!window.multiplayerRooms[roomCode]) {
-            alert('Sala não encontrada');
-            return;
-        }
-
-        if (window.multiplayerRooms[roomCode].gameStarted) {
-            alert('Jogo já começou');
-            return;
-        }
-
-        const playerName = prompt('Seu nome:') || 'Jogador';
-        window.multiplayerRooms[roomCode].players.push(playerName);
-        saveRooms();
-
-        joinRoomLobby(roomCode, playerName, false);
-    }
-
-    function joinRoomLobby(roomCode, playerName, isHost) {
-        const room = window.multiplayerRooms[roomCode];
-        document.getElementById('multiplayer-menu').style.display = 'none';
-        document.getElementById('room-lobby').style.display = 'block';
-
-        document.getElementById('lobby-title').textContent = `Sala: ${room.name} (${roomCode})`;
-        updatePlayersList(room.players);
-
-        if (isHost) {
-            document.getElementById('start-game-btn').style.display = 'inline-block';
-        }
-
-        // Armazenar dados da sessão atual
-        window.currentRoom = { code: roomCode, playerName, isHost };
-    }
-
-    function updatePlayersList(players) {
-        const ul = document.getElementById('players-ul');
-        ul.innerHTML = '';
-        players.forEach(player => {
-            const li = document.createElement('li');
-            li.textContent = player;
-            li.style.padding = '0.25rem 0';
-            ul.appendChild(li);
-        });
-    }
-
-    function leaveRoom() {
-        if (window.currentRoom) {
-            const room = window.multiplayerRooms[window.currentRoom.code];
-            if (room) {
-                room.players = room.players.filter(p => p !== window.currentRoom.playerName);
-                if (room.players.length === 0) {
-                    delete window.multiplayerRooms[window.currentRoom.code];
-                }
-                saveRooms();
-            }
-        }
-        showMultiplayerMenu();
-    }
-
-    // Event listeners para multiplayer
-    document.getElementById('create-room-btn').addEventListener('click', showRoomCreation);
-    document.getElementById('join-room-btn').addEventListener('click', showRoomJoin);
-    document.getElementById('confirm-create-btn').addEventListener('click', createRoom);
-    document.getElementById('cancel-create-btn').addEventListener('click', showMultiplayerMenu);
-    document.getElementById('confirm-join-btn').addEventListener('click', joinRoom);
-    document.getElementById('cancel-join-btn').addEventListener('click', showMultiplayerMenu);
-    document.getElementById('leave-room-btn').addEventListener('click', leaveRoom);
-
     // Inicialização
     loadQuestions();
 
@@ -746,8 +619,6 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // Inicializar tema
-
     // Registrar service worker para PWA
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
@@ -802,7 +673,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const groupCode = generateGroupCode();
 
         // Criar objeto da partida
-        currentGroup = {
+        window.currentGroup = {
             id: groupCode,
             name: groupName,
             host: hostName,
@@ -811,11 +682,11 @@ document.addEventListener('DOMContentLoaded', function() {
             status: 'waiting'
         };
 
-        isGroupHost = true;
-        groupPlayers = [hostName];
+        window.isGroupHost = true;
+        window.groupPlayers = [hostName];
 
         // Salvar no localStorage (simulando servidor)
-        saveGroup(currentGroup);
+        saveGroup(window.currentGroup);
 
         // Mostrar sala de espera do anfitrião
         showGroupLobbyHost();
@@ -859,9 +730,9 @@ document.addEventListener('DOMContentLoaded', function() {
         group.players.push(playerName);
         saveGroup(group);
 
-        currentGroup = group;
-        isGroupHost = false;
-        groupPlayers = group.players;
+        window.currentGroup = group;
+        window.isGroupHost = false;
+        window.groupPlayers = group.players;
 
         // Mostrar sala de espera do participante
         showGroupLobbyPlayer();
@@ -875,12 +746,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('group-lobby-host').style.display = 'block';
 
         // Atualizar informações da partida
-        document.getElementById('lobby-host-title').textContent = `🎯 ${currentGroup.name}`;
-        document.getElementById('group-code-display').textContent = formatGroupCode(currentGroup.id);
+        document.getElementById('lobby-host-title').textContent = `🎯 ${window.currentGroup.name}`;
+        document.getElementById('group-code-display').textContent = formatGroupCode(window.currentGroup.id);
 
         // Gerar link da partida
         const baseUrl = window.location.origin + window.location.pathname;
-        const groupLink = `${baseUrl}?join=${currentGroup.id}`;
+        const groupLink = `${baseUrl}?join=${window.currentGroup.id}`;
         document.getElementById('group-link-display').value = groupLink;
 
         // Atualizar lista de jogadores
@@ -894,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('join-group').style.display = 'none';
         document.getElementById('group-lobby-player').style.display = 'block';
 
-        document.getElementById('lobby-player-title').textContent = `🎮 ${currentGroup.name}`;
+        document.getElementById('lobby-player-title').textContent = `🎮 ${window.currentGroup.name}`;
 
         // Atualizar lista de jogadores
         updatePlayersListPlayer();
@@ -904,11 +775,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('players-list-host');
         container.innerHTML = '';
 
-        groupPlayers.forEach((player, index) => {
+        window.groupPlayers.forEach((player, index) => {
             const playerItem = document.createElement('div');
             playerItem.className = 'player-item';
 
-            const isHost = player === currentGroup.host;
+            const isHost = player === window.currentGroup.host;
             const avatarLetter = player.charAt(0).toUpperCase();
 
             playerItem.innerHTML = `
@@ -925,11 +796,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('players-list-player');
         container.innerHTML = '';
 
-        groupPlayers.forEach((player, index) => {
+        window.groupPlayers.forEach((player, index) => {
             const playerItem = document.createElement('div');
             playerItem.className = 'player-item';
 
-            const isHost = player === currentGroup.host;
+            const isHost = player === window.currentGroup.host;
             const avatarLetter = player.charAt(0).toUpperCase();
 
             playerItem.innerHTML = `
@@ -944,31 +815,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateStartButton() {
         const startBtn = document.getElementById('start-group-game');
-        const hasEnoughPlayers = groupPlayers.length >= 2;
+        const hasEnoughPlayers = window.groupPlayers.length >= 2;
 
         startBtn.disabled = !hasEnoughPlayers;
         startBtn.textContent = hasEnoughPlayers ? '▶️ Iniciar Partida' : 'Aguardando mais jogadores...';
     }
 
     function startGroupGame() {
-        if (groupPlayers.length < 2) {
+        if (window.groupPlayers.length < 2) {
             alert('Precisa de pelo menos 2 jogadores para iniciar a partida.');
             return;
         }
 
         // Atualizar status da partida
-        currentGroup.status = 'playing';
-        saveGroup(currentGroup);
+        window.currentGroup.status = 'playing';
+        saveGroup(window.currentGroup);
 
-        groupGameStarted = true;
+        window.groupGameStarted = true;
 
         // Iniciar quiz em grupo
         startGroupQuiz();
 
         // Analytics
         window.analytics.track('group_game_started', {
-            groupId: currentGroup.id,
-            playerCount: groupPlayers.length
+            groupId: window.currentGroup.id,
+            playerCount: window.groupPlayers.length
         });
     }
 
@@ -980,7 +851,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.groupQuizState = {
             questions: questions,
             currentQuestionIndex: 0,
-            players: groupPlayers.map(name => ({
+            players: window.groupPlayers.map(name => ({
                 name: name,
                 score: 0,
                 answers: [],
@@ -1003,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Configurar pergunta
         document.getElementById('question-text').textContent = question.question;
-        document.getElementById('question-progress').textContent = `Pergunta ${state.currentQuestionIndex + 1} de ${state.questions.length}`;
+        document.getElementById('quiz-progress').textContent = `Pergunta ${state.currentQuestionIndex + 1} de ${state.questions.length}`;
 
         // Configurar opções
         const optionsContainer = document.getElementById('options-container');
@@ -1069,7 +940,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Registrar resposta (simulando apenas o jogador local por enquanto)
-        const playerIndex = window.groupQuizState.players.findIndex(p => p.name === currentGroup.host);
+        const playerIndex = window.groupQuizState.players.findIndex(p => p.name === window.currentGroup.host);
         if (playerIndex >= 0) {
             window.groupQuizState.players[playerIndex].answers.push(isCorrect);
             window.groupQuizState.players[playerIndex].score += isCorrect ? 10 : 0;
@@ -1088,7 +959,7 @@ document.addEventListener('DOMContentLoaded', function() {
         allBtns[question.correct].classList.add('correct');
 
         // Registrar resposta incorreta por tempo
-        const playerIndex = window.groupQuizState.players.findIndex(p => p.name === currentGroup.host);
+        const playerIndex = window.groupQuizState.players.findIndex(p => p.name === window.currentGroup.host);
         if (playerIndex >= 0) {
             window.groupQuizState.players[playerIndex].answers.push(false);
         }
@@ -1128,10 +999,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function leaveGroup() {
         // Limpar estado
-        currentGroup = null;
-        isGroupHost = false;
-        groupPlayers = [];
-        groupGameStarted = false;
+        window.currentGroup = null;
+        window.isGroupHost = false;
+        window.groupPlayers = [];
+        window.groupGameStarted = false;
 
         if (window.groupQuizState) {
             if (window.groupQuizState.currentTimer) {
@@ -1167,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return groups[code];
     }
 
-    function copyToClipboard(text) {
+    function copyToClipboard(text, event) {
         navigator.clipboard.writeText(text).then(() => {
             // Feedback visual temporário
             const btn = event.target;
@@ -1224,11 +1095,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('cancel-join-group').addEventListener('click', showGroupMenu);
 
     // Sala de espera (anfitrião)
-    document.getElementById('copy-code-btn').addEventListener('click', () => {
-        copyToClipboard(document.getElementById('group-code-display').textContent.replace('-', ''));
+    document.getElementById('copy-code-btn').addEventListener('click', (e) => {
+        copyToClipboard(document.getElementById('group-code-display').textContent.replace('-', ''), e);
     });
-    document.getElementById('copy-link-btn').addEventListener('click', () => {
-        copyToClipboard(document.getElementById('group-link-display').value);
+    document.getElementById('copy-link-btn').addEventListener('click', (e) => {
+        copyToClipboard(document.getElementById('group-link-display').value, e);
     });
     document.getElementById('start-group-game').addEventListener('click', startGroupGame);
     document.getElementById('cancel-group-lobby').addEventListener('click', leaveGroup);
@@ -1249,26 +1120,14 @@ document.addEventListener('DOMContentLoaded', function() {
         timeElapsed: 0,
         gameStarted: false,
         animals: [
-            { name: 'cachorro', emoji: '🐕', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'gato', emoji: '🐱', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'coelho', emoji: '🐰', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'urso', emoji: '🐻', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'leão', emoji: '🦁', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'tigre', emoji: '🐯', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'elefante', emoji: '🐘', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'macaco', emoji: '🐵', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'panda', emoji: '🐼', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'girafa', emoji: '🦒', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'zebra', emoji: '🦓', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'cavalo', emoji: '🐎', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'vaca', emoji: '🐄', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'porco', emoji: '🐖', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'ovelha', emoji: '🐑', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'galinha', emoji: '🐔', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'pato', emoji: '🦆', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'pinguim', emoji: '🐧', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'tartaruga', emoji: '🐢', image: 'https://i.imgur.com/9Q3Z3Z3.png' },
-            { name: 'cobra', emoji: '🐍', image: 'https://i.imgur.com/9Q3Z3Z3.png' }
+            { name: 'leão', emoji: '🦁' },
+            { name: 'tigre', emoji: '🐯' },
+            { name: 'elefante', emoji: '🐘' },
+            { name: 'macaco', emoji: '🐵' },
+            { name: 'panda', emoji: '🐼' },
+            { name: 'girafa', emoji: '🦒' },
+            { name: 'zebra', emoji: '🦓' },
+            { name: 'cavalo', emoji: '🐎' },
         ]
     };
 
@@ -1305,18 +1164,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const board = document.getElementById('memory-board');
         board.innerHTML = '';
 
-        // Criar pares de cartas (20 animais = 40 cartas)
         const cardPairs = [];
         memoryGame.animals.forEach(animal => {
-            // Criar duas cartas para cada animal
             cardPairs.push({ ...animal, id: `${animal.name}-1` });
             cardPairs.push({ ...animal, id: `${animal.name}-2` });
         });
 
-        // Embaralhar as cartas
         shuffleArray(cardPairs);
 
-        // Criar elementos das cartas
         cardPairs.forEach(cardData => {
             const card = document.createElement('div');
             card.className = 'memory-card';
@@ -1337,23 +1192,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function flipMemoryCard(card) {
-        // Não permitir virar cartas se o jogo não começou
         if (!memoryGame.gameStarted) return;
-
-        // Não permitir virar cartas já viradas ou combinadas
         if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-
-        // Não permitir virar mais de 2 cartas
         if (memoryGame.flippedCards.length >= 2) return;
 
-        // Virar a carta
         card.classList.add('flipped');
         memoryGame.flippedCards.push(card);
 
-        // Efeito sonoro
         playMemorySound('flip');
 
-        // Se duas cartas estão viradas, verificar combinação
         if (memoryGame.flippedCards.length === 2) {
             memoryGame.attempts++;
             setTimeout(checkMemoryMatch, 1000);
@@ -1368,25 +1215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const animal2 = card2.dataset.animal;
 
         if (animal1 === animal2) {
-            // Par encontrado!
             card1.classList.add('matched');
             card2.classList.add('matched');
             memoryGame.matchedPairs++;
-
-            // Efeito sonoro de sucesso
             playMemorySound('match');
         } else {
-            // Não é par, virar de volta
-            setTimeout(() => {
-                card1.classList.remove('flipped');
-                card2.classList.remove('flipped');
-            }, 500);
+            card1.classList.remove('flipped');
+            card2.classList.remove('flipped');
         }
 
         memoryGame.flippedCards = [];
 
-        // Verificar se o jogo acabou
-        if (memoryGame.matchedPairs === 20) {
+        if (memoryGame.matchedPairs === memoryGame.animals.length) {
             endMemoryGame();
         }
 
@@ -1402,13 +1242,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('start-memory-btn').disabled = true;
         document.getElementById('reset-memory-btn').disabled = false;
 
-        // Iniciar timer
         memoryGame.timer = setInterval(() => {
             memoryGame.timeElapsed++;
             updateMemoryDisplay();
         }, 1000);
 
-        // Analytics
         window.analytics.track('memory_game_started');
     }
 
@@ -1416,18 +1254,15 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(memoryGame.timer);
         memoryGame.gameStarted = false;
 
-        // Calcular pontuação (menos tempo e tentativas = melhor pontuação)
-        const timeBonus = Math.max(0, 300 - memoryGame.timeElapsed); // Máximo 5 minutos
-        const attemptPenalty = memoryGame.attempts * 5;
-        const score = Math.max(0, timeBonus - attemptPenalty + 1000);
+        const timeBonus = Math.max(0, 120 - memoryGame.timeElapsed);
+        const attemptPenalty = memoryGame.attempts * 2;
+        const score = Math.max(0, timeBonus - attemptPenalty + (memoryGame.animals.length * 10));
 
-        // Mostrar tela de vitória
         document.getElementById('victory-time').textContent = formatMemoryTime(memoryGame.timeElapsed);
         document.getElementById('victory-attempts').textContent = memoryGame.attempts;
         document.getElementById('victory-score').textContent = score;
         document.getElementById('memory-victory').classList.remove('hidden');
 
-        // Analytics
         window.analytics.track('memory_game_completed', {
             time: memoryGame.timeElapsed,
             attempts: memoryGame.attempts,
@@ -1436,14 +1271,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateMemoryDisplay() {
-        // Atualizar timer
         document.getElementById('memory-timer').textContent = formatMemoryTime(memoryGame.timeElapsed);
-
-        // Atualizar tentativas
         document.getElementById('memory-attempts').textContent = memoryGame.attempts;
-
-        // Atualizar pares
-        document.getElementById('memory-pairs').textContent = `${memoryGame.matchedPairs}/20`;
+        document.getElementById('memory-pairs').textContent = `${memoryGame.matchedPairs}/${memoryGame.animals.length}`;
     }
 
     function formatMemoryTime(seconds) {
@@ -1462,28 +1292,25 @@ document.addEventListener('DOMContentLoaded', function() {
             gainNode.connect(audioContext.destination);
 
             if (type === 'match') {
-                // Som de sucesso
-                oscillator.frequency.setValueAtTime(523, audioContext.currentTime); // Dó
-                oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1); // Mi
-                oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2); // Sol
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.5);
             } else if (type === 'flip') {
-                // Som de virar carta
-                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.2);
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.1);
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.1);
             }
         } catch (e) {
-            // Silently fail if audio not supported
+            // Silently fail
         }
     }
 
-    // Função utilitária para embaralhar array
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -1492,38 +1319,24 @@ document.addEventListener('DOMContentLoaded', function() {
         return array;
     }
 
-    // Event listeners para analytics
-    document.addEventListener('click', (e) => {
-        if (e.target.id === 'back-from-analytics') {
-            showView('home-view');
-        }
-        if (e.target.id === 'export-analytics') {
-            exportAnalyticsData();
-        }
-        if (e.target.id === 'clear-analytics') {
-            if (confirm('Tem certeza que deseja limpar TODOS os dados de analytics? Esta ação não pode ser desfeita.')) {
-                clearAnalyticsData();
-            }
-        }
-    });
+    function showAnalyticsView() {
+        showView('analytics-view');
+        loadAndDisplayAnalytics();
+    }
+
+    function loadAndDisplayAnalytics() {
         const analytics = calculateAnalytics();
 
-        // Métricas gerais
         document.getElementById('analytics-users').textContent = analytics.uniqueUsers;
         document.getElementById('analytics-sessions').textContent = analytics.totalSessions;
         document.getElementById('analytics-avg-session').textContent = formatTime(analytics.avgSessionTime);
         document.getElementById('analytics-completion').textContent = analytics.completionRate + '%';
-
-        // Atividade
         document.getElementById('analytics-quizzes').textContent = analytics.totalQuizzes;
         document.getElementById('analytics-questions').textContent = analytics.totalQuestions;
         document.getElementById('analytics-light-theme').textContent = analytics.themeUsage.light;
         document.getElementById('analytics-dark-theme').textContent = analytics.themeUsage.dark;
 
-        // Dispositivos
         displayDeviceStats(analytics.deviceStats);
-
-        // Uso por hora
         displayHourlyChart(analytics.hourlyUsage);
     }
 
@@ -1542,81 +1355,35 @@ document.addEventListener('DOMContentLoaded', function() {
             sessions: []
         };
 
-        // Processar dados de analytics
         Object.values(data).forEach(day => {
             Object.entries(day.events).forEach(([event, occurrences]) => {
                 occurrences.forEach(occ => {
-                    // Usuários únicos
-                    if (occ.userId) {
-                        analytics.uniqueUsers.add(occ.userId);
-                    }
-
-                    // Sessões
+                    if (occ.userId) analytics.uniqueUsers.add(occ.userId);
                     if (event === 'session_start') {
                         analytics.totalSessions++;
-                        analytics.sessions.push({
-                            sessionId: occ.sessionId,
-                            startTime: occ.timestamp,
-                            userId: occ.userId,
-                            device: occ.device,
-                            duration: 0
-                        });
+                        analytics.sessions.push({ sessionId: occ.sessionId, startTime: occ.timestamp, duration: 0 });
                     }
-
-                    // Tempo de sessão
                     if (event === 'session_end' && occ.sessionId) {
                         const session = analytics.sessions.find(s => s.sessionId === occ.sessionId);
                         if (session) {
-                            session.endTime = occ.timestamp;
-                            session.duration = (occ.timestamp - session.startTime) / 1000;
+                            session.duration = occ.duration;
                             analytics.totalSessionTime += session.duration;
                         }
                     }
-
-                    // Quizzes
-                    if (event === 'quiz_start') {
-                        analytics.totalQuizzes++;
-                    }
-
-                    if (event === 'quiz_complete') {
-                        analytics.completedQuizzes++;
-                    }
-
-                    // Perguntas
-                    if (event === 'question_answered') {
-                        analytics.totalQuestions++;
-                    }
-
-                    // Tema
-                    if (event === 'theme_changed') {
-                        if (occ.theme === 'light') analytics.themeUsage.light++;
-                        if (occ.theme === 'dark') analytics.themeUsage.dark++;
-                    }
-
-                    // Dispositivos
-                    if (occ.device) {
-                        if (!analytics.deviceStats[occ.device]) {
-                            analytics.deviceStats[occ.device] = 0;
-                        }
-                        analytics.deviceStats[occ.device]++;
-                    }
-
-                    // Uso por hora
-                    if (occ.timestamp) {
-                        const hour = new Date(occ.timestamp).getHours();
-                        analytics.hourlyUsage[hour]++;
-                    }
+                    if (event === 'quiz_start') analytics.totalQuizzes++;
+                    if (event === 'quiz_completed') analytics.completedQuizzes++;
+                    if (event === 'question_answered') analytics.totalQuestions++;
+                    if (event === 'theme_changed') analytics.themeUsage[occ.theme]++;
+                    const device = getDeviceType(occ.userAgent);
+                    analytics.deviceStats[device] = (analytics.deviceStats[device] || 0) + 1;
+                    const hour = new Date(occ.timestamp).getHours();
+                    analytics.hourlyUsage[hour]++;
                 });
             });
         });
 
-        // Calcular médias e percentuais
-        analytics.avgSessionTime = analytics.totalSessions > 0 ?
-            Math.round(analytics.totalSessionTime / analytics.totalSessions) : 0;
-
-        analytics.completionRate = analytics.totalQuizzes > 0 ?
-            Math.round((analytics.completedQuizzes / analytics.totalQuizzes) * 100) : 0;
-
+        analytics.avgSessionTime = analytics.totalSessions > 0 ? Math.round(analytics.totalSessionTime / analytics.totalSessions) : 0;
+        analytics.completionRate = analytics.totalQuizzes > 0 ? Math.round((analytics.completedQuizzes / analytics.totalQuizzes) * 100) : 0;
         analytics.uniqueUsers = analytics.uniqueUsers.size;
 
         return analytics;
@@ -1625,92 +1392,54 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayDeviceStats(deviceStats) {
         const container = document.getElementById('device-stats');
         container.innerHTML = '';
-
-        if (Object.keys(deviceStats).length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhum dispositivo registrado ainda.</p>';
-            return;
-        }
-
-        Object.entries(deviceStats)
-            .sort(([,a], [,b]) => b - a)
-            .forEach(([device, count]) => {
-                const item = document.createElement('div');
-                item.className = 'device-item';
-                item.innerHTML = `
-                    <span class="device-name">${device}</span>
-                    <span class="device-count">${count}</span>
-                `;
-                container.appendChild(item);
-            });
+        Object.entries(deviceStats).sort(([,a], [,b]) => b - a).forEach(([device, count]) => {
+            const item = document.createElement('div');
+            item.className = 'category-stats';
+            item.innerHTML = `<span class="category-name">${device}</span> <span class="category-stats-text">${count}</span>`;
+            container.appendChild(item);
+        });
     }
 
     function displayHourlyChart(hourlyUsage) {
         const container = document.getElementById('hourly-chart');
         container.innerHTML = '';
-
-        const maxUsage = Math.max(...hourlyUsage);
-
+        const maxUsage = Math.max(...hourlyUsage, 1);
         hourlyUsage.forEach((usage, hour) => {
             const bar = document.createElement('div');
             bar.className = 'hourly-bar';
-
-            const height = maxUsage > 0 ? (usage / maxUsage) * 100 : 0;
-
-            bar.innerHTML = `
-                <div class="hourly-fill" style="height: ${height}%"></div>
-                <span class="hourly-label">${hour.toString().padStart(2, '0')}</span>
-            `;
-
+            const height = (usage / maxUsage) * 100;
+            bar.innerHTML = `<div class="hourly-fill" style="height: ${height}%"></div><span class="hourly-label">${hour.toString().padStart(2, '0')}</span>`;
             container.appendChild(bar);
         });
     }
 
-    // Event listeners para analytics
     document.addEventListener('click', (e) => {
-        if (e.target.id === 'back-from-analytics') {
-            showView('home-view');
-        }
-        if (e.target.id === 'export-analytics') {
-            exportAnalyticsData();
-        }
+        if (e.target.id === 'back-from-analytics') showView('home-view');
+        if (e.target.id === 'export-analytics') exportAnalyticsData();
         if (e.target.id === 'clear-analytics') {
-            if (confirm('Tem certeza que deseja limpar TODOS os dados de analytics? Esta ação não pode ser desfeita.')) {
-                clearAnalyticsData();
+            if (confirm('Tem certeza?')) {
+                localStorage.removeItem('quiz_analytics');
+                window.analytics.data = {};
+                showAnalyticsView();
             }
         }
     });
 
     function exportAnalyticsData() {
-        const analytics = calculateAnalytics();
-        const data = {
-            exportDate: new Date().toISOString(),
-            analytics: analytics,
-            rawData: window.analytics.data
-        };
-
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const dataStr = JSON.stringify(window.analytics.exportData(), null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `jw-quiz-analytics-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
+        a.download = 'quiz_analytics.json';
         a.click();
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
 
-    function clearAnalyticsData() {
-        localStorage.removeItem('quiz_analytics');
-        window.analytics.data = {};
-        showView('home-view');
-    }
-
-    // Expor função para acesso externo (desenvolvedor)
     window.showAnalyticsView = showAnalyticsView;
 
-    // Acesso secreto à analytics (clique duplo no título)
     document.getElementById('home-title').addEventListener('dblclick', () => {
-        if (confirm('Acesso ao painel de analytics do desenvolvedor. Continuar?')) {
+        if (confirm('Acessar painel de analytics?')) {
             showAnalyticsView();
         }
     });
