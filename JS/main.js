@@ -1111,6 +1111,8 @@ document.addEventListener('DOMContentLoaded', function() {
     checkUrlParams();
 
     // === JOGO DA MEMÓRIA ===
+    // Implementação do jogo da memória movida para script.js
+    /*
     let memoryGame = {
         cards: [],
         flippedCards: [],
@@ -1130,12 +1132,17 @@ document.addEventListener('DOMContentLoaded', function() {
             { name: 'cavalo', emoji: '🐎' },
         ]
     };
+    */
 
     function showMemoryView() {
         showView('memory-view');
-        initializeMemoryGame();
+        // Inicializar mostrando o menu do jogo da memória
+        if (typeof showMemoryMenu === 'function') {
+            showMemoryMenu();
+        }
     }
 
+    /*
     function initializeMemoryGame() {
         resetMemoryGame();
         createMemoryBoard();
@@ -1318,6 +1325,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return array;
     }
+    */
 
     function showAnalyticsView() {
         showView('analytics-view');
@@ -1444,7 +1452,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Event listeners para o jogo da memória
+    // Event listeners para o jogo da memória (movidos para script.js)
+    /*
     document.getElementById('start-memory-game-btn').addEventListener('click', showMemoryView);
     document.getElementById('back-from-memory').addEventListener('click', () => showView('home-view'));
     document.getElementById('start-memory-btn').addEventListener('click', startMemoryGame);
@@ -1454,4 +1463,5 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeMemoryGame();
         startMemoryGame(); // Inicia o jogo automaticamente
     });
+    */
 });

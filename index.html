@@ -217,56 +217,77 @@
                     <button id="back-from-memory" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
                 </header>
 
-                <div class="memory-content">
-                    <h1>Teste sem memória</h1>
+                <!-- MENU INICIAL DO JOGO DA MEMÓRIA -->
+                <div id="memory-menu" class="memory-subview active">
+                    <div class="memory-content">
+                        <h1>Bem-vindo ao Jogo da Memória!</h1>
+                        <p>Desafie sua memória com temas divertidos e dificuldades variadas.</p>
+                        <button id="config-game-btn" class="btn btn-primary">🎯 Configurar Partida</button>
+                    </div>
+                </div>
 
-                    <div class="controls">
-                        <div class="control-group">
-                            <label for="player-buttons">Jogadores (1-4):</label>
-                            <div class="player-buttons" id="player-buttons">
-                                <button class="player-btn active" data-players="1">1</button>
-                                <button class="player-btn" data-players="2">2</button>
-                                <button class="player-btn" data-players="3">3</button>
-                                <button class="player-btn" data-players="4">4</button>
+                <!-- TELA DE CONFIGURAÇÃO -->
+                <div id="memory-config" class="memory-subview">
+                    <div class="memory-content">
+                        <h1>Configurar Partida</h1>
+                        <div class="controls">
+                            <div class="control-group">
+                                <label for="player-buttons">Jogadores (1-4):</label>
+                                <div class="player-buttons" id="player-buttons">
+                                    <button class="player-btn active" data-players="1">1</button>
+                                    <button class="player-btn" data-players="2">2</button>
+                                    <button class="player-btn" data-players="3">3</button>
+                                    <button class="player-btn" data-players="4">4</button>
+                                </div>
                             </div>
+                            <div class="control-group">
+                                <label for="theme-select">Escolha o Tema:</label>
+                                <select id="theme-select">
+                                    <option value="animais">Animais</option>
+                                    <option value="frutas">Frutas</option>
+                                    <option value="transportes">Transportes</option>
+                                    <option value="peixes">Peixes</option>
+                                    <option value="aves">Aves</option>
+                                    <option value="numeros">Números</option>
+                                    <option value="objetos">Objetos</option>
+                                    <option value="natureza">Natureza</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="difficulty-select">Dificuldade:</label>
+                                <select id="difficulty-select">
+                                    <option value="easy">Fácil (10 pares)</option>
+                                    <option value="medium" selected>Médio (15 pares)</option>
+                                    <option value="hard">Difícil (20 pares)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label><input type="checkbox" id="sound-toggle" checked> Sons</label>
+                            </div>
+                            <button id="start-game" class="btn btn-primary">🎮 Iniciar Jogo</button>
+                            <button id="back-to-menu" class="btn btn-link">← Voltar ao Menu</button>
                         </div>
-                        <div class="control-group">
-                            <label for="theme-select">Escolha o Tema:</label>
-                            <select id="theme-select">
-                                <option value="animais">Animais</option>
-                                <option value="frutas">Frutas</option>
-                                <option value="transportes">Transportes</option>
-                                <option value="peixes">Peixes</option>
-                                <option value="aves">Aves</option>
-                                <option value="numeros">Números</option>
-                                <option value="objetos">Objetos</option>
-                                <option value="natureza">Natureza</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label for="difficulty-select">Dificuldade:</label>
-                            <select id="difficulty-select">
-                                <option value="easy">Fácil (10 pares)</option>
-                                <option value="medium" selected>Médio (15 pares)</option>
-                                <option value="hard">Difícil (20 pares)</option>
-                            </select>
-                        </div>
-                        <div class="control-group">
-                            <label><input type="checkbox" id="sound-toggle" checked> Sons</label>
-                        </div>
-                        <button id="start-game">🎮 Iniciar Jogo</button>
-                        <div id="timer-display" style="display: none; margin-top: 10px; font-size: 18px; font-weight: bold;">
+                    </div>
+                </div>
+
+                <!-- TELA DO JOGO -->
+                <div id="memory-game" class="memory-subview">
+                    <div class="memory-content">
+                        <div id="timer-display" style="display: none; margin-bottom: 10px; font-size: 18px; font-weight: bold; text-align: center;">
                             Tempo: <span id="timer-text">00:00</span>
                         </div>
-
-                    <div id="status-display">
-                        <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
-                    </div>
-
-                    <div class="game-container">
-                        <section id="game-board" class="game-board">
-                            <!-- As cartas serão geradas aqui pelo JavaScript -->
-                        </section>
+                        <div id="status-display" style="margin-bottom: 20px; text-align: center;">
+                            <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
+                        </div>
+                        <div class="game-container">
+                            <section id="game-board" class="game-board">
+                                <!-- As cartas serão geradas aqui pelo JavaScript -->
+                            </section>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button id="restart-game" class="btn btn-secondary" style="display: none;">🔄 Jogar Novamente</button>
+                            <button id="back-to-config" class="btn btn-link">← Voltar à Configuração</button>
+                        </div>
                     </div>
                 </div>
             </div>

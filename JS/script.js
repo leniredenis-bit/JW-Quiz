@@ -20,19 +20,36 @@ const difficultySelect = document.getElementById('difficulty-select');
 const soundToggle = document.getElementById('sound-toggle');
 const startButton = document.getElementById('start-game');
 
-// --- ESTADO DO JOGO ---
-let gameState = {
-    cards: [],
-    firstCard: null,
-    secondCard: null,
-    lockBoard: false, // Trava o tabuleiro para não virar mais de 2 cartas
-    numPlayers: 1,
-    currentPlayer: 0, // Índice do jogador atual (0 a 3)
-    scores: [],
-    pairsFound: 0,
-    timer: null,
-    timeLeft: 0
-};
+// Elementos das sub-views
+const memoryMenu = document.getElementById('memory-menu');
+const memoryConfig = document.getElementById('memory-config');
+const memoryGame = document.getElementById('memory-game');
+const configGameBtn = document.getElementById('config-game-btn');
+const backToMenuBtn = document.getElementById('back-to-menu');
+const backToConfigBtn = document.getElementById('back-to-config');
+const restartGameBtn = document.getElementById('restart-game');
+
+// --- FUNÇÕES DE NAVEGAÇÃO DAS SUB-VIEWS ---
+function hideAllMemorySubviews() {
+    memoryMenu.classList.remove('active');
+    memoryConfig.classList.remove('active');
+    memoryGame.classList.remove('active');
+}
+
+function showMemoryMenu() {
+    hideAllMemorySubviews();
+    memoryMenu.classList.add('active');
+}
+
+function showMemoryConfig() {
+    hideAllMemorySubviews();
+    memoryConfig.classList.add('active');
+}
+
+function showMemoryGame() {
+    hideAllMemorySubviews();
+    memoryGame.classList.add('active');
+}
 
 // --- FUNÇÕES DO JOGO ---
 
@@ -243,7 +260,17 @@ function endGame() {
 }
 
 // Event Listeners
-startButton.addEventListener('click', startGame);
+configGameBtn.addEventListener('click', showMemoryConfig);
+backToMenuBtn.addEventListener('click', showMemoryMenu);
+startButton.addEventListener('click', () => {
+    startGame();
+    showMemoryGame();
+});
+backToConfigBtn.addEventListener('click', showMemoryConfig);
+restartGameBtn.addEventListener('click', () => {
+    startGame();
+    showMemoryGame();
+});
 
 // Event listeners para botões de jogadores
 playerButtons.forEach(btn => {
@@ -271,4 +298,34 @@ function showConfetti() {
     setTimeout(() => {
         document.body.removeChild(confettiContainer);
     }, 3000);
+}
+
+// Função para tocar sons (placeholder - pode ser substituído por arquivos de áudio reais)
+function playSound(type) {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        if (type === 'correct') {
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // Nota Dó
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.5);
+        } else if (type === 'incorrect') {
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(146.83, audioContext.currentTime); // Nota Ré baixo
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.3);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+    } catch (e) {
+        // Silently fail if Web Audio API is not supported
+    }
 }

@@ -1167,3 +1167,46 @@ button:hover {
         transform: rotate(720deg);
     }
 }
+
+/* Sub-views do jogo da memória */
+.memory-subview {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.memory-subview.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.memory-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.memory-content h1 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    margin: 0;
+    text-align: center;
+}
+
+.memory-content p {
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0;
+}
+
+/* Responsividade para sub-views */
+@media (max-width: 768px) {
+    .memory-content h1 {
+        font-size: 1.5rem;
+    }
+}
