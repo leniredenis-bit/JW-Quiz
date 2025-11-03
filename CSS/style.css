@@ -1576,12 +1576,12 @@ footer {
 }
 
 .memory-animal {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     margin-bottom: 0.5rem;
 }
 
 .memory-name {
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-primary);
     text-align: center;
@@ -1589,6 +1589,9 @@ footer {
     max-width: 95%;
     word-wrap: break-word;
     padding: 0 0.25rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* === MEMORY GAME STATUS === */
@@ -1700,11 +1703,11 @@ footer {
     }
 
     .memory-animal {
-        font-size: 2.8rem;
+        font-size: 3.5rem;
     }
 
     .memory-name {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -1792,11 +1795,11 @@ footer {
     }
 
     .memory-animal {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
 
     .memory-name {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .game-status-bar {
