@@ -395,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function initTheme() {
         const themeToggle = document.getElementById('theme-toggle');
         const savedTheme = localStorage.getItem('theme') || 'light'; // Tema claro como padrão
-        console.log('Initializing theme:', savedTheme);
 
         // Aplicar tema salvo
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -405,7 +404,6 @@ document.addEventListener('DOMContentLoaded', function() {
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            console.log('Theme toggle clicked. Current:', currentTheme, 'New:', newTheme);
 
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
@@ -416,7 +414,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         function updateThemeButton(theme) {
-            console.log('Updating theme button for theme:', theme);
             const themeToggle = document.getElementById('theme-toggle');
             const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
 
@@ -429,7 +426,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
                 if (themeIcon) {
                     themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
-                    console.log('Updated welcome theme icon to:', themeIcon.textContent);
                 }
                 welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
             }
