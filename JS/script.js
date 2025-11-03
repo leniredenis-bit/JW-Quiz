@@ -1,14 +1,58 @@
 // --- CONFIGURAÇÃO DOS TEMAS ---
 // Para adicionar um novo tema, basta adicionar uma nova entrada aqui com 20 itens.
 const THEMES = {
-    animais: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🦆', '🦉', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜'],
-    frutas: ['🍎', '🍌', '🍇', '🍓', '🍈', '🍒', '🍑', '🥝', '🥭', '🥥', '🍉', '🍊', '🍋', '🍐', '🍍', '🍇', '🍓', '🍈', '🍒', '🍑', '🍊', '🍋', '🍐', '🍍', '🥝', '🥭', '🥥', '🍉', '🍊', '🍋'],
-    transportes: ['🚗', '🚕', '🚌', '🚑', '🚓', '🚚', '🚜', '🚲', '🛵', '✈️', '🚀', '⛵️', '🛳️', '🚆', '🚁', '🚗', '🚕', '🚌', '🚑', '🚓', '🚚', '🚜', '🚲', '🛵', '✈️', '🚀', '⛵️', '🛳️', '🚆', '🚁'],
-    peixes: ['🐟', '🐠', '🐡', '🦈', '🐙', '🦑', '🦞', '🦀', '🐚', '🐳', '🐋', '🦭', '🐢', '🐊', '🦎', '🐌', '🦋', '🐛', '🐜', '🦗', '🐟', '🐠', '🐡', '🦈', '🐙', '🦑', '🦞', '🦀', '🐚', '🐳'],
-    aves: ['🐦', '🦅', '🦉', '🦆', '🦜', '🐔', '🐧', '🦚', '🦢', '🦃', '🐓', '🦇', '🐦‍⬛', '🦤', '🐦‍🔥', '🦅', '🦉', '🦆', '🦜', '🐔', '🐧', '🦚', '🦢', '🦃', '🐓', '🦇', '🐦‍⬛', '🦤', '🐦‍🔥', '🦅'],
-    numeros: ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣'],
-    objetos: ['📱', '💻', '⌚', '📷', '🎥', '📺', '📻', '💡', '🔋', '🔌', '🛠️', '🔧', '🔨', '🪜', '📏', '📐', '📎', '✂️', '🔒', '🗝️', '📱', '💻', '⌚', '📷', '🎥', '📺', '📻', '💡', '🔋', '🔌'],
-    natureza: ['🌸', '🌺', '🌻', '🌷', '🌹', '🌼', '🌿', '🍀', '🌳', '🌲', '🌴', '🌵', '🌾', '🌱', '🌿', '🍄', '🌰', '🌸', '🌺', '🌻', '🌷', '🌹', '🌼', '🌿', '🍀', '🌳', '🌲', '🌴', '🌵', '🌾']
+    animais: [
+        { name: 'Cachorro', emoji: '🐶' }, { name: 'Gato', emoji: '🐱' }, { name: 'Rato', emoji: '🐭' }, { name: 'Hamster', emoji: '🐹' },
+        { name: 'Coelho', emoji: '🐰' }, { name: 'Raposa', emoji: '🦊' }, { name: 'Urso', emoji: '🐻' }, { name: 'Panda', emoji: '🐼' },
+        { name: 'Coalá', emoji: '🐨' }, { name: 'Tigre', emoji: '🐯' }, { name: 'Leão', emoji: '🦁' }, { name: 'Vaca', emoji: '🐮' },
+        { name: 'Porco', emoji: '🐷' }, { name: 'Sapo', emoji: '🐸' }, { name: 'Macaco', emoji: '🐵' }, { name: 'Galinha', emoji: '🐔' },
+        { name: 'Pinguim', emoji: '🐧' }, { name: 'Pássaro', emoji: '🐦' }, { name: 'Pato', emoji: '🦆' }, { name: 'Coruja', emoji: '🦉' },
+        { name: 'Lobo', emoji: '🐺' }, { name: 'Javali', emoji: '🐗' }, { name: 'Cavalo', emoji: '🐴' }, { name: 'Unicórnio', emoji: '🦄' },
+        { name: 'Abelha', emoji: '🐝' }, { name: 'Lagarta', emoji: '🐛' }, { name: 'Borboleta', emoji: '🦋' }, { name: 'Lesma', emoji: '🐌' },
+        { name: 'Joaninha', emoji: '🐞' }, { name: 'Formiga', emoji: '🐜' }
+    ],
+    frutas: [
+        { name: 'Maçã', emoji: '�' }, { name: 'Banana', emoji: '�' }, { name: 'Uva', emoji: '�' }, { name: 'Morango', emoji: '🍓' },
+        { name: 'Melão', emoji: '🍈' }, { name: 'Cereja', emoji: '�' }, { name: 'Pêssego', emoji: '�' }, { name: 'Kiwi', emoji: '🥝' },
+        { name: 'Manga', emoji: '🥭' }, { name: 'Coco', emoji: '🥥' }, { name: 'Melancia', emoji: '�' }, { name: 'Laranja', emoji: '�' },
+        { name: 'Limão', emoji: '🍋' }, { name: 'Pêra', emoji: '�' }, { name: 'Abacaxi', emoji: '�' }
+    ],
+    transportes: [
+        { name: 'Carro', emoji: '�' }, { name: 'Táxi', emoji: '�' }, { name: 'Ônibus', emoji: '�' }, { name: 'Ambulância', emoji: '�' },
+        { name: 'Carro de Polícia', emoji: '�' }, { name: 'Caminhão', emoji: '�' }, { name: 'Trator', emoji: '�' }, { name: 'Bicicleta', emoji: '�' },
+        { name: 'Moto', emoji: '�' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '�' }, { name: 'Barco', emoji: '⛵️' },
+        { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }
+    ],
+    peixes: [
+        { name: 'Peixe', emoji: '🐟' }, { name: 'Peixe Tropical', emoji: '�' }, { name: 'Baiacu', emoji: '�' }, { name: 'Tubarão', emoji: '�' },
+        { name: 'Polvo', emoji: '�' }, { name: 'Lula', emoji: '🦑' }, { name: 'Lagosta', emoji: '🦞' }, { name: 'Caranguejo', emoji: '�' },
+        { name: 'Concha', emoji: '🐚' }, { name: 'Baleia', emoji: '�' }, { name: 'Orca', emoji: '�' }, { name: 'Foca', emoji: '�' },
+        { name: 'Tartaruga', emoji: '🐢' }, { name: 'Crocodilo', emoji: '🐊' }, { name: 'Lagarto', emoji: '🦎' }
+    ],
+    aves: [
+        { name: 'Pássaro', emoji: '🐦' }, { name: 'Águia', emoji: '�' }, { name: 'Coruja', emoji: '�' }, { name: 'Pato', emoji: '🦆' },
+        { name: 'Papagaio', emoji: '�' }, { name: 'Galinha', emoji: '�' }, { name: 'Pinguim', emoji: '�' }, { name: 'Pavão', emoji: '🦚' },
+        { name: 'Cisne', emoji: '�' }, { name: 'Peru', emoji: '�' }, { name: 'Galo', emoji: '�' }, { name: 'Morcego', emoji: '�' },
+        { name: 'Pardal', emoji: '�‍⬛' }, { name: 'Dodô', emoji: '🦤' }, { name: 'Fênix', emoji: '🐦‍🔥' }
+    ],
+    numeros: [
+        { name: 'Um', emoji: '1️⃣' }, { name: 'Dois', emoji: '2️⃣' }, { name: 'Três', emoji: '3️⃣' }, { name: 'Quatro', emoji: '4️⃣' },
+        { name: 'Cinco', emoji: '5️⃣' }, { name: 'Seis', emoji: '6️⃣' }, { name: 'Sete', emoji: '7️⃣' }, { name: 'Oito', emoji: '8️⃣' },
+        { name: 'Nove', emoji: '9️⃣' }, { name: 'Dez', emoji: '🔟' }, { name: 'Zero', emoji: '0️⃣' }
+    ],
+    objetos: [
+        { name: 'Celular', emoji: '📱' }, { name: 'Computador', emoji: '💻' }, { name: 'Relógio', emoji: '⌚' }, { name: 'Câmera', emoji: '📷' },
+        { name: 'Câmera de Vídeo', emoji: '🎥' }, { name: 'Televisão', emoji: '�' }, { name: 'Rádio', emoji: '�' }, { name: 'Lâmpada', emoji: '�' },
+        { name: 'Bateria', emoji: '�' }, { name: 'Tomada', emoji: '🔌' }, { name: 'Caixa de Ferramentas', emoji: '🛠️' }, { name: 'Chave Inglesa', emoji: '�' },
+        { name: 'Martelo', emoji: '�' }, { name: 'Escada', emoji: '🪜' }, { name: 'Régua', emoji: '�' }, { name: 'Esquadro', emoji: '�' },
+        { name: 'Clips', emoji: '�' }, { name: 'Tesoura', emoji: '✂️' }, { name: 'Cadeado', emoji: '�' }, { name: 'Chave', emoji: '�️' }
+    ],
+    natureza: [
+        { name: 'Flor de Cerejeira', emoji: '🌸' }, { name: 'Flor', emoji: '🌺' }, { name: 'Girassol', emoji: '�' }, { name: 'Flor', emoji: '�' },
+        { name: 'Rosa', emoji: '�' }, { name: 'Margarida', emoji: '�' }, { name: 'Folha', emoji: '�' }, { name: 'Trevo', emoji: '�' },
+        { name: 'Árvore', emoji: '�' }, { name: 'Pinheiro', emoji: '�' }, { name: 'Palmeira', emoji: '�' }, { name: 'Cacto', emoji: '�' },
+        { name: 'Trigo', emoji: '�' }, { name: 'Broto', emoji: '�' }, { name: 'Cogumelo', emoji: '�' }, { name: 'Castanha', emoji: '�' }
+    ]
 };
 
 // --- ELEMENTOS DO DOM ---
@@ -20,25 +64,48 @@ const difficultySelect = document.getElementById('difficulty-select');
 const soundToggle = document.getElementById('sound-toggle');
 const startButton = document.getElementById('start-game');
 
+// Estado do jogo da memória
+let gameState = {
+    cards: [],
+    firstCard: null,
+    secondCard: null,
+    lockBoard: false,
+    pairsFound: 0,
+    numPlayers: 1,
+    currentPlayer: 0,
+    scores: [0],
+    timer: null,
+    timeLeft: 0
+};
+
 // Elementos das sub-views
-const memoryMenu = document.getElementById('memory-menu');
+const memoryMenu = null; // Removido - não existe mais
 const memoryConfig = document.getElementById('memory-config');
 const memoryGame = document.getElementById('memory-game');
-const configGameBtn = document.getElementById('config-game-btn');
-const backToMenuBtn = document.getElementById('back-to-menu');
+const configGameBtn = null; // Removido - não existe mais
+const backToMenuBtn = null; // Removido - não existe mais
 const backToConfigBtn = document.getElementById('back-to-config');
 const restartGameBtn = document.getElementById('restart-game');
 
+// Função auxiliar para debug - mostra a cadeia de elementos pai
+function getParentChain(element) {
+    const chain = [];
+    let current = element;
+    while (current && current !== document.body) {
+        chain.push(`${current.tagName}${current.id ? '#' + current.id : ''}${current.className ? '.' + current.className.split(' ').join('.') : ''}`);
+        current = current.parentElement;
+    }
+    return chain.join(' > ');
+}
+
 // --- FUNÇÕES DE NAVEGAÇÃO DAS SUB-VIEWS ---
 function hideAllMemorySubviews() {
-    memoryMenu.classList.remove('active');
     memoryConfig.classList.remove('active');
     memoryGame.classList.remove('active');
 }
 
 function showMemoryMenu() {
-    hideAllMemorySubviews();
-    memoryMenu.classList.add('active');
+    showMemoryConfig();
 }
 
 function showMemoryConfig() {
@@ -66,19 +133,24 @@ function createBoard() {
     const selectedTheme = themeSelect.value;
     const selectedDifficulty = difficultySelect.value;
     const pairsCount = {easy: 10, medium: 15, hard: 20}[selectedDifficulty];
-    const themeIcons = THEMES[selectedTheme].slice(0, pairsCount);
-    const cardIcons = [...themeIcons, ...themeIcons]; // Duplica os ícones para formar os pares
+    
+    const themeItems = THEMES[selectedTheme].slice(0, pairsCount);
+    const cardItems = [...themeItems, ...themeItems]; // Duplica os itens para formar os pares
 
     // Embaralha as cartas
-    cardIcons.sort(() => 0.5 - Math.random());
+    cardItems.sort(() => 0.5 - Math.random());
 
-    gameState.cards = cardIcons.map(icon => {
+    gameState.cards = cardItems.map(item => {
         const card = document.createElement('div');
         card.classList.add('card');
-        card.dataset.icon = icon;
+        card.dataset.icon = item.emoji; // Mantém compatibilidade com código existente
+        card.dataset.name = item.name;
 
         card.innerHTML = `
-            <div class="card-face card-front">${icon}</div>
+            <div class="card-face card-front">
+                <div class="card-emoji">${item.emoji}</div>
+                <div class="card-name">${item.name}</div>
+            </div>
             <div class="card-face card-back">?</div>
         `;
 
@@ -94,6 +166,9 @@ function flipCard() {
     if (this === gameState.firstCard) return; // Não deixa clicar na mesma carta duas vezes
 
     this.classList.add('is-flipped');
+
+    // 🔄 Pop click: som leve para virar carta
+    if (soundToggle.checked) playSound('flip');
 
     if (!gameState.firstCard) {
         gameState.firstCard = this;
@@ -124,9 +199,17 @@ function handleMatch() {
 
     if (soundToggle.checked) playSound('correct'); // Som divertido para acerto
 
-    gameState.firstCard.removeEventListener('click', flipCard);
-    gameState.secondCard.removeEventListener('click', flipCard);
-    
+    // Adicionar checkmark verde nas cartas
+    const checkmark1 = document.createElement('div');
+    checkmark1.className = 'card-checkmark';
+    checkmark1.innerHTML = '✓';
+    gameState.firstCard.appendChild(checkmark1);
+
+    const checkmark2 = document.createElement('div');
+    checkmark2.className = 'card-checkmark';
+    checkmark2.innerHTML = '✓';
+    gameState.secondCard.appendChild(checkmark2);
+
     gameState.firstCard.classList.add('is-matched');
     gameState.secondCard.classList.add('is-matched');
     
@@ -200,7 +283,7 @@ function startGame() {
 
     if (selectedDifficulty === 'hard') {
         gameState.timeLeft = 120; // 2 minutes
-        document.getElementById('timer-display').style.display = 'block';
+        document.getElementById('timer-display').style.display = 'flex';
         updateTimer();
         gameState.timer = setInterval(() => {
             gameState.timeLeft--;
@@ -221,6 +304,9 @@ function startGame() {
 // Finaliza o jogo e anuncia o vencedor
 function endGame() {
     if (gameState.timer) clearInterval(gameState.timer);
+
+    // 🎉 Short fanfarra: som celebratório para fim do jogo
+    if (soundToggle.checked) playSound('game_complete');
 
     // Salvar estatísticas
     const selectedTheme = themeSelect.value;
@@ -266,21 +352,17 @@ function endGame() {
 
 // Aguardar o DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, setting up memory game event listeners');
 
     // Usar event delegation para garantir que os cliques funcionem mesmo em elementos inicialmente ocultos
     const memoryView = document.getElementById('memory-view');
+
     if (memoryView) {
         memoryView.addEventListener('click', function(e) {
-            console.log('Click detected in memory-view:', e.target.id);
 
             if (e.target.id === 'config-game-btn') {
-                console.log('config-game-btn clicked via delegation');
                 e.preventDefault();
-                showMemoryConfig();
             } else if (e.target.id === 'back-to-menu') {
                 e.preventDefault();
-                showMemoryMenu();
             } else if (e.target.id === 'start-game') {
                 e.preventDefault();
                 startGame();
@@ -296,17 +378,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Event listeners para botões de jogadores (usando delegation também)
-    if (playerButtons) {
-        playerButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                playerButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                gameState.numPlayers = parseInt(btn.dataset.players);
-            });
-        });
-    }
+    // Verificar se os elementos das sub-views existem
+
+    // Adicionar funcionalidade aos botões de jogadores
+    setupPlayerButtons();
 });
+
+// Configurar botões de jogadores
+function setupPlayerButtons() {
+    const playerButtons = document.querySelectorAll('.player-btn');
+    playerButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remover classe active de todos os botões
+            playerButtons.forEach(btn => btn.classList.remove('active'));
+            // Adicionar classe active ao botão clicado
+            this.classList.add('active');
+
+            // Atualizar número de jogadores no gameState
+            const numPlayers = parseInt(this.dataset.players);
+            gameState.numPlayers = numPlayers;
+        });
+    });
+}
 
 // Mostra confetes
 function showConfetti() {
@@ -338,19 +431,47 @@ function playSound(type) {
         gainNode.connect(audioContext.destination);
 
         if (type === 'correct') {
+            // ✨ Sparkle ding: som mágico e brilhante para par encontrado
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // Nota Dó
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime); // Sol5
+            oscillator.frequency.setValueAtTime(1046.50, audioContext.currentTime + 0.1); // Dó6
+            oscillator.frequency.setValueAtTime(1318.51, audioContext.currentTime + 0.2); // Mi6
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.4);
             oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.5);
+            oscillator.stop(audioContext.currentTime + 0.4);
         } else if (type === 'incorrect') {
-            oscillator.type = 'sawtooth';
-            oscillator.frequency.setValueAtTime(146.83, audioContext.currentTime); // Nota Ré baixo
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            // 🎵 Pluck down: som descendente suave para erro
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(220.00, audioContext.currentTime); // Lá3
+            oscillator.frequency.exponentialRampToValueAtTime(110.00, audioContext.currentTime + 0.3); // Lá2
+            gainNode.gain.setValueAtTime(0.12, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.3);
             oscillator.start();
             oscillator.stop(audioContext.currentTime + 0.3);
+        } else if (type === 'flip') {
+            // 🔄 Pop click: som rápido e leve para virar carta
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.1);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } else if (type === 'game_complete') {
+            // 🎉 Short fanfarra: sequência celebratória para fim do jogo
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // Dó5, Mi5, Sol5, Dó6
+            notes.forEach((freq, index) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.15);
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime + index * 0.15);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + index * 0.15 + 0.2);
+                osc.start(audioContext.currentTime + index * 0.15);
+                osc.stop(audioContext.currentTime + index * 0.15 + 0.2);
+            });
         }
     } catch (e) {
         // Silently fail if Web Audio API is not supported

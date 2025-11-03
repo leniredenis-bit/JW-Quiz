@@ -13,8 +13,42 @@
 
     <div id="app-container" role="application" aria-label="JW Quiz">
 
-        <!-- TELA INICIAL -->
-        <section id="home-view" class="view active" role="main" aria-labelledby="home-title">
+        <!-- NOVA TELA DE BOAS-VINDAS -->
+        <section id="welcome-view" class="view active" role="main" aria-labelledby="welcome-title">
+            <div class="welcome-hero">
+                <header class="welcome-header">
+                    <h1 id="welcome-title">JW Quiz</h1>
+                    <p class="welcome-subtitle">Conhecimento Bíblico Interativo</p>
+                </header>
+
+                <main class="welcome-actions">
+                    <button id="welcome-quiz-btn" class="btn-hero btn-quiz" aria-label="Ir para o Quiz Bíblico">
+                        <span class="btn-icon">🎯</span>
+                        <span class="btn-text">Quiz Bíblico</span>
+                        <span class="btn-desc">Teste seus conhecimentos</span>
+                    </button>
+                    <button id="welcome-memory-btn" class="btn-hero btn-memory" aria-label="Ir para o Jogo da Memória">
+                        <span class="btn-icon">🧠</span>
+                        <span class="btn-text">Jogo da Memória</span>
+                        <span class="btn-desc">Divirta-se aprendendo</span>
+                    </button>
+                </main>
+
+                <footer class="welcome-footer">
+                    <div class="welcome-controls">
+                        <button id="welcome-theme-toggle" class="btn-icon-only" aria-label="Alternar tema claro/escuro">
+                            <span class="theme-icon">☀️</span>
+                        </button>
+                        <button id="welcome-legal-btn" class="btn-icon-only" aria-label="Ver informações legais">
+                            <span class="legal-icon">ℹ️</span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <!-- TELA INICIAL ORIGINAL (mantida como backup) -->
+        <section id="home-view" class="view" role="main" aria-labelledby="home-title">
             <header class="app-header">
                 <h1 id="home-title">JW Quiz</h1>
             </header>
@@ -24,10 +58,6 @@
                     <button id="start-quick-quiz-btn" class="btn btn-primary" aria-label="Iniciar quiz rápido com perguntas aleatórias">▶️ Iniciar Quiz Rápido</button>
                     <button id="start-study-mode-btn" class="btn btn-secondary" aria-label="Iniciar modo estudo sem timer">📚 Modo Estudo</button>
                     <button id="start-multiplayer-btn" class="btn btn-secondary" aria-label="Entrar no modo partida em grupo online">🏆 Partida em Grupo</button>
-                </div>
-
-                <div class="buttons-row">
-                    <button id="start-memory-game-btn" class="btn btn-secondary" aria-label="Jogar jogo da memória com animais">🧠 Jogo da Memória</button>
                 </div>
 
                 <div class="stats-row">
@@ -53,6 +83,7 @@
 
                 <footer>
                     <button id="manage-content-btn" class="btn btn-link" aria-label="Acessar painel de gerenciamento de perguntas" disabled>Gerenciar Perguntas</button>
+                    <button id="legal-btn" class="btn btn-link" aria-label="Ver informações legais e políticas">ℹ️ Legal</button>
                     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">modo escuro</button>
                 </footer>
             </main>
@@ -214,22 +245,17 @@
             <div class="quiz-card">
                 <header class="stats-header">
                     <h2 id="memory-title">🧠 Jogo da Memória</h2>
-                    <button id="back-from-memory" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+                    <button id="back-from-memory" class="btn btn-link" aria-label="Voltar ao menu principal">🏠 Início</button>
                 </header>
 
-                <!-- MENU INICIAL DO JOGO DA MEMÓRIA -->
-                <div id="memory-menu" class="memory-subview active">
-                    <div class="memory-content">
-                        <h1>Bem-vindo ao Jogo da Memória!</h1>
-                        <p>Desafie sua memória com temas divertidos e dificuldades variadas.</p>
-                        <button id="config-game-btn" class="btn btn-primary">🎯 Configurar Partida</button>
-                    </div>
-                </div>
-
                 <!-- TELA DE CONFIGURAÇÃO -->
-                <div id="memory-config" class="memory-subview">
+                <div id="memory-config" class="memory-subview active">
                     <div class="memory-content">
-                        <h1>Configurar Partida</h1>
+                        <div class="welcome-message">
+                            <h1>Bem-vindo ao Jogo da Memória!</h1>
+                            <p>Desafie sua memória com temas divertidos e dificuldades variadas.</p>
+                        </div>
+                        <h2>Configurar Partida</h2>
                         <div class="controls">
                             <div class="control-group">
                                 <label for="player-buttons">Jogadores (1-4):</label>
@@ -265,7 +291,6 @@
                                 <label><input type="checkbox" id="sound-toggle" checked> Sons</label>
                             </div>
                             <button id="start-game" class="btn btn-primary">🎮 Iniciar Jogo</button>
-                            <button id="back-to-menu" class="btn btn-link">← Voltar ao Menu</button>
                         </div>
                     </div>
                 </div>
@@ -273,18 +298,26 @@
                 <!-- TELA DO JOGO -->
                 <div id="memory-game" class="memory-subview">
                     <div class="memory-content">
-                        <div id="timer-display" style="display: none; margin-bottom: 10px; font-size: 18px; font-weight: bold; text-align: center;">
-                            Tempo: <span id="timer-text">00:00</span>
+                        <!-- Barra superior com dados da partida -->
+                        <div class="game-status-bar">
+                            <div id="timer-display" class="status-item">
+                                <span class="status-label">⏱️ Tempo:</span>
+                                <span id="timer-text" class="status-value">00:00</span>
+                            </div>
+                            <div id="status-display" class="status-item status-main">
+                                <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
+                            </div>
                         </div>
-                        <div id="status-display" style="margin-bottom: 20px; text-align: center;">
-                            <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
-                        </div>
+
+                        <!-- Tabuleiro do jogo -->
                         <div class="game-container">
                             <section id="game-board" class="game-board">
                                 <!-- As cartas serão geradas aqui pelo JavaScript -->
                             </section>
                         </div>
-                        <div style="text-align: center; margin-top: 20px;">
+
+                        <!-- Botões de controle -->
+                        <div class="game-controls">
                             <button id="restart-game" class="btn btn-secondary" style="display: none;">🔄 Jogar Novamente</button>
                             <button id="back-to-config" class="btn btn-link">← Voltar à Configuração</button>
                         </div>
@@ -468,6 +501,108 @@
                     <div class="stats-actions">
                         <button id="reset-stats" class="btn btn-secondary">🔄 Resetar Estatísticas</button>
                         <button id="export-stats" class="btn btn-link">📤 Exportar Dados</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA LEGAL -->
+        <section id="legal-view" class="view" role="main" aria-labelledby="legal-title">
+            <div class="quiz-card">
+                <header class="stats-header">
+                    <h2 id="legal-title">ℹ️ Informações Legais</h2>
+                    <button id="back-from-legal" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+                </header>
+
+                <div class="legal-content">
+                    <div class="legal-section">
+                        <h3>📋 Termos de Uso</h3>
+                        <div class="legal-text">
+                            <p>Bem-vindo ao JW Quiz! Este aplicativo foi desenvolvido para fins educacionais e de entretenimento, visando promover o conhecimento bíblico de forma interativa.</p>
+
+                            <h4>1. Uso do Aplicativo</h4>
+                            <p>O JW Quiz é um aplicativo gratuito para uso pessoal. Você pode:</p>
+                            <ul>
+                                <li>Jogar quizzes individuais ou em grupo</li>
+                                <li>Acessar estatísticas pessoais</li>
+                                <li>Usar o modo estudo sem limite de tempo</li>
+                                <li>Jogar o jogo da memória</li>
+                            </ul>
+
+                            <h4>2. Conteúdo Bíblico</h4>
+                            <p>As perguntas e respostas são baseadas na Bíblia Sagrada. Este aplicativo não substitui o estudo pessoal das Escrituras Sagradas nem representa uma organização religiosa oficial.</p>
+
+                            <h4>3. Responsabilidades</h4>
+                            <p>O usuário é responsável por seu uso adequado do aplicativo. Não nos responsabilizamos por:</p>
+                            <ul>
+                                <li>Uso indevido das informações apresentadas</li>
+                                <li>Interpretações pessoais do conteúdo bíblico</li>
+                                <li>Problemas técnicos ou perda de dados</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>🔒 Política de Privacidade</h3>
+                        <div class="legal-text">
+                            <p>Respeitamos sua privacidade. Este aplicativo:</p>
+
+                            <h4>1. Dados Coletados</h4>
+                            <ul>
+                                <li><strong>Dados de uso:</strong> Estatísticas de jogo, preferências de tema</li>
+                                <li><strong>Dados técnicos:</strong> Tipo de dispositivo, navegador, sistema operacional</li>
+                                <li><strong>Dados de sessão:</strong> Tempo de uso, páginas visitadas</li>
+                            </ul>
+
+                            <h4>2. Armazenamento</h4>
+                            <p>Todos os dados são armazenados localmente no seu dispositivo. Não enviamos dados para servidores externos.</p>
+
+                            <h4>3. Cookies e LocalStorage</h4>
+                            <p>Usamos localStorage do navegador para salvar:</p>
+                            <ul>
+                                <li>Preferências do usuário (tema claro/escuro)</li>
+                                <li>Estatísticas pessoais de jogo</li>
+                                <li>Dados de analytics (opcional)</li>
+                            </ul>
+
+                            <h4>4. Compartilhamento</h4>
+                            <p>Não compartilhamos seus dados pessoais com terceiros. Os dados permanecem exclusivamente no seu dispositivo.</p>
+                        </div>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>©️ Direitos Autorais</h3>
+                        <div class="legal-text">
+                            <h4>1. Conteúdo do Aplicativo</h4>
+                            <p>O código do aplicativo JW Quiz é distribuído sob licença MIT. As perguntas e respostas são de domínio público ou foram criadas especificamente para este projeto educacional.</p>
+
+                            <h4>2. Bíblia e Textos Sagrados</h4>
+                            <p>Os textos bíblicos citados seguem a Tradução do Novo Mundo (TNM) das Escrituras Sagradas, usada com permissão para fins educacionais não comerciais.</p>
+
+                            <h4>3. Imagens e Ícones</h4>
+                            <p>Os ícones e emojis utilizados são de fontes públicas ou licenciadas para uso gratuito.</p>
+
+                            <h4>4. Uso Não Comercial</h4>
+                            <p>Este aplicativo é desenvolvido para fins educacionais e não comerciais. Qualquer uso comercial requer autorização prévia.</p>
+                        </div>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>📞 Contato</h3>
+                        <div class="legal-text">
+                            <p>Para dúvidas, sugestões ou relatar problemas:</p>
+                            <ul>
+                                <li><strong>Email:</strong> [seu-email@exemplo.com]</li>
+                                <li><strong>GitHub:</strong> <a href="https://github.com/leniredenis-bit/JW-Quiz" target="_blank">leniredenis-bit/JW-Quiz</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>📅 Última Atualização</h3>
+                        <div class="legal-text">
+                            <p>Esta política foi atualizada em: <strong>Novembro de 2025</strong></p>
+                        </div>
                     </div>
                 </div>
             </div>

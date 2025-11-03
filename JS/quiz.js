@@ -75,7 +75,7 @@
         }
     }
 
-    // Audio feedback
+    // Audio feedback aprimorado
     function playSound(type) {
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -85,25 +85,113 @@
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
 
+            // Hierarquia de volumes: UI (-10dB), sucesso (-6dB), vitória (-3dB)
+            const baseVolume = 0.1; // Volume base reduzido
+
             if (type === 'correct') {
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.2);
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.2);
+                // ✅ "Harp Shine" - Suave, notas ascendentes, sensação de luz (0.8s)
+                oscillator.type = 'sine';
+                const now = audioContext.currentTime;
+
+                // Arpejo ascendente celestial
+                oscillator.frequency.setValueAtTime(523.25, now); // C5
+                oscillator.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                oscillator.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                oscillator.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+
+                gainNode.gain.setValueAtTime(baseVolume * 0.5, now); // -6dB (sucesso)
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.8);
             } else if (type === 'wrong') {
-                oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.5);
+                // ❌ "Soft Thud" - Grave e discreto, sem susto (0.5s)
+                oscillator.type = 'triangle';
+                const now = audioContext.currentTime;
+
+                oscillator.frequency.setValueAtTime(146.83, now); // D3
+                oscillator.frequency.exponentialRampToValueAtTime(110.00, now + 0.3); // A2
+
+                gainNode.gain.setValueAtTime(baseVolume * 0.3, now); // -10dB (UI)
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.5);
             } else if (type === 'timer') {
-                oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
+                // ⏳ "Tick-Tick Fade" - Tick leve com fade-in (3–5s)
+                const now = audioContext.currentTime;
+                let tickCount = 0;
+                const maxTicks = 8;
+
+                const playTick = () => {
+                    if (tickCount >= maxTicks) return;
+
+                    const tickOsc = audioContext.createOscillator();
+                    const tickGain = audioContext.createGain();
+
+                    tickOsc.connect(tickGain);
+                    tickGain.connect(audioContext.destination);
+
+                    tickOsc.type = 'square';
+                    tickOsc.frequency.setValueAtTime(800 + (tickCount * 50), now + tickCount * 0.4);
+
+                    // Fade-in progressivo
+                    const volume = baseVolume * 0.2 * (tickCount + 1) / maxTicks; // -10dB crescendo
+                    tickGain.gain.setValueAtTime(volume, now + tickCount * 0.4);
+                    tickGain.gain.exponentialRampToValueAtTime(0.001, now + tickCount * 0.4 + 0.1);
+
+                    tickOsc.start(now + tickCount * 0.4);
+                    tickOsc.stop(now + tickCount * 0.4 + 0.1);
+
+                    tickCount++;
+                    if (tickCount < maxTicks) {
+                        setTimeout(playTick, 400 - (tickCount * 30)); // Acelera progressivamente
+                    }
+                };
+                playTick();
+            } else if (type === 'new_question') {
+                // 📖 "Page Flip" - Som de página virando (0.4s)
+                oscillator.type = 'sawtooth';
+                const now = audioContext.currentTime;
+
+                oscillator.frequency.setValueAtTime(200, now);
+                oscillator.frequency.exponentialRampToValueAtTime(400, now + 0.2);
+
+                gainNode.gain.setValueAtTime(baseVolume * 0.3, now); // -10dB (UI)
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.4);
+            } else if (type === 'perfect_sequence') {
+                // 🕊️ "Harp Chord Ascending" - Arpejo celestial curto (1.2s)
+                const now = audioContext.currentTime;
+
+                // Primeiro acorde (C-E-G)
+                const osc1 = audioContext.createOscillator();
+                const osc2 = audioContext.createOscillator();
+                const osc3 = audioContext.createOscillator();
+                const chordGain = audioContext.createGain();
+
+                [osc1, osc2, osc3].forEach(osc => {
+                    osc.connect(chordGain);
+                    osc.type = 'sine';
+                });
+                chordGain.connect(audioContext.destination);
+
+                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc2.frequency.setValueAtTime(659.25, now); // E5
+                osc3.frequency.setValueAtTime(783.99, now); // G5
+
+                chordGain.gain.setValueAtTime(baseVolume * 0.7, now); // -3dB (vitória)
+                chordGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc3.start(now);
+
+                osc1.stop(now + 1.2);
+                osc2.stop(now + 1.2);
+                osc3.stop(now + 1.2);
             }
         } catch (e) {
             // Silently fail if audio not supported
@@ -180,6 +268,11 @@
         if (!q) {
             showResults();
             return;
+        }
+
+        // 📖 Som de nova pergunta
+        if (soundToggle && soundToggle.checked) {
+            playSound('new_question');
         }
 
         // Atualiza progresso
@@ -281,6 +374,11 @@
                 } else {
                     answeredQuestions.add(qId);
                     currentStreak += 1;
+
+                    // 🕊️ Som especial para sequência perfeita (3+ acertos consecutivos)
+                    if (currentStreak >= 3 && soundToggle && soundToggle.checked) {
+                        playSound('perfect_sequence');
+                    }
                 }
             } else {
                 // Penalidade por erro: -0.1

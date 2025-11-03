@@ -14,14 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // showView exposto globalmente para outras partes usarem
     function showView(viewId) {
-        console.log('showView called with:', viewId);
         views.forEach(view => view.classList.remove('active'));
         const el = document.getElementById(viewId);
         if (el) {
             el.classList.add('active');
-            console.log('Added active to:', viewId);
-        } else {
-            console.log('Element not found:', viewId);
         }
         // small scroll to top for mobile UX
         window.scrollTo(0, 0);
@@ -133,6 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('show-stats-btn').addEventListener('click', () => {
         console.log('Stats button clicked');
         showStatsView();
+    });
+    document.getElementById('legal-btn').addEventListener('click', () => {
+        console.log('Legal button clicked');
+        showView('legal-view');
     });
 
     // Analytics avançado para análise de usuários
@@ -414,8 +414,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         function updateThemeButton(theme) {
-            themeToggle.textContent = theme === 'dark' ? 'modo claro' : 'modo escuro';
-            themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
+            const themeToggle = document.getElementById('theme-toggle');
+            const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
+
+            if (themeToggle) {
+                themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+                themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
+            }
+
+            if (welcomeThemeToggle) {
+                const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
+                if (themeIcon) {
+                    themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+                }
+                welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
+            }
         }
     }
 
@@ -574,7 +587,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para a página de estatísticas
     document.addEventListener('click', (e) => {
         if (e.target.id === 'back-from-stats') {
-            showView('home-view');
+            showView('welcome-view');
         }
         if (e.target.id === 'reset-stats') {
             if (confirm('Tem certeza que deseja resetar todas as estatísticas? Esta ação não pode ser desfeita.')) {
@@ -583,6 +596,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (e.target.id === 'export-stats') {
             exportStats();
+        }
+        if (e.target.id === 'back-from-legal') {
+            showView('welcome-view');
         }
     });
 
@@ -1080,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listeners para partida em grupo
     document.getElementById('start-multiplayer-btn').addEventListener('click', showGroupView);
-    document.getElementById('back-from-group').addEventListener('click', () => showView('home-view'));
+    document.getElementById('back-from-group').addEventListener('click', () => showView('welcome-view'));
 
     // Menu
     document.getElementById('create-group-btn').addEventListener('click', showCreateGroup);
@@ -1135,11 +1151,16 @@ document.addEventListener('DOMContentLoaded', function() {
     */
 
     function showMemoryView() {
+        console.log('showMemoryView called');
         showView('memory-view');
-        // Inicializar mostrando o menu do jogo da memória
+        // Mostrar diretamente a tela de configuração
         setTimeout(() => {
-            if (window.showMemoryMenu) {
-                window.showMemoryMenu();
+            console.log('Calling showMemoryConfig from main.js');
+            if (window.showMemoryConfig) {
+                console.log('window.showMemoryConfig exists, calling it');
+                window.showMemoryConfig();
+            } else {
+                console.log('window.showMemoryConfig does not exist');
             }
         }, 100);
     }
@@ -1424,7 +1445,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('click', (e) => {
-        if (e.target.id === 'back-from-analytics') showView('home-view');
+        if (e.target.id === 'back-from-analytics') showView('welcome-view');
         if (e.target.id === 'export-analytics') exportAnalyticsData();
         if (e.target.id === 'clear-analytics') {
             if (confirm('Tem certeza?')) {
@@ -1457,7 +1478,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para o jogo da memória (movidos para script.js)
     /*
     document.getElementById('start-memory-game-btn').addEventListener('click', showMemoryView);
-    document.getElementById('back-from-memory').addEventListener('click', () => showView('home-view'));
+    document.getElementById('back-from-memory').addEventListener('click', () => showView('welcome-view'));
     document.getElementById('start-memory-btn').addEventListener('click', startMemoryGame);
     document.getElementById('reset-memory-btn').addEventListener('click', initializeMemoryGame);
     document.getElementById('play-again-memory').addEventListener('click', () => {
@@ -1466,4 +1487,74 @@ document.addEventListener('DOMContentLoaded', function() {
         startMemoryGame(); // Inicia o jogo automaticamente
     });
     */
+
+    // Adicionar event listener para o botão do jogo da memória com debug
+    const memoryBtn = document.getElementById('start-memory-game-btn');
+    if (memoryBtn) {
+        console.log('Adding event listener to start-memory-game-btn');
+        memoryBtn.addEventListener('click', function(e) {
+            console.log('start-memory-game-btn clicked');
+            showMemoryView();
+        });
+    } else {
+        console.log('start-memory-game-btn not found');
+    }
+
+    // Adicionar event listener para o botão de voltar ao início
+    const backFromMemoryBtn = document.getElementById('back-from-memory');
+    if (backFromMemoryBtn) {
+        console.log('Adding event listener to back-from-memory');
+        backFromMemoryBtn.addEventListener('click', function(e) {
+            console.log('back-from-memory clicked - going back to welcome');
+            showView('welcome-view');
+        });
+    } else {
+        console.log('back-from-memory not found');
+    }
+
+    // Event listeners para a tela de boas-vindas
+    const welcomeQuizBtn = document.getElementById('welcome-quiz-btn');
+    if (welcomeQuizBtn) {
+        welcomeQuizBtn.addEventListener('click', () => {
+            showView('home-view');
+        });
+    }
+
+    const welcomeMemoryBtn = document.getElementById('welcome-memory-btn');
+    if (welcomeMemoryBtn) {
+        welcomeMemoryBtn.addEventListener('click', () => {
+            showView('memory-view');
+            // Mostrar diretamente a tela de configuração
+            setTimeout(() => {
+                if (window.showMemoryConfig) {
+                    window.showMemoryConfig();
+                }
+            }, 100);
+        });
+    }
+
+    const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
+    if (welcomeThemeToggle) {
+        welcomeThemeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+
+            // Analytics
+            window.analytics.track('theme_changed', { theme: newTheme });
+        });
+    }
+
+    const welcomeLegalBtn = document.getElementById('welcome-legal-btn');
+    if (welcomeLegalBtn) {
+        welcomeLegalBtn.addEventListener('click', () => {
+            showView('legal-view');
+        });
+    }
+
+    // Sempre mostrar tela de boas-vindas como página inicial
+    showView('welcome-view');
 });
