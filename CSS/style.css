@@ -20,7 +20,7 @@
     --shadow-secondary: rgba(0,0,0,0.1);
     --shadow-accent: rgba(0,123,255,0.3);
 
-    --btn-primary: #007bff;
+    --btn-primary: #2e66a3;
     --btn-primary-hover: #0069d9;
     --btn-secondary: #6c757d;
     --btn-secondary-hover: #5a6268;
@@ -1080,7 +1080,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 70%; /* Responsivo ao tamanho da carta */
+    font-size: 80%; /* Ajustado para ~80% do tamanho da carta para ícones maiores */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
