@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // small scroll to top for mobile UX
         window.scrollTo(0, 0);
+
+        // Se estamos indo para home-view e já temos perguntas carregadas, repopular filtros
+        if (viewId === 'home-view' && window.allQuestions && window.allQuestions.length > 0) {
+            console.log('Going to home-view, repopulating filters...');
+            populateFilters();
+        }
     }
     window.showView = showView;
 
@@ -29,15 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const themeToggle = document.getElementById('theme-toggle');
         const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
 
+        // LÓGICA CORRETA: Se está em DARK, mostrar SOL (para ir para LIGHT)
+        //                 Se está em LIGHT, mostrar LUA (para ir para DARK)
         if (themeToggle) {
-            themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+            themeToggle.textContent = theme === 'dark' ? '☀️ modo claro' : '🌙 modo escuro';
             themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
         }
 
         if (welcomeThemeToggle) {
             const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
             if (themeIcon) {
-                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
             }
             welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
         }
@@ -56,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await res.json();
             console.log('Perguntas carregadas com sucesso:', data.length);
             window.allQuestions = data;
+            console.log('Chamando populateFilters...');
             populateFilters();
             console.log('Filtros populados, botões devem funcionar agora');
         } catch (err) {
@@ -70,6 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Popula filtros
     function populateFilters() {
+        if (!tagsContainer || !difficultyContainer) {
+            console.error('Containers not found!');
+            return;
+        }
+
+        // Extrair tags únicas
         const tags = new Set();
         window.allQuestions.forEach(q => (q.tags || []).forEach(t => tags.add(t)));
 
@@ -83,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.className = 'tag-btn';
             btn.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
             btn.onclick = () => {
-                console.log('Tag clicked:', tag);
                 window.startQuiz({ type: 'tag', value: tag });
             };
             tagsContainer.appendChild(btn);
@@ -111,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tagsContainer.appendChild(showMoreBtn);
         }
 
+        // Extrair dificuldades únicas
         const difficulties = [...new Set(window.allQuestions.map(q => q.dificuldade || 1))].sort((a,b)=>a-b);
         difficultyContainer.innerHTML = '';
         difficulties.forEach(d => {
@@ -121,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (d === 3) btn.classList.add('difficulty-hard');
             btn.innerHTML = '★'.repeat(d) + '☆'.repeat(3-d);
             btn.onclick = () => {
-                console.log('Difficulty clicked:', d);
                 window.startQuiz({ type: 'difficulty', value: d });
             };
             difficultyContainer.appendChild(btn);

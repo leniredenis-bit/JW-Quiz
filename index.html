@@ -13,27 +13,30 @@
 
     <div id="app-container" role="application" aria-label="JW Quiz">
 
-        <!-- NOVA TELA DE BOAS-VINDAS -->
+
+        <!-- NOVA TELA DE BOAS-VINDAS REESTILIZADA -->
         <section id="welcome-view" class="view active" role="main" aria-labelledby="welcome-title">
-            <div class="welcome-hero">
-                <header class="welcome-header">
+            <div class="main-container welcome-hero">
+                <div class="header-title welcome-header">
                     <h1 id="welcome-title">JW Quiz</h1>
                     <p class="welcome-subtitle">Conhecimento Bíblico Interativo</p>
-                </header>
-
-                <main class="welcome-actions">
-                    <button id="welcome-quiz-btn" class="btn-hero btn-quiz" aria-label="Ir para o Quiz Bíblico">
-                        <span class="btn-icon">🎯</span>
-                        <span class="btn-text">Quiz Bíblico</span>
-                        <span class="btn-desc">Teste seus conhecimentos</span>
+                </div>
+                <nav class="main-menu welcome-actions">
+                    <button id="welcome-quiz-btn" class="menu-button quiz-button btn-hero btn-quiz" aria-label="Ir para o Quiz Bíblico">
+                        <span class="button-icon btn-icon">🎯</span>
+                        <div>
+                            <span class="button-title btn-text">Quiz Bíblico</span>
+                            <span class="button-subtitle btn-desc">Teste seus conhecimentos</span>
+                        </div>
                     </button>
-                    <button id="welcome-memory-btn" class="btn-hero btn-memory" aria-label="Ir para o Jogo da Memória">
-                        <span class="btn-icon">🧠</span>
-                        <span class="btn-text">Jogo da Memória</span>
-                        <span class="btn-desc">Divirta-se aprendendo</span>
+                    <button id="welcome-memory-btn" class="menu-button memory-game-button btn-hero btn-memory" aria-label="Ir para o Jogo da Memória">
+                        <span class="button-icon btn-icon">🧠</span>
+                        <div>
+                            <span class="button-title btn-text">Jogo da Memória</span>
+                            <span class="button-subtitle btn-desc">Divirta-se aprendendo</span>
+                        </div>
                     </button>
-                </main>
-
+                </nav>
                 <footer class="welcome-footer">
                     <div class="welcome-controls">
                         <button id="welcome-theme-toggle" class="btn-icon-only" aria-label="Alternar tema claro/escuro">
@@ -241,77 +244,89 @@
             </div>
         </section>
 
-        <!-- TELA DO JOGO DA MEMÓRIA -->
+        <!-- TELA DO JOGO DA MEMÓRIA - VERSÃO TURBINADA 2.0 -->
         <section id="memory-view" class="view" role="main" aria-labelledby="memory-title">
-            <div class="quiz-card">
-                <header class="stats-header">
-                    <h2 id="memory-title">🧠 Jogo da Memória</h2>
-                    <button id="back-from-memory" class="btn btn-link" aria-label="Voltar ao menu principal">🏠 Início</button>
+            <div class="memory-container quiz-card">
+                <header class="memory-main-header stats-header">
+                    <h1 id="memory-title">🧠 Jogo da Memória</h1>
+                    <button id="back-from-memory" class="btn-icon-link btn btn-link" aria-label="Voltar ao menu principal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path></svg>
+                        Voltar
+                    </button>
                 </header>
 
-                <!-- TELA DE CONFIGURAÇÃO -->
+                <!-- TELA DE CONFIGURAÇÃO - TURBINADA 2.0 -->
                 <div id="memory-config" class="memory-subview active">
-                    <div class="memory-content">
-                        <div class="welcome-message">
-                            <h1>Bem-vindo ao Jogo da Memória!</h1>
-                            <p>Desafie sua memória com temas divertidos e dificuldades variadas.</p>
+                    <div class="config-grid memory-config-hero">
+                        <div class="config-header memory-config-header">
+                            <h2>Configurar Partida</h2>
+                            <p class="memory-config-subtitle">Escolha como você quer jogar</p>
                         </div>
-                        <h2>Configurar Partida</h2>
-                        <div class="controls">
-                            <div class="control-group">
-                                <label for="player-buttons">Jogadores (1-4):</label>
-                                <div class="player-buttons" id="player-buttons">
-                                    <button class="player-btn active" data-players="1">1</button>
-                                    <button class="player-btn" data-players="2">2</button>
-                                    <button class="player-btn" data-players="3">3</button>
-                                    <button class="player-btn" data-players="4">4</button>
-                                </div>
+
+                        <fieldset class="config-group memory-config-group">
+                            <legend>👥 Jogadores</legend>
+                            <div class="btn-group memory-player-buttons" id="player-buttons">
+                                <button class="config-btn memory-player-btn active" data-players="1">1</button>
+                                <button class="config-btn memory-player-btn" data-players="2">2</button>
+                                <button class="config-btn memory-player-btn" data-players="3">3</button>
+                                <button class="config-btn memory-player-btn" data-players="4">4</button>
                             </div>
-                            <div class="control-group">
-                                <label for="theme-select">Escolha o Tema:</label>
-                                <select id="theme-select">
+                        </fieldset>
+
+                        <fieldset class="config-group memory-config-group">
+                            <legend>🎨 Tema</legend>
+                            <div class="select-wrapper">
+                                <select id="theme-select" class="config-select memory-theme-select">
                                     <option value="animais">Animais</option>
                                     <option value="frutas">Frutas</option>
                                     <option value="transportes">Transportes</option>
-                                    <option value="peixes">Peixes</option>
+                                    <option value="peixes">Vida Marinha</option>
                                     <option value="aves">Aves</option>
-                                    <option value="numeros">Números</option>
+                                    <option value="numeros">Números e Símbolos</option>
                                     <option value="objetos">Objetos</option>
                                     <option value="natureza">Natureza</option>
                                 </select>
                             </div>
-                            <div class="control-group">
-                                <label for="difficulty-select">Dificuldade:</label>
-                                <select id="difficulty-select">
-                                    <option value="easy">Fácil (10 pares)</option>
-                                    <option value="medium" selected>Médio (15 pares)</option>
-                                    <option value="hard">Difícil (20 pares)</option>
-                                </select>
+                        </fieldset>
+
+                        <fieldset class="config-group memory-config-group">
+                            <legend>🎯 Dificuldade</legend>
+                            <div class="btn-group memory-difficulty-buttons" id="difficulty-buttons">
+                                <button class="config-btn memory-difficulty-btn" data-difficulty="easy">Fácil <small>10 pares</small></button>
+                                <button class="config-btn memory-difficulty-btn active" data-difficulty="medium">Médio <small>15 pares</small></button>
+                                <button class="config-btn memory-difficulty-btn" data-difficulty="hard">Difícil <small>20 pares</small></button>
                             </div>
-                            <div class="control-group">
-                                <label><input type="checkbox" id="sound-toggle" checked> Sons</label>
+                        </fieldset>
+                        
+                        <div class="config-footer">
+                            <div class="sound-toggle-wrapper memory-sound-toggle">
+                                <input type="checkbox" id="sound-toggle" checked>
+                                <label for="sound-toggle">🔊 Efeitos Sonoros</label>
                             </div>
-                            <button id="start-game" class="btn btn-primary">🎮 Iniciar Jogo</button>
+                            <button id="start-game" class="start-game-btn memory-start-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path></svg>
+                                <span class="memory-start-text">Iniciar Jogo</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- TELA DO JOGO -->
+                <!-- TELA DO JOGO - TURBINADA 2.0 -->
                 <div id="memory-game" class="memory-subview">
                     <div class="memory-content">
                         <!-- Barra superior com dados da partida -->
                         <div class="game-status-bar">
-                            <div id="timer-display" class="status-item">
-                                <span class="status-label">⏱️ Tempo:</span>
-                                <span id="timer-text" class="status-value">00:00</span>
+                            <div id="status-display" class="status-players status-item status-main">
+                                <!-- Status dos jogadores será inserido aqui pelo JavaScript -->
                             </div>
-                            <div id="status-display" class="status-item status-main">
-                                <!-- O status do jogo (turno do jogador, placar) será inserido aqui pelo JavaScript -->
+                            <div id="timer-display" class="status-timer status-item hidden">
+                                <span class="status-label">⏱️</span>
+                                <span id="timer-text" class="status-value">00:00</span>
                             </div>
                         </div>
 
                         <!-- Tabuleiro do jogo -->
-                        <div class="game-container">
+                        <div class="game-board-container game-container">
                             <section id="game-board" class="game-board">
                                 <!-- As cartas serão geradas aqui pelo JavaScript -->
                             </section>
@@ -319,8 +334,14 @@
 
                         <!-- Botões de controle -->
                         <div class="game-controls">
-                            <button id="restart-game" class="btn btn-secondary" style="display: none;">🔄 Jogar Novamente</button>
-                            <button id="back-to-config" class="btn btn-link">← Voltar à Configuração</button>
+                            <button id="restart-game" class="btn-icon-link btn btn-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path></svg>
+                                Reiniciar
+                            </button>
+                            <button id="back-to-config" class="btn-icon-link btn btn-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z"></path></svg>
+                                Configurações
+                            </button>
                         </div>
                     </div>
                 </div>
