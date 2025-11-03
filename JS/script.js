@@ -266,20 +266,37 @@ function endGame() {
 
 // Aguardar o DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar se os elementos existem antes de adicionar event listeners
-    if (configGameBtn) configGameBtn.addEventListener('click', showMemoryConfig);
-    if (backToMenuBtn) backToMenuBtn.addEventListener('click', showMemoryMenu);
-    if (startButton) startButton.addEventListener('click', () => {
-        startGame();
-        showMemoryGame();
-    });
-    if (backToConfigBtn) backToConfigBtn.addEventListener('click', showMemoryConfig);
-    if (restartGameBtn) restartGameBtn.addEventListener('click', () => {
-        startGame();
-        showMemoryGame();
-    });
+    console.log('DOM loaded, setting up memory game event listeners');
 
-    // Event listeners para botões de jogadores
+    // Usar event delegation para garantir que os cliques funcionem mesmo em elementos inicialmente ocultos
+    const memoryView = document.getElementById('memory-view');
+    if (memoryView) {
+        memoryView.addEventListener('click', function(e) {
+            console.log('Click detected in memory-view:', e.target.id);
+
+            if (e.target.id === 'config-game-btn') {
+                console.log('config-game-btn clicked via delegation');
+                e.preventDefault();
+                showMemoryConfig();
+            } else if (e.target.id === 'back-to-menu') {
+                e.preventDefault();
+                showMemoryMenu();
+            } else if (e.target.id === 'start-game') {
+                e.preventDefault();
+                startGame();
+                showMemoryGame();
+            } else if (e.target.id === 'back-to-config') {
+                e.preventDefault();
+                showMemoryConfig();
+            } else if (e.target.id === 'restart-game') {
+                e.preventDefault();
+                startGame();
+                showMemoryGame();
+            }
+        });
+    }
+
+    // Event listeners para botões de jogadores (usando delegation também)
     if (playerButtons) {
         playerButtons.forEach(btn => {
             btn.addEventListener('click', () => {
