@@ -1137,9 +1137,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function showMemoryView() {
         showView('memory-view');
         // Inicializar mostrando o menu do jogo da memória
-        if (typeof showMemoryMenu === 'function') {
-            showMemoryMenu();
-        }
+        setTimeout(() => {
+            if (window.showMemoryMenu) {
+                window.showMemoryMenu();
+            }
+        }, 100);
     }
 
     /*

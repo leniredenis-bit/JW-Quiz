@@ -286,7 +286,7 @@ body, html {
 }
 
 /* Reference area (hidden until shown) */
-.reference-area { margin-top:1rem; background:var(--bg-quaternary); padding:.9rem; border-radius:8px; }
+.reference-area { margin-top:0.5rem; background:var(--bg-quaternary); padding:.9rem; border-radius:8px; }
 .reference-title { font-weight:700; margin-top:.35rem; color:var(--text-secondary); }
 .reference-text, .biblical-text, .correct-answer { margin-top:.4rem; color:var(--text-primary); }
 
@@ -314,7 +314,7 @@ body, html {
 }
 
 /* Footer */
-.quiz-footer { display:flex; justify-content:space-between; gap:1rem; margin-top:1rem; }
+.quiz-footer { display:flex; justify-content:space-between; gap:1rem; margin:1.5rem 0; }
 
 footer {
     display: flex;

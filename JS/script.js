@@ -51,6 +51,11 @@ function showMemoryGame() {
     memoryGame.classList.add('active');
 }
 
+// Tornar funções globais para serem acessíveis pelo main.js
+window.showMemoryMenu = showMemoryMenu;
+window.showMemoryConfig = showMemoryConfig;
+window.showMemoryGame = showMemoryGame;
+
 // --- FUNÇÕES DO JOGO ---
 
 // Gera as cartas e as posiciona no tabuleiro
@@ -259,26 +264,31 @@ function endGame() {
     statusDisplay.innerHTML = winnerMsg;
 }
 
-// Event Listeners
-configGameBtn.addEventListener('click', showMemoryConfig);
-backToMenuBtn.addEventListener('click', showMemoryMenu);
-startButton.addEventListener('click', () => {
-    startGame();
-    showMemoryGame();
-});
-backToConfigBtn.addEventListener('click', showMemoryConfig);
-restartGameBtn.addEventListener('click', () => {
-    startGame();
-    showMemoryGame();
-});
-
-// Event listeners para botões de jogadores
-playerButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        playerButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        gameState.numPlayers = parseInt(btn.dataset.players);
+// Aguardar o DOM carregar completamente
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se os elementos existem antes de adicionar event listeners
+    if (configGameBtn) configGameBtn.addEventListener('click', showMemoryConfig);
+    if (backToMenuBtn) backToMenuBtn.addEventListener('click', showMemoryMenu);
+    if (startButton) startButton.addEventListener('click', () => {
+        startGame();
+        showMemoryGame();
     });
+    if (backToConfigBtn) backToConfigBtn.addEventListener('click', showMemoryConfig);
+    if (restartGameBtn) restartGameBtn.addEventListener('click', () => {
+        startGame();
+        showMemoryGame();
+    });
+
+    // Event listeners para botões de jogadores
+    if (playerButtons) {
+        playerButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                playerButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                gameState.numPlayers = parseInt(btn.dataset.players);
+            });
+        });
+    }
 });
 
 // Mostra confetes
