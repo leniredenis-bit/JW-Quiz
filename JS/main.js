@@ -24,6 +24,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.showView = showView;
 
+    // Função global para atualizar o botão de tema
+    function updateThemeButton(theme) {
+        const themeToggle = document.getElementById('theme-toggle');
+        const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
+
+        if (themeToggle) {
+            themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+            themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
+        }
+
+        if (welcomeThemeToggle) {
+            const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+            welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
+        }
+    }
+    window.updateThemeButton = updateThemeButton;
+
     // Carrega perguntas do JSON
     async function loadQuestions() {
         try {
@@ -412,24 +432,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Analytics
             window.analytics.track('theme_changed', { theme: newTheme });
         });
-
-        function updateThemeButton(theme) {
-            const themeToggle = document.getElementById('theme-toggle');
-            const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
-
-            if (themeToggle) {
-                themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
-                themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
-            }
-
-            if (welcomeThemeToggle) {
-                const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
-                if (themeIcon) {
-                    themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
-                }
-                welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
-            }
-        }
     }
 
     // Inicializar tema
