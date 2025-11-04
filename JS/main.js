@@ -54,6 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Carrega perguntas do JSON
     async function loadQuestions() {
+        // Mostrar loading overlay
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.remove('hidden');
+        }
+
         try {
             console.log('Tentando carregar perguntas do JSON...');
             const res = await fetch('DATA/perguntas.json');
@@ -63,7 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const data = await res.json();
             console.log('Perguntas carregadas com sucesso:', data.length);
+            console.log('Primeira pergunta:', data[0]);
             window.allQuestions = data;
+            console.log('window.allQuestions definido:', window.allQuestions.length);
             console.log('Chamando populateFilters...');
             populateFilters();
             console.log('Filtros populados, botões devem funcionar agora');
@@ -74,6 +82,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('start-quick-quiz-btn').disabled = true;
             document.getElementById('start-study-mode-btn').disabled = true;
             document.getElementById('start-memory-game-btn').disabled = true;
+        } finally {
+            // Esconder loading overlay
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('hidden');
+            }
         }
     }
 
@@ -158,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showMultiplayerMenu();
     });
     document.getElementById('manage-content-btn').addEventListener('click', () => {
-        showView('admin-view');
+        showAdminView();
     });
     document.getElementById('show-stats-btn').addEventListener('click', () => {
         console.log('Stats button clicked');
@@ -1579,6 +1592,221 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Event listeners para o modal de fim de jogo
+    document.getElementById('play-again-btn').addEventListener('click', () => {
+        document.getElementById('end-game-modal').classList.add('hidden');
+        // Reinicia um quiz com as mesmas configurações (simplificado por enquanto)
+        window.location.reload();
+    });
+
+    document.getElementById('back-to-menu-btn').addEventListener('click', () => {
+        document.getElementById('end-game-modal').classList.add('hidden');
+        showView('home-view');
+    });
+
     // Sempre mostrar tela de boas-vindas como página inicial
     showView('welcome-view');
+
+    // === FUNCIONALIDADES DA PÁGINA DE ADMIN ===
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let filteredQuestions = [];
+    let allTags = new Set();
+
+    // Função para mostrar a página de admin
+    function showAdminView() {
+        showView('admin-view');
+        loadAdminData();
+    }
+
+    // Carregar dados para a página de admin
+    function loadAdminData() {
+        if (!window.allQuestions || window.allQuestions.length === 0) {
+            console.warn('Nenhuma pergunta carregada para admin');
+            return;
+        }
+
+        // Atualizar estatísticas
+        updateAdminStats();
+
+        // Coletar todas as tags
+        allTags.clear();
+        window.allQuestions.forEach(q => {
+            if (q.tags) {
+                q.tags.forEach(tag => allTags.add(tag));
+            }
+        });
+
+        // Popular filtro de tags
+        populateTagFilter();
+
+        // Aplicar filtros iniciais (todas as questões)
+        applyFilters();
+    }
+
+    // Atualizar estatísticas da página admin
+    function updateAdminStats() {
+        const questions = window.allQuestions || [];
+        document.getElementById('total-questions-count').textContent = questions.length;
+
+        const easy = questions.filter(q => q.dificuldade === 1).length;
+        const medium = questions.filter(q => q.dificuldade === 2).length;
+        const hard = questions.filter(q => q.dificuldade === 3).length;
+
+        document.getElementById('easy-questions-count').textContent = easy;
+        document.getElementById('medium-questions-count').textContent = medium;
+        document.getElementById('hard-questions-count').textContent = hard;
+    }
+
+    // Popular filtro de tags
+    function populateTagFilter() {
+        const tagFilter = document.getElementById('tag-filter');
+        tagFilter.innerHTML = '<option value="">Todas as tags</option>';
+
+        Array.from(allTags).sort().forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
+            tagFilter.appendChild(option);
+        });
+    }
+
+    // Aplicar filtros de busca
+    function applyFilters() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase();
+        const difficultyFilter = document.getElementById('difficulty-filter').value;
+        const tagFilter = document.getElementById('tag-filter').value;
+
+        filteredQuestions = (window.allQuestions || []).filter(question => {
+            // Filtro de texto
+            const matchesSearch = !searchTerm ||
+                question.question.toLowerCase().includes(searchTerm) ||
+                question.options.some(opt => opt.toLowerCase().includes(searchTerm));
+
+            // Filtro de dificuldade
+            const matchesDifficulty = !difficultyFilter ||
+                question.dificuldade.toString() === difficultyFilter;
+
+            // Filtro de tag
+            const matchesTag = !tagFilter ||
+                (question.tags && question.tags.includes(tagFilter));
+
+            return matchesSearch && matchesDifficulty && matchesTag;
+        });
+
+        currentPage = 1;
+        renderQuestionsPage();
+    }
+
+    // Renderizar página atual de questões
+    function renderQuestionsPage() {
+        const questionsList = document.getElementById('questions-list');
+        questionsList.innerHTML = '';
+
+        const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, filteredQuestions.length);
+        const questionsToShow = filteredQuestions.slice(startIndex, endIndex);
+
+        if (questionsToShow.length === 0) {
+            questionsList.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">Nenhuma questão encontrada.</div>';
+        } else {
+            questionsToShow.forEach((question, index) => {
+                const questionItem = createQuestionItem(question, startIndex + index);
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        // Atualizar controles de paginação
+        updatePaginationControls(totalPages);
+    }
+
+    // Criar item de questão para a lista
+    function createQuestionItem(question, globalIndex) {
+        const item = document.createElement('div');
+        item.className = 'question-item';
+
+        const difficultyClass = question.dificuldade === 1 ? 'difficulty-easy' :
+                               question.dificuldade === 2 ? 'difficulty-medium' : 'difficulty-hard';
+        const difficultyText = question.dificuldade === 1 ? 'Fácil' :
+                              question.dificuldade === 2 ? 'Médio' : 'Difícil';
+
+        item.innerHTML = `
+            <div class="question-header">
+                <div class="question-text">${question.question}</div>
+                <div class="question-meta">
+                    <span class="difficulty-badge ${difficultyClass}">${difficultyText}</span>
+                    ${question.tags ? question.tags.map(tag =>
+                        `<span class="tag-badge">${tag}</span>`
+                    ).join('') : ''}
+                </div>
+            </div>
+            <div class="question-options">
+                ${question.options.map((option, idx) =>
+                    `<span class="question-option ${idx === question.correct ? 'correct' : ''}">• ${option}</span>`
+                ).join('')}
+            </div>
+        `;
+
+        return item;
+    }
+
+    // Atualizar controles de paginação
+    function updatePaginationControls(totalPages) {
+        document.getElementById('current-page').textContent = currentPage;
+        document.getElementById('total-pages').textContent = totalPages;
+        document.getElementById('showing-count').textContent = filteredQuestions.length;
+
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = currentPage >= totalPages;
+    }
+
+    // Navegar para página anterior
+    function goToPrevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderQuestionsPage();
+        }
+    }
+
+    // Navegar para próxima página
+    function goToNextPage() {
+        const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderQuestionsPage();
+        }
+    }
+
+    // Event listeners para a página de admin
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'back-from-admin') {
+            showView('home-view');
+        }
+        if (e.target.id === 'prev-page') {
+            goToPrevPage();
+        }
+        if (e.target.id === 'next-page') {
+            goToNextPage();
+        }
+    });
+
+    // Event listeners para filtros
+    document.addEventListener('input', (e) => {
+        if (e.target.id === 'search-input') {
+            applyFilters();
+        }
+    });
+
+    document.addEventListener('change', (e) => {
+        if (e.target.id === 'difficulty-filter' || e.target.id === 'tag-filter') {
+            applyFilters();
+        }
+    });
+
+    // Expor função global para acessar admin
+    window.showAdminView = showAdminView;
 });

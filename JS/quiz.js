@@ -55,7 +55,7 @@
     let isStudyMode = false; // flag para modo estudo
 
     // DOM - só buscar quando necessário
-    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn, autoNextCounter, autoNextText;
+    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn, autoNextCounter, autoNextText, soundToggle;
 
     function getDOMElements() {
         if (!progressEl) {
@@ -72,6 +72,7 @@
             quitBtn = document.getElementById('quit-btn');
             autoNextCounter = document.getElementById('auto-next-counter');
             autoNextText = document.getElementById('auto-next-text');
+            soundToggle = document.getElementById('sound-toggle');
         }
     }
 
@@ -219,7 +220,7 @@
     }
 
     // Mostra resultados finais simples e volta para home em botão
-    function showResults() {
+    function finishQuiz() {
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
         stopAutoNextTimer(); // Parar temporizador automático
         // construir tela de resultados simples
@@ -227,48 +228,77 @@
         let resultText = '';
 
         if (isStudyMode) {
-            resultText = `
-                <h2>Modo Estudo Concluído</h2>
-                <p style="font-size:1rem; margin: 0.5rem 0;">Você estudou <strong>${total}</strong> perguntas.</p>
-                <p style="font-size:1rem; margin: 0.5rem 0;">Acertou <strong>${correctAnswers}/${total}</strong> perguntas</p>
-                <p style="font-size:0.9rem; color:#666;">Modo estudo - sem pressão de tempo!</p>
-            `;
+            resultText = `Modo Estudo Concluído`;
         } else {
-            resultText = `
-                <h2>Resultado</h2>
-                <p style="font-size:1.1rem">Você marcou <strong>${score.toFixed(2)}</strong> pontos em ${total} perguntas.</p>
-                <p style="font-size:1rem; margin: 0.5rem 0;">Acertou <strong>${correctAnswers}/${total}</strong> perguntas</p>
-                <p>Streak máximo: ${currentStreak}</p>
-            `;
+            resultText = `Quiz Finalizado!`;
         }
 
-        const html = `
-            <div style="text-align:center;padding:1rem;">
-                ${resultText}
-                <button id="play-again" class="btn btn-primary">Jogar Novamente</button>
-                <button id="back-home" class="btn btn-link">Voltar</button>
-            </div>
-        `;
-        // mostrar em quiz-view (substitui conteúdo)
-        const quizView = document.getElementById('quiz-view');
-        quizView.innerHTML = html;
-        document.getElementById('play-again').addEventListener('click', () => window.location.reload());
-        document.getElementById('back-home').addEventListener('click', () => window.showView('home-view'));
+        const accuracy = total > 0 ? Math.round((correctAnswers / total) * 100) : 0;
+        const totalTimeSec = timeSpent || 0;
+        const timeFormatted = totalTimeSec > 0 ? `${Math.floor(totalTimeSec / 60)}m ${Math.floor(totalTimeSec % 60)}s` : 'N/A';
+
+        // Preenche e exibe o modal
+        document.getElementById('end-game-title').textContent = resultText;
+        document.getElementById('end-game-message').textContent = `Você acertou ${correctAnswers} de ${total} perguntas.`;
+        document.getElementById('end-game-score').textContent = score.toFixed(2);
+        document.getElementById('end-game-accuracy').textContent = `${accuracy}%`;
+        document.getElementById('end-game-time').textContent = timeFormatted;
+
+        showConfetti();
+        document.getElementById('end-game-modal').classList.remove('hidden');
+
+        // Verificar conquistas
+        const quizResult = {
+            mode: window.currentQuiz?.mode || 'random',
+            value: window.currentQuiz?.value || '',
+            difficulty: window.currentQuiz?.difficulty || 1,
+            accuracy: accuracy,
+            totalQuestions: total
+        };
+        if (window.checkAchievements) {
+            window.checkAchievements(quizResult);
+        }
+    }
+
+    // Função para exibir confetes (pode ser adicionada ao final do quiz.js)
+    function showConfetti() {
+        const container = document.getElementById('confetti-container');
+        if (!container) return;
+        container.innerHTML = '';
+        const colors = ['#f44336', '#ffc107', '#4caf50', '#3a6ea5', '#9c27b0'];
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = `${Math.random() * 2}s`;
+            container.appendChild(confetti);
+        }
     }
 
     // Exibe pergunta atual
     function renderQuestion() {
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
 
+        console.log('renderQuestion chamada');
+        console.log('questions array:', questions);
+        console.log('currentIndex:', currentIndex);
+        console.log('totalQuestions:', totalQuestions);
+
         stopAutoNextTimer(); // Parar temporizador automático da pergunta anterior
         referenceArea.classList.add('hidden');
         nextBtn.disabled = true;
 
         const q = questions[currentIndex];
+        console.log('Pergunta atual (q):', q);
+
         if (!q) {
-            showResults();
+            console.log('Nenhuma pergunta encontrada, chamando finishQuiz');
+            finishQuiz();
             return;
         }
+
+        console.log('Renderizando pergunta:', q.pergunta);
 
         // 📖 Som de nova pergunta
         if (soundToggle && soundToggle.checked) {
@@ -280,6 +310,7 @@
 
         // Exibe pergunta
         questionTextEl.textContent = q.pergunta;
+        console.log('Pergunta exibida no DOM:', questionTextEl.textContent);
 
         // Prepara opções embaralhadas
         const opts = q.opcoes.map(o => ({ text: o }));
@@ -294,6 +325,8 @@
             btn.onclick = () => handleOptionClick(btn, q);
             optionsContainer.appendChild(btn);
         });
+
+        console.log('Opções criadas:', opts.length);
 
         // Calcula tempo e inicia countdown (apenas se não for modo estudo)
         if (!isStudyMode) {
@@ -463,7 +496,7 @@
                 // Avançar automaticamente para próxima pergunta
                 currentIndex += 1;
                 if (currentIndex >= totalQuestions) {
-                    showResults();
+                    finishQuiz();
                 } else {
                     renderQuestion();
                 }
@@ -490,7 +523,7 @@
             stopAutoNextTimer(); // Cancelar temporizador automático
             currentIndex += 1;
             if (currentIndex >= totalQuestions) {
-                showResults();
+                finishQuiz();
             } else {
                 renderQuestion();
             }
@@ -508,6 +541,10 @@
 
     // Função pública para iniciar quiz
     window.originalStartQuiz = function (filter) {
+        console.log('originalStartQuiz chamado com filtro:', filter);
+        console.log('window.allQuestions existe:', !!window.allQuestions);
+        console.log('window.allQuestions length:', window.allQuestions ? window.allQuestions.length : 'undefined');
+
         // filtra perguntas a partir do dataset global
         const pool = window.allQuestions || [];
         let selected = [];
@@ -523,6 +560,11 @@
             selected = shuffleArray(pool.slice()).slice(0, filter.value || 10);
         } else {
             selected = pool.slice();
+        }
+
+        console.log('Perguntas selecionadas:', selected.length);
+        if (selected.length > 0) {
+            console.log('Primeira pergunta selecionada:', selected[0]);
         }
 
         if (!selected.length) {
@@ -541,12 +583,24 @@
         isStudyMode = filter.type === 'study'; // Flag para modo estudo
         totalQuestions = questions.length;
 
+        console.log('Quiz configurado:', { totalQuestions, isStudyMode, currentIndex });
+
+        // Salvar informações do quiz atual para conquistas
+        window.currentQuiz = {
+            mode: filter.type,
+            value: filter.value,
+            difficulty: filter.type === 'difficulty' ? filter.value : 1
+        };
+
         // Inicializar event listeners
         initEventListeners();
 
         // restaura a quiz-view original (útil após resultados)
         window.showView('quiz-view');
         // garantir que quiz view DOM exista antes de renderizar
-        setTimeout(() => renderQuestion(), 80);
+        setTimeout(() => {
+            console.log('Chamando renderQuestion...');
+            renderQuestion();
+        }, 80);
     };
 })();

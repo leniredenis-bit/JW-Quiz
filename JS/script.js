@@ -1,75 +1,183 @@
-﻿/* ==========    frutas:     transportes: [
-        { name: 'Carro', emoji: '🚗' }, { name: 'Táxi', emoji: '🚕' }, { name: 'Ônibus', emoji: '🚌' }, { name: 'Ambulância', emoji: '🚑' },
-        { name: 'Polícia', emoji: '🚓' }, { name: 'Caminhão', emoji: '🚚' }, { name: 'Trator', emoji: '🚜' }, { name: 'Bicicleta', emoji: '🚲' },
-        { name: 'Moto', emoji: '🏍️' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '🚀' }, { name: 'Barco', emoji: '⛵️' },
-        { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }, { name: 'Patinete', emoji: '🛴' },
-        { name: 'Monociclo', emoji: '🚲' }, { name: 'Teleférico', emoji: '🚠' }, { name: 'Trólebus', emoji: '🚎' }, { name: 'Vagão', emoji: '🚃' }
-    ],     { name: 'Maçã', emoji: '🍎' }, { name: 'Banana', emoji: '🍌' }, { name: 'Uva', emoji: '🍇' }, { name: 'Morango', emoji: '🍓' },
-        { name: 'Melão', emoji: '🍈' }, { name: 'Cereja', emoji: '🍒' }, { name: 'Pêssego', emoji: '🍑' }, { name: 'Kiwi', emoji: '🥝' },
-        { name: 'Manga', emoji: '🥭' }, { name: 'Coco', emoji: '🥥' }, { name: 'Melancia', emoji: '🍉' }, { name: 'Laranja', emoji: '🍊' },
-        { name: 'Limão', emoji: '🍋' }, { name: 'Pêra', emoji: '🍐' }, { name: 'Abacaxi', emoji: '🍍' }, { name: 'Abacate', emoji: '🥑' },
-        { name: 'Amora', emoji: '🫐' }, { name: 'Figo', emoji: '🫒' }, { name: 'Romã', emoji: '🫕' }, { name: 'Tangerina', emoji: '🍊' }
-    ],================================
-   MEMORY GAME - THEME CONFIGURATION
-   ================================================ */
-
+﻿/* =================
+   MEMORY GAME THEMES
+   ================= */
 // Para adicionar um novo tema, basta adicionar uma nova entrada aqui com 20 itens.
 const THEMES = {
     animais: [
-        { name: 'Cachorro', emoji: '🐶' }, { name: 'Gato', emoji: '🐱' }, { name: 'Rato', emoji: '🐭' }, { name: 'Hamster', emoji: '🐹' },
-        { name: 'Coelho', emoji: '🐰' }, { name: 'Raposa', emoji: '🦊' }, { name: 'Urso', emoji: '🐻' }, { name: 'Panda', emoji: '🐼' },
-        { name: 'Coalá', emoji: '🐨' }, { name: 'Tigre', emoji: '🐯' }, { name: 'Leão', emoji: '🦁' }, { name: 'Vaca', emoji: '🐮' },
-        { name: 'Porco', emoji: '🐷' }, { name: 'Sapo', emoji: '🐸' }, { name: 'Macaco', emoji: '🐵' }, { name: 'Galinha', emoji: '🐔' },
-        { name: 'Pinguim', emoji: '🐧' }, { name: 'Pássaro', emoji: '🐦' }, { name: 'Pato', emoji: '🦆' }, { name: 'Coruja', emoji: '🦉' }
+        { name: 'Cachorro', emoji: '🐶' },
+        { name: 'Gato', emoji: '🐱' },
+        { name: 'Rato', emoji: '🐭' },
+        { name: 'Hamster', emoji: '🐹' },
+        { name: 'Coelho', emoji: '🐰' },
+        { name: 'Raposa', emoji: '🦊' },
+        { name: 'Urso', emoji: '🐻' },
+        { name: 'Panda', emoji: '🐼' },
+        { name: 'Coalá', emoji: '🐨' },
+        { name: 'Tigre', emoji: '🐯' },
+        { name: 'Leão', emoji: '🦁' },
+        { name: 'Vaca', emoji: '🐮' },
+        { name: 'Porco', emoji: '🐷' },
+        { name: 'Sapo', emoji: '🐸' },
+        { name: 'Macaco', emoji: '🐵' },
+        { name: 'Galinha', emoji: '🐔' },
+        { name: 'Pinguim', emoji: '🐧' },
+        { name: 'Pássaro', emoji: '🐦' },
+        { name: 'Pato', emoji: '🦆' },
+        { name: 'Coruja', emoji: '🦉' }
     ],
     frutas: [
-        { name: 'Maçã', emoji: '🍎' }, { name: 'Banana', emoji: '🍌' }, { name: 'Uva', emoji: '🍇' }, { name: 'Morango', emoji: '🍓' },
-        { name: 'Melão', emoji: '🍈' }, { name: 'Cereja', emoji: '🍒' }, { name: 'Pêssego', emoji: '🍑' }, { name: 'Kiwi', emoji: '🥝' },
-        { name: 'Manga', emoji: '🥭' }, { name: 'Coco', emoji: '🥥' }, { name: 'Melancia', emoji: '🍉' }, { name: 'Laranja', emoji: '🍊' },
-        { name: 'Limão', emoji: '🍋' }, { name: 'Pêra', emoji: '🍐' }, { name: 'Abacaxi', emoji: '🍍' }, { name: 'Abacate', emoji: '🥑' },
-        { name: 'Amora', emoji: '🫐' }, { name: 'Figo', emoji: '🫒' }, { name: 'Romã', emoji: '🫐' }, { name: 'Tangerina', emoji: '🍊' }
+        { name: 'Maçã', emoji: '🍎' },
+        { name: 'Banana', emoji: '🍌' },
+        { name: 'Uva', emoji: '🍇' },
+        { name: 'Morango', emoji: '🍓' },
+        { name: 'Melão', emoji: '🍈' },
+        { name: 'Cereja', emoji: '🍒' },
+        { name: 'Pêssego', emoji: '🍑' },
+        { name: 'Kiwi', emoji: '🥝' },
+        { name: 'Manga', emoji: '🥭' },
+        { name: 'Coco', emoji: '🥥' },
+        { name: 'Melancia', emoji: '🍉' },
+        { name: 'Laranja', emoji: '🍊' },
+        { name: 'Limão', emoji: '🍋' },
+        { name: 'Pêra', emoji: '🍐' },
+        { name: 'Abacaxi', emoji: '🍍' },
+        { name: 'Abacate', emoji: '🥑' },
+        { name: 'Amora', emoji: '🫐' },
+        { name: 'Figo', emoji: '🥒' },
+        { name: 'Romã', emoji: '🍅' },
+        { name: 'Tangerina', emoji: '🍊' }
     ],
     transportes: [
-        { name: 'Carro', emoji: '🚗' }, { name: 'Táxi', emoji: '🚕' }, { name: 'Ônibus', emoji: '🚌' }, { name: 'Ambulância', emoji: '🚑' },
-        { name: 'Polícia', emoji: '🚓' }, { name: 'Caminhão', emoji: '🚚' }, { name: 'Trator', emoji: '🚜' }, { name: 'Bicicleta', emoji: '🚲' },
-        { name: 'Moto', emoji: '🏍️' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '🚀' }, { name: 'Barco', emoji: '⛵️' },
-        { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }, { name: 'Patinete', emoji: '🛴' },
-        { name: 'Monociclo', emoji: '🚲' }, { name: 'Teleférico', emoji: '🚠' }, { name: 'Trólebus', emoji: '🚎' }, { name: 'Vagão', emoji: '🚃' }
+        { name: 'Carro', emoji: '🚗' },
+        { name: 'Táxi', emoji: '🚕' },
+        { name: 'Ônibus', emoji: '🚌' },
+        { name: 'Ambulância', emoji: '🚑' },
+        { name: 'Polícia', emoji: '🚓' },
+        { name: 'Caminhão', emoji: '🚚' },
+        { name: 'Trator', emoji: '🚜' },
+        { name: 'Bicicleta', emoji: '🚲' },
+        { name: 'Moto', emoji: '🏍️' },
+        { name: 'Avião', emoji: '✈️' },
+        { name: 'Foguete', emoji: '🚀' },
+        { name: 'Barco', emoji: '⛵' },
+        { name: 'Navio', emoji: '🚢' },
+        { name: 'Trem', emoji: '🚂' },
+        { name: 'Helicóptero', emoji: '🚁' },
+        { name: 'Patinete', emoji: '🛴' },
+        { name: 'Monociclo', emoji: '🚲' },
+        { name: 'Teleférico', emoji: '🚠' },
+        { name: 'Trólebus', emoji: '🚎' },
+        { name: 'Vagão', emoji: '🚃' }
     ],
     peixes: [
-        { name: 'Peixe', emoji: '🐟' }, { name: 'Peixe Tropical', emoji: '🐠' }, { name: 'Baiacu', emoji: '🐡' }, { name: 'Tubarão', emoji: '🦈' },
-        { name: 'Polvo', emoji: '🐙' }, { name: 'Lula', emoji: '🦑' }, { name: 'Lagosta', emoji: '🦞' }, { name: 'Caranguejo', emoji: '🦀' },
-        { name: 'Concha', emoji: '🐚' }, { name: 'Baleia', emoji: '🐋' }, { name: 'Orca', emoji: '🐋' }, { name: 'Foca', emoji: '🦭' },
-        { name: 'Tartaruga', emoji: '🐢' }, { name: 'Crocodilo', emoji: '🐊' }, { name: 'Lagarto', emoji: '🦎' }, { name: 'Sapo', emoji: '🐸' },
-        { name: 'Rã', emoji: '🐸' }, { name: 'Salamandra', emoji: '🦎' }, { name: 'Enguia', emoji: '🐟' }, { name: 'Estrela-do-mar', emoji: '⭐' }
+        { name: 'Peixe', emoji: '🐟' },
+        { name: 'Peixe Tropical', emoji: '🐠' },
+        { name: 'Baiacu', emoji: '🐡' },
+        { name: 'Tubarão', emoji: '🦈' },
+        { name: 'Polvo', emoji: '🐙' },
+        { name: 'Lula', emoji: '🦑' },
+        { name: 'Lagosta', emoji: '🦞' },
+        { name: 'Caranguejo', emoji: '🦀' },
+        { name: 'Concha', emoji: '🐚' },
+        { name: 'Baleia', emoji: '🐋' },
+        { name: 'Orca', emoji: '🐳' },
+        { name: 'Foca', emoji: '🦭' },
+        { name: 'Tartaruga', emoji: '🐢' },
+        { name: 'Crocodilo', emoji: '🐊' },
+        { name: 'Lagarto', emoji: '🦎' },
+        { name: 'Sapo', emoji: '🐸' },
+        { name: 'Rã', emoji: '🐸' },
+        { name: 'Salamandra', emoji: '🦎' },
+        { name: 'Enguia', emoji: '🐍' },
+        { name: 'Estrela-do-mar', emoji: '⭐' }
     ],
     aves: [
-        { name: 'Pássaro', emoji: '🐦' }, { name: 'Águia', emoji: '🦅' }, { name: 'Coruja', emoji: '🦉' }, { name: 'Pato', emoji: '🦆' },
-        { name: 'Papagaio', emoji: '🦜' }, { name: 'Galinha', emoji: '🐔' }, { name: 'Pinguim', emoji: '🐧' }, { name: 'Pavão', emoji: '🦚' },
-        { name: 'Cisne', emoji: '🦢' }, { name: 'Peru', emoji: '🦃' }, { name: 'Galo', emoji: '🐔' }, { name: 'Morcego', emoji: '🦇' },
-        { name: 'Pardal', emoji: '🐦' }, { name: 'Dodô', emoji: '🦤' }, { name: 'Fênix', emoji: '🐦‍🔥' }, { name: 'Flamingo', emoji: '🦜' },
-        { name: 'Tucano', emoji: '🐦' }, { name: 'Arara', emoji: '🦜' }, { name: 'Canário', emoji: '🐦' }, { name: 'Pombo', emoji: '🕊️' }
+        { name: 'Pássaro', emoji: '🐦' },
+        { name: 'Águia', emoji: '🦅' },
+        { name: 'Coruja', emoji: '🦉' },
+        { name: 'Pato', emoji: '🦆' },
+        { name: 'Papagaio', emoji: '🦜' },
+        { name: 'Galinha', emoji: '🐔' },
+        { name: 'Pinguim', emoji: '🐧' },
+        { name: 'Pavão', emoji: '🦚' },
+        { name: 'Cisne', emoji: '🦢' },
+        { name: 'Peru', emoji: '🦃' },
+        { name: 'Galo', emoji: '🐓' },
+        { name: 'Morcego', emoji: '🦇' },
+        { name: 'Pardal', emoji: '🐦' },
+        { name: 'Dodô', emoji: '🦤' },
+        { name: 'Fênix', emoji: '🔥' },
+        { name: 'Flamingo', emoji: '🦩' },
+        { name: 'Tucano', emoji: '🦜' },
+        { name: 'Arara', emoji: '🦜' },
+        { name: 'Canário', emoji: '🐤' },
+        { name: 'Pombo', emoji: '🕊️' }
     ],
     numeros: [
-        { name: 'Um', emoji: '1️⃣' }, { name: 'Dois', emoji: '2️⃣' }, { name: 'Três', emoji: '3️⃣' }, { name: 'Quatro', emoji: '4️⃣' },
-        { name: 'Cinco', emoji: '5️⃣' }, { name: 'Seis', emoji: '6️⃣' }, { name: 'Sete', emoji: '7️⃣' }, { name: 'Oito', emoji: '8️⃣' },
-        { name: 'Nove', emoji: '9️⃣' }, { name: 'Dez', emoji: '🔟' }, { name: 'Zero', emoji: '0️⃣' }, { name: 'Onze', emoji: '1️⃣1️⃣' },
-        { name: 'Doze', emoji: '1️⃣2️⃣' }, { name: 'Vinte', emoji: '2️⃣0️⃣' }, { name: 'Cem', emoji: '💯' }, { name: 'Mil', emoji: '1️⃣0️⃣0️⃣0️⃣' },
-        { name: 'Sinal de +', emoji: '➕' }, { name: 'Sinal de -', emoji: '➖' }, { name: 'Sinal de x', emoji: '✖️' }, { name: 'Sinal de ÷', emoji: '➗' }
+        { name: 'Um', emoji: '1️⃣' },
+        { name: 'Dois', emoji: '2️⃣' },
+        { name: 'Três', emoji: '3️⃣' },
+        { name: 'Quatro', emoji: '4️⃣' },
+        { name: 'Cinco', emoji: '5️⃣' },
+        { name: 'Seis', emoji: '6️⃣' },
+        { name: 'Sete', emoji: '7️⃣' },
+        { name: 'Oito', emoji: '8️⃣' },
+        { name: 'Nove', emoji: '9️⃣' },
+        { name: 'Dez', emoji: '🔟' },
+        { name: 'Zero', emoji: '0️⃣' },
+        { name: 'Onze', emoji: '🔢' },
+        { name: 'Doze', emoji: '🔢' },
+        { name: 'Vinte', emoji: '🔢' },
+        { name: 'Cem', emoji: '💯' },
+        { name: 'Mil', emoji: '🔢' },
+        { name: 'Sinal de +', emoji: '➕' },
+        { name: 'Sinal de -', emoji: '➖' },
+        { name: 'Sinal de x', emoji: '✖️' },
+        { name: 'Sinal de ÷', emoji: '➗' }
     ],
     objetos: [
-        { name: 'Celular', emoji: '📱' }, { name: 'Computador', emoji: '💻' }, { name: 'Relógio', emoji: '⌚' }, { name: 'Câmera', emoji: '📷' },
-        { name: 'Câmera de Vídeo', emoji: '🎥' }, { name: 'Televisão', emoji: '📺' }, { name: 'Rádio', emoji: '📻' }, { name: 'Lâmpada', emoji: '💡' },
-        { name: 'Bateria', emoji: '🔋' }, { name: 'Tomada', emoji: '🔌' }, { name: 'Caixa de Ferramentas', emoji: '🛠️' }, { name: 'Chave Inglesa', emoji: '🔧' },
-        { name: 'Martelo', emoji: '🔨' }, { name: 'Escada', emoji: '🪜' }, { name: 'Régua', emoji: '📏' }, { name: 'Esquadro', emoji: '📐' },
-        { name: 'Clips', emoji: '📎' }, { name: 'Tesoura', emoji: '✂️' }, { name: 'Cadeado', emoji: '🔒' }, { name: 'Chave', emoji: '🔑' }
+        { name: 'Celular', emoji: '📱' },
+        { name: 'Computador', emoji: '💻' },
+        { name: 'Relógio', emoji: '⌚' },
+        { name: 'Câmera', emoji: '📷' },
+        { name: 'Câmera de Vídeo', emoji: '📹' },
+        { name: 'Televisão', emoji: '📺' },
+        { name: 'Rádio', emoji: '📻' },
+        { name: 'Lâmpada', emoji: '💡' },
+        { name: 'Bateria', emoji: '🔋' },
+        { name: 'Tomada', emoji: '🔌' },
+        { name: 'Caixa de Ferramentas', emoji: '🧰' },
+        { name: 'Chave Inglesa', emoji: '🔧' },
+        { name: 'Martelo', emoji: '🔨' },
+        { name: 'Escada', emoji: '🪜' },
+        { name: 'Régua', emoji: '📏' },
+        { name: 'Esquadro', emoji: '📐' },
+        { name: 'Clips', emoji: '📎' },
+        { name: 'Tesoura', emoji: '✂️' },
+        { name: 'Cadeado', emoji: '🔒' },
+        { name: 'Chave', emoji: '🔑' }
     ],
     natureza: [
-        { name: 'Flor de Cerejeira', emoji: '🌸' }, { name: 'Flor', emoji: '🌺' }, { name: 'Girassol', emoji: '🌻' }, { name: 'Flor', emoji: '🌹' },
-        { name: 'Rosa', emoji: '🌹' }, { name: 'Margarida', emoji: '🌼' }, { name: 'Folha', emoji: '🍃' }, { name: 'Trevo', emoji: '🍀' },
-        { name: 'Árvore', emoji: '🌳' }, { name: 'Pinheiro', emoji: '🌲' }, { name: 'Palmeira', emoji: '🌴' }, { name: 'Cacto', emoji: '🌵' },
-        { name: 'Trigo', emoji: '🌾' }, { name: 'Broto', emoji: '🌱' }, { name: 'Cogumelo', emoji: '🍄' }, { name: 'Castanha', emoji: '🌰' },
-        { name: 'Carvalho', emoji: '🌳' }, { name: 'Bambu', emoji: '🎋' }, { name: 'Flor de Lótus', emoji: '🪷' }, { name: 'Flor de Hibisco', emoji: '🌺' }
+        { name: 'Cerejeira', emoji: '🌸' },
+        { name: 'Flor', emoji: '🌺' },
+        { name: 'Girassol', emoji: '🌻' },
+        { name: 'Margarida', emoji: '🌼' },
+        { name: 'Rosa', emoji: '🌹' },
+        { name: 'Folha', emoji: '🍃' },
+        { name: 'Trevo', emoji: '☘️' },
+        { name: 'Árvore', emoji: '🌳' },
+        { name: 'Pinheiro', emoji: '🌲' },
+        { name: 'Palmeira', emoji: '🌴' },
+        { name: 'Cacto', emoji: '🌵' },
+        { name: 'Trigo', emoji: '🌾' },
+        { name: 'Broto', emoji: '🌱' },
+        { name: 'Cogumelo', emoji: '🍄' },
+        { name: 'Castanha', emoji: '🌰' },
+        { name: 'Vulcão', emoji: '🌋' },
+        { name: 'Montanha', emoji: '⛰️' },
+        { name: 'Lua', emoji: '🌙' },
+        { name: 'Sol', emoji: '☀️' },
+        { name: 'Arco-íris', emoji: '🌈' }
     ]
 };
 
@@ -619,46 +727,101 @@ function setupSoundToggle() {
  * Sets up navigation buttons using event delegation
  */
 function setupNavigation() {
-    if (!DOM.memoryView) return;
+    console.log('🔧 Setting up navigation...');
     
+    if (!DOM.memoryView) {
+        console.error('❌ DOM.memoryView not found!');
+        return;
+    }
+    
+    // Event delegation for navigation buttons
     DOM.memoryView.addEventListener('click', function(e) {
         const button = e.target.closest('button');
         if (!button) return;
         
+        console.log('🔘 Button clicked:', button.id);
+        
         const handlers = {
             'start-game': () => {
                 e.preventDefault();
+                console.log('▶️ Starting game...');
                 startGame();
                 showMemoryGame();
             },
             'back-to-config': () => {
                 e.preventDefault();
+                console.log('⬅️ Back to config...');
                 showMemoryConfig();
             },
             'restart-game': () => {
                 e.preventDefault();
+                console.log('🔄 Restarting game...');
                 startGame();
+            },
+            'back-from-memory': () => {
+                e.preventDefault();
+                console.log('🏠 Back to welcome...');
+                // Navigate back to welcome screen
+                const welcomeView = document.getElementById('welcome-view');
+                const memoryView = document.getElementById('memory-view');
+                if (welcomeView && memoryView) {
+                    memoryView.classList.remove('active');
+                    welcomeView.classList.add('active');
+                }
             }
         };
         
         const handler = handlers[button.id];
-        if (handler) handler();
+        if (handler) {
+            handler();
+        } else {
+            console.warn('⚠️ No handler for button:', button.id);
+        }
     });
+    
+    // Direct event listener as backup for start button
+    const startBtn = document.getElementById('start-game');
+    if (startBtn) {
+        console.log('✅ Start button found, adding direct listener');
+        startBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🎯 Direct start button clicked!');
+            startGame();
+            showMemoryGame();
+        });
+    } else {
+        console.error('❌ Start button NOT found!');
+    }
+    
+    console.log('✅ Navigation setup complete');
 }
 
 /**
  * Initialize all event listeners
  */
 function initializeEventListeners() {
+    console.log('🎮 Initializing Memory Game...');
+    console.log('DOM Elements:', {
+        memoryView: !!DOM.memoryView,
+        gameBoard: !!DOM.gameBoard,
+        startButton: !!document.getElementById('start-game')
+    });
+    
     setupPlayerButtons();
     setupDifficultyButtons();
     setupThemeSelect();
     setupSoundToggle();
     setupNavigation();
+    
+    console.log('✅ Memory Game initialized!');
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', initializeEventListeners);
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📄 DOM Content Loaded');
+    initializeEventListeners();
+});
 
 /* ================================================
    VISUAL EFFECTS

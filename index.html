@@ -8,6 +8,8 @@
     <title>JW Quiz</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="CSS/style.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
 
@@ -50,6 +52,81 @@
             </div>
         </section>
 
+        <!-- TELA DE ADMINISTRAÇÃO -->
+        <section id="admin-view" class="view" role="main" aria-labelledby="admin-title">
+            <div class="quiz-card">
+                <header class="stats-header">
+                    <h2 id="admin-title">⚙️ Administração de Questões</h2>
+                    <button id="back-from-admin" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+                </header>
+
+                <div class="admin-content">
+                    <!-- Estatísticas Rápidas -->
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="total-questions-count">0</div>
+                            <div class="stat-label">Total de Questões</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="easy-questions-count">0</div>
+                            <div class="stat-label">Fáceis</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="medium-questions-count">0</div>
+                            <div class="stat-label">Médias</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="hard-questions-count">0</div>
+                            <div class="stat-label">Difíceis</div>
+                        </div>
+                    </div>
+
+                    <!-- Filtros e Busca -->
+                    <div class="admin-filters">
+                        <div class="filter-row">
+                            <input type="text" id="search-input" placeholder="Buscar questões..." class="search-input">
+                            <select id="difficulty-filter" class="filter-select">
+                                <option value="">Todas as dificuldades</option>
+                                <option value="1">Fácil</option>
+                                <option value="2">Médio</option>
+                                <option value="3">Difícil</option>
+                            </select>
+                            <select id="tag-filter" class="filter-select">
+                                <option value="">Todas as tags</option>
+                                <!-- Tags serão populadas dinamicamente -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Questões com Paginação -->
+                    <div class="questions-list-container">
+                        <div id="questions-list" class="questions-list">
+                            <!-- Questões serão carregadas aqui -->
+                        </div>
+
+                        <!-- Controles de Paginação -->
+                        <div class="pagination-controls">
+                            <button id="prev-page" class="btn btn-secondary pagination-btn" disabled>← Anterior</button>
+                            <span class="pagination-info">
+                                Página <span id="current-page">1</span> de <span id="total-pages">1</span>
+                                (<span id="showing-count">0</span> questões)
+                            </span>
+                            <button id="next-page" class="btn btn-secondary pagination-btn" disabled>Próxima →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOADING OVERLAY -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <h2 class="loading-title">Carregando Questões...</h2>
+                <p class="loading-subtitle">Preparando seu quiz bíblico</p>
+            </div>
+        </div>
+
         <!-- TELA INICIAL ORIGINAL (mantida como backup) -->
         <section id="home-view" class="view" role="main" aria-labelledby="home-title">
             <header class="app-header">
@@ -86,7 +163,7 @@
                 </div>
 
                 <footer>
-                    <button id="manage-content-btn" class="btn btn-link" aria-label="Acessar painel de gerenciamento de perguntas" disabled>Gerenciar Perguntas</button>
+                    <button id="manage-content-btn" class="btn btn-link" aria-label="Acessar painel de gerenciamento de perguntas">Gerenciar Perguntas</button>
                     <button id="legal-btn" class="btn btn-link" aria-label="Ver informações legais e políticas">ℹ️ Legal</button>
                     <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">modo escuro</button>
                 </footer>
@@ -257,6 +334,13 @@
 
                 <!-- TELA DE CONFIGURAÇÃO - TURBINADA 2.0 -->
                 <div id="memory-config" class="memory-subview active">
+                    <div class="memory-welcome-section">
+                        <div class="memory-welcome-message">
+                            <h1>Bem-vindo ao Jogo da Memória!</h1>
+                            <p>Desafie sua memória com temas divertidos e dificuldades variadas. Jogue sozinho ou com amigos!</p>
+                        </div>
+                    </div>
+
                     <div class="config-grid memory-config-hero">
                         <div class="config-header memory-config-header">
                             <h2>Configurar Partida</h2>
@@ -630,9 +714,37 @@
             </div>
         </section>
 
+        <!-- Modal de Fim de Jogo -->
+        <div id="end-game-modal" class="modal-overlay hidden">
+            <div class="modal-content end-game-content">
+                <div id="confetti-container"></div>
+                <h2 id="end-game-title">Quiz Finalizado!</h2>
+                <p id="end-game-message">Você acertou 8 de 10 perguntas!</p>
+                <div class="end-game-stats">
+                    <div class="stat-item">
+                        <strong>Pontuação:</strong>
+                        <span id="end-game-score">1200</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Precisão:</strong>
+                        <span id="end-game-accuracy">80%</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Tempo:</strong>
+                        <span id="end-game-time">2m 15s</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="play-again-btn" class="btn-primary">Jogar Novamente</button>
+                    <button id="back-to-menu-btn" class="btn-secondary">Voltar ao Menu</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="JS/quiz.js"></script>
+    <script src="JS/achievements.js"></script>
     <script src="JS/main.js"></script>
     <script src="JS/unregister-sw.js"></script>
     <script src="JS/debug.js"></script>

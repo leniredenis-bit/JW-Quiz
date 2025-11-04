@@ -1,5 +1,11 @@
-/* ==========    frutas:     transportes: [
-        { name: 'Carro', emoji: '🚗' }, { name: 'Táxi', emoji: '🚕' }, { name: 'Ônibus', emoji: '🚌' }, { name: 'Ambulância', emoji: '🚑' },
+﻿/* ===        { name: 'Carvalho', emoji: '🎄' }, { name: 'Bambu', emoji: '🎋' }, { name: 'Flor de Lótus', emoji: '🪷' }, { name: 'Flor de Hibisco', emoji: '🌿' }======    frutas:     transportes: [
+        { name: 'Carr    natureza: [
+        { name: 'Flor de Cerejeira', emoji: '🌸' }, { name: 'Tulipa', emoji: '�' }, { name: 'Girassol', emoji: '🌻' }, { name: 'Hibisco', emoji: '�' },
+        { name: 'Rosa', emoji: '🌹' }, { name: 'Margarida', emoji: '🌼' }, { name: 'Folha', emoji: '🍃' }, { name: 'Trevo', emoji: '🍀' },
+        { name: 'Árvore', emoji: '🌳' }, { name: 'Pinheiro', emoji: '🌲' }, { name: 'Palmeira', emoji: '🌴' }, { name: 'Cacto', emoji: '🌵' },
+        { name: 'Trigo', emoji: '🌾' }, { name: 'Broto', emoji: '🌱' }, { name: 'Cogumelo', emoji: '🍄' }, { name: 'Castanha', emoji: '🌰' },
+        { name: 'Carvalho', emoji: '🌲' }, { name: 'Bambu', emoji: '🎋' }, { name: 'Flor de Lótus', emoji: '🪷' }, { name: 'Flor de Hibisco', emoji: '�' }
+    ]ji: '🚗' }, { name: 'Táxi', emoji: '🚕' }, { name: 'Ônibus', emoji: '🚌' }, { name: 'Ambulância', emoji: '🚑' },
         { name: 'Polícia', emoji: '🚓' }, { name: 'Caminhão', emoji: '🚚' }, { name: 'Trator', emoji: '🚜' }, { name: 'Bicicleta', emoji: '🚲' },
         { name: 'Moto', emoji: '🏍️' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '🚀' }, { name: 'Barco', emoji: '⛵️' },
         { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }, { name: 'Patinete', emoji: '🛴' },
@@ -23,28 +29,32 @@ const THEMES = {
         { name: 'Pinguim', emoji: '🐧' }, { name: 'Pássaro', emoji: '🐦' }, { name: 'Pato', emoji: '🦆' }, { name: 'Coruja', emoji: '🦉' }
     ],
     frutas: [
-        { name: 'Maçã', emoji: '�' }, { name: 'Banana', emoji: '�' }, { name: 'Uva', emoji: '�' }, { name: 'Morango', emoji: '🍓' },
-        { name: 'Melão', emoji: '🍈' }, { name: 'Cereja', emoji: '�' }, { name: 'Pêssego', emoji: '�' }, { name: 'Kiwi', emoji: '🥝' },
-        { name: 'Manga', emoji: '🥭' }, { name: 'Coco', emoji: '🥥' }, { name: 'Melancia', emoji: '�' }, { name: 'Laranja', emoji: '�' },
-        { name: 'Limão', emoji: '🍋' }, { name: 'Pêra', emoji: '�' }, { name: 'Abacaxi', emoji: '�' }
+        { name: 'Maçã', emoji: '🍎' }, { name: 'Banana', emoji: '🍌' }, { name: 'Uva', emoji: '🍇' }, { name: 'Morango', emoji: '🍓' },
+        { name: 'Melão', emoji: '🍈' }, { name: 'Cereja', emoji: '🍒' }, { name: 'Pêssego', emoji: '🍑' }, { name: 'Kiwi', emoji: '🥝' },
+        { name: 'Manga', emoji: '🥭' }, { name: 'Coco', emoji: '🥥' }, { name: 'Melancia', emoji: '🍉' }, { name: 'Laranja', emoji: '🍊' },
+        { name: 'Limão', emoji: '🍋' }, { name: 'Pêra', emoji: '🍐' }, { name: 'Abacaxi', emoji: '🍍' }, { name: 'Abacate', emoji: '🥑' },
+        { name: 'Amora', emoji: '🫐' }, { name: 'Figo', emoji: '🫒' }, { name: 'Romã', emoji: '🫐' }, { name: 'Tangerina', emoji: '🍊' }
     ],
     transportes: [
-        { name: 'Carro', emoji: '�' }, { name: 'Táxi', emoji: '�' }, { name: 'Ônibus', emoji: '�' }, { name: 'Ambulância', emoji: '�' },
-        { name: 'Carro de Polícia', emoji: '�' }, { name: 'Caminhão', emoji: '�' }, { name: 'Trator', emoji: '�' }, { name: 'Bicicleta', emoji: '�' },
-        { name: 'Moto', emoji: '�' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '�' }, { name: 'Barco', emoji: '⛵️' },
-        { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }
+        { name: 'Carro', emoji: '🚗' }, { name: 'Táxi', emoji: '🚕' }, { name: 'Ônibus', emoji: '🚌' }, { name: 'Ambulância', emoji: '🚑' },
+        { name: 'Polícia', emoji: '🚓' }, { name: 'Caminhão', emoji: '🚚' }, { name: 'Trator', emoji: '🚜' }, { name: 'Bicicleta', emoji: '🚲' },
+        { name: 'Moto', emoji: '🏍️' }, { name: 'Avião', emoji: '✈️' }, { name: 'Foguete', emoji: '🚀' }, { name: 'Barco', emoji: '⛵️' },
+        { name: 'Navio', emoji: '🛳️' }, { name: 'Trem', emoji: '🚆' }, { name: 'Helicóptero', emoji: '🚁' }, { name: 'Patinete', emoji: '🛴' },
+        { name: 'Monociclo', emoji: '🚲' }, { name: 'Teleférico', emoji: '🚠' }, { name: 'Trólebus', emoji: '🚎' }, { name: 'Vagão', emoji: '🚃' }
     ],
     peixes: [
-        { name: 'Peixe', emoji: '🐟' }, { name: 'Peixe Tropical', emoji: '�' }, { name: 'Baiacu', emoji: '�' }, { name: 'Tubarão', emoji: '�' },
-        { name: 'Polvo', emoji: '�' }, { name: 'Lula', emoji: '🦑' }, { name: 'Lagosta', emoji: '🦞' }, { name: 'Caranguejo', emoji: '�' },
-        { name: 'Concha', emoji: '🐚' }, { name: 'Baleia', emoji: '�' }, { name: 'Orca', emoji: '�' }, { name: 'Foca', emoji: '�' },
-        { name: 'Tartaruga', emoji: '🐢' }, { name: 'Crocodilo', emoji: '🐊' }, { name: 'Lagarto', emoji: '🦎' }
+        { name: 'Peixe', emoji: '🐟' }, { name: 'Peixe Tropical', emoji: '🐠' }, { name: 'Baiacu', emoji: '🐡' }, { name: 'Tubarão', emoji: '🦈' },
+        { name: 'Polvo', emoji: '🐙' }, { name: 'Lula', emoji: '🦑' }, { name: 'Lagosta', emoji: '🦞' }, { name: 'Caranguejo', emoji: '🦀' },
+        { name: 'Concha', emoji: '🐚' }, { name: 'Baleia', emoji: '🐋' }, { name: 'Orca', emoji: '🐋' }, { name: 'Foca', emoji: '🦭' },
+        { name: 'Tartaruga', emoji: '🐢' }, { name: 'Crocodilo', emoji: '🐊' }, { name: 'Lagarto', emoji: '🦎' }, { name: 'Sapo', emoji: '🐸' },
+        { name: 'Rã', emoji: '🐸' }, { name: 'Salamandra', emoji: '🦎' }, { name: 'Enguia', emoji: '🐟' }, { name: 'Estrela-do-mar', emoji: '⭐' }
     ],
     aves: [
-        { name: 'Pássaro', emoji: '🐦' }, { name: 'Águia', emoji: '�' }, { name: 'Coruja', emoji: '�' }, { name: 'Pato', emoji: '🦆' },
-        { name: 'Papagaio', emoji: '�' }, { name: 'Galinha', emoji: '�' }, { name: 'Pinguim', emoji: '�' }, { name: 'Pavão', emoji: '🦚' },
-        { name: 'Cisne', emoji: '�' }, { name: 'Peru', emoji: '�' }, { name: 'Galo', emoji: '�' }, { name: 'Morcego', emoji: '�' },
-        { name: 'Pardal', emoji: '�‍⬛' }, { name: 'Dodô', emoji: '🦤' }, { name: 'Fênix', emoji: '🐦‍🔥' }
+        { name: 'Pássaro', emoji: '🐦' }, { name: 'Águia', emoji: '🦅' }, { name: 'Coruja', emoji: '🦉' }, { name: 'Pato', emoji: '🦆' },
+        { name: 'Papagaio', emoji: '🦜' }, { name: 'Galinha', emoji: '🐔' }, { name: 'Pinguim', emoji: '🐧' }, { name: 'Pavão', emoji: '🦚' },
+        { name: 'Cisne', emoji: '🦢' }, { name: 'Peru', emoji: '🦃' }, { name: 'Galo', emoji: '🐔' }, { name: 'Morcego', emoji: '🦇' },
+        { name: 'Pardal', emoji: '🐦' }, { name: 'Dodô', emoji: '🦤' }, { name: 'Fênix', emoji: '🐦‍🔥' }, { name: 'Flamingo', emoji: '🦜' },
+        { name: 'Tucano', emoji: '🐦' }, { name: 'Arara', emoji: '🦜' }, { name: 'Canário', emoji: '🐦' }, { name: 'Pombo', emoji: '🕊️' }
     ],
     numeros: [
         { name: 'Um', emoji: '1️⃣' }, { name: 'Dois', emoji: '2️⃣' }, { name: 'Três', emoji: '3️⃣' }, { name: 'Quatro', emoji: '4️⃣' },
@@ -55,16 +65,17 @@ const THEMES = {
     ],
     objetos: [
         { name: 'Celular', emoji: '📱' }, { name: 'Computador', emoji: '💻' }, { name: 'Relógio', emoji: '⌚' }, { name: 'Câmera', emoji: '📷' },
-        { name: 'Câmera de Vídeo', emoji: '🎥' }, { name: 'Televisão', emoji: '�' }, { name: 'Rádio', emoji: '�' }, { name: 'Lâmpada', emoji: '�' },
-        { name: 'Bateria', emoji: '�' }, { name: 'Tomada', emoji: '🔌' }, { name: 'Caixa de Ferramentas', emoji: '🛠️' }, { name: 'Chave Inglesa', emoji: '�' },
-        { name: 'Martelo', emoji: '�' }, { name: 'Escada', emoji: '🪜' }, { name: 'Régua', emoji: '�' }, { name: 'Esquadro', emoji: '�' },
-        { name: 'Clips', emoji: '�' }, { name: 'Tesoura', emoji: '✂️' }, { name: 'Cadeado', emoji: '�' }, { name: 'Chave', emoji: '�️' }
+        { name: 'Câmera de Vídeo', emoji: '🎥' }, { name: 'Televisão', emoji: '📺' }, { name: 'Rádio', emoji: '📻' }, { name: 'Lâmpada', emoji: '💡' },
+        { name: 'Bateria', emoji: '🔋' }, { name: 'Tomada', emoji: '🔌' }, { name: 'Caixa de Ferramentas', emoji: '🛠️' }, { name: 'Chave Inglesa', emoji: '🔧' },
+        { name: 'Martelo', emoji: '🔨' }, { name: 'Escada', emoji: '🪜' }, { name: 'Régua', emoji: '📏' }, { name: 'Esquadro', emoji: '📐' },
+        { name: 'Clips', emoji: '📎' }, { name: 'Tesoura', emoji: '✂️' }, { name: 'Cadeado', emoji: '🔒' }, { name: 'Chave', emoji: '🔑' }
     ],
     natureza: [
-        { name: 'Flor de Cerejeira', emoji: '🌸' }, { name: 'Flor', emoji: '🌺' }, { name: 'Girassol', emoji: '�' }, { name: 'Flor', emoji: '�' },
-        { name: 'Rosa', emoji: '�' }, { name: 'Margarida', emoji: '�' }, { name: 'Folha', emoji: '�' }, { name: 'Trevo', emoji: '�' },
-        { name: 'Árvore', emoji: '�' }, { name: 'Pinheiro', emoji: '�' }, { name: 'Palmeira', emoji: '�' }, { name: 'Cacto', emoji: '�' },
-        { name: 'Trigo', emoji: '�' }, { name: 'Broto', emoji: '�' }, { name: 'Cogumelo', emoji: '�' }, { name: 'Castanha', emoji: '�' }
+        { name: 'Flor de Cerejeira', emoji: '🌸' }, { name: 'Flor', emoji: '🌺' }, { name: 'Girassol', emoji: '🌻' }, { name: 'Flor', emoji: '�' },
+        { name: 'Rosa', emoji: '🌹' }, { name: 'Margarida', emoji: '🌼' }, { name: 'Folha', emoji: '🍃' }, { name: 'Trevo', emoji: '🍀' },
+        { name: 'Árvore', emoji: '🌳' }, { name: 'Pinheiro', emoji: '🌲' }, { name: 'Palmeira', emoji: '🌴' }, { name: 'Cacto', emoji: '🌵' },
+        { name: 'Trigo', emoji: '🌾' }, { name: 'Broto', emoji: '🌱' }, { name: 'Cogumelo', emoji: '🍄' }, { name: 'Castanha', emoji: '🌰' },
+        { name: 'Carvalho', emoji: '🌳' }, { name: 'Bambu', emoji: '🎋' }, { name: 'Flor de Lótus', emoji: '🪷' }, { name: 'Flor de Hibisco', emoji: '🌺' }
     ]
 };
 
