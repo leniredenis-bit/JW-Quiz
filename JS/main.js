@@ -79,9 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Erro ao carregar perguntas:', err);
             alert('Erro ao carregar perguntas: ' + err.message);
             // Mostrar botões desabilitados ou mensagem de erro
-            document.getElementById('start-quick-quiz-btn').disabled = true;
-            document.getElementById('start-study-mode-btn').disabled = true;
-            document.getElementById('start-memory-game-btn').disabled = true;
+            const btnQuick = document.getElementById('start-quick-quiz-btn');
+            const btnStudy = document.getElementById('start-study-mode-btn');
+            const btnMemory = document.getElementById('start-memory-game-btn');
+            if (btnQuick) btnQuick.disabled = true;
+            if (btnStudy) btnStudy.disabled = true;
+            if (btnMemory) btnMemory.disabled = true;
         } finally {
             // Esconder loading overlay
             if (loadingOverlay) {
@@ -102,11 +105,29 @@ document.addEventListener('DOMContentLoaded', function() {
         window.allQuestions.forEach(q => (q.tags || []).forEach(t => tags.add(t)));
 
         const sortedTags = Array.from(tags).sort();
-        const initialTags = sortedTags.slice(0, 7);
-        const hasMore = sortedTags.length > 7;
+
+        // Seleção reduzida solicitada: Bíblia, Crianças, Milagres (+ expandir)
+        const norm = s => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+        const desired = ['biblia', 'criancas', 'milagres'];
+
+        // map real labels preserving original casing from dataset
+        const byNorm = new Map(sortedTags.map(t => [norm(t), t]));
+        const picked = [];
+        desired.forEach(key => {
+            if (byNorm.has(key)) picked.push(byNorm.get(key));
+        });
+        // fallback: se faltar alguma, completa com primeiras disponíveis
+        if (picked.length < 3) {
+            for (const t of sortedTags) {
+                if (!picked.includes(t)) picked.push(t);
+                if (picked.length >= 3) break;
+            }
+        }
+
+        const hasMore = sortedTags.length > picked.length;
 
         tagsContainer.innerHTML = '';
-        initialTags.forEach(tag => {
+        picked.forEach(tag => {
             const btn = document.createElement('button');
             btn.className = 'tag-btn';
             btn.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
@@ -177,10 +198,13 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Stats button clicked');
         showStatsView();
     });
-    document.getElementById('legal-btn').addEventListener('click', () => {
-        console.log('Legal button clicked');
-        showView('legal-view');
-    });
+    const legalBtn = document.getElementById('legal-btn');
+    if (legalBtn) {
+        legalBtn.addEventListener('click', () => {
+            console.log('Legal button clicked');
+            showView('legal-view');
+        });
+    }
 
     // Analytics avançado para análise de usuários
     window.analytics = {
@@ -447,18 +471,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeButton(savedTheme);
 
-        // Event listener para alternar tema
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        // Event listener para alternar tema (opcional, botão pode não existir)
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeButton(newTheme);
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeButton(newTheme);
 
-            // Analytics
-            window.analytics.track('theme_changed', { theme: newTheme });
-        });
+                // Analytics
+                window.analytics.track('theme_changed', { theme: newTheme });
+            });
+        }
     }
 
     // Inicializar tema

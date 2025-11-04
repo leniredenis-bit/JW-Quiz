@@ -220,7 +220,7 @@ const gameState = {
     timeLeft: 0,
     
     // Settings
-    difficulty: 'medium',
+    difficulty: 'easy', // Changed from 'medium' to 'easy' (6 pairs default)
     theme: 'animais',
     soundEnabled: true,
     
@@ -294,9 +294,12 @@ window.showMemoryGame = showMemoryGame;
  * Difficulty settings
  */
 const DIFFICULTY_CONFIG = {
-    easy: { pairs: 10, time: 0 },
-    medium: { pairs: 15, time: 0 },
-    hard: { pairs: 20, time: 120 }
+    easy: { pairs: 6, time: 0 },
+    medium: { pairs: 8, time: 0 },
+    hard: { pairs: 10, time: 0 },
+    expert: { pairs: 12, time: 0 },
+    master: { pairs: 15, time: 0 },
+    legend: { pairs: 20, time: 120 }
 };
 
 /**
@@ -327,11 +330,15 @@ function createBoard() {
     gameState.totalPairs = pairs;
     gameState.pairsFound = 0;
     
-    // Get theme items and create pairs with unique IDs
-    const themeItems = THEMES[gameState.theme].slice(0, pairs);
+    // Get theme items and select random ones
+    const themeItems = THEMES[gameState.theme];
+    
+    // Shuffle the theme items and select the first 'pairs' items
+    const shuffledItems = shuffleArray([...themeItems]);
+    const selectedItems = shuffledItems.slice(0, pairs);
     
     // Add pairId to each item before duplicating
-    const itemsWithIds = themeItems.map((item, index) => ({
+    const itemsWithIds = selectedItems.map((item, index) => ({
         ...item,
         pairId: index
     }));
@@ -710,6 +717,163 @@ function setupThemeSelect() {
 }
 
 /**
+ * Sets up players dropdown
+ */
+function setupPlayersDropdown() {
+    const trigger = document.getElementById('players-dropdown-trigger');
+    const menu = document.getElementById('players-dropdown-menu');
+    const text = document.getElementById('players-dropdown-text');
+    
+    if (!trigger || !menu || !text) return;
+    
+    // Toggle dropdown on trigger click
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns
+        closeAllDropdowns();
+        
+        // Toggle this dropdown
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) {
+            closeDropdown(menu, trigger);
+        } else {
+            openDropdown(menu, trigger);
+        }
+    });
+    
+    // Handle option selection
+    menu.addEventListener('click', function(e) {
+        const option = e.target.closest('.dropdown-option');
+        if (!option) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const players = parseInt(option.dataset.players);
+        const optionText = option.textContent.trim();
+        
+        // Update display text
+        text.textContent = optionText;
+        
+        // Update game state
+        gameState.numPlayers = players;
+        
+        // Close dropdown
+        closeDropdown(menu, trigger);
+        
+        // Update scores array
+        gameState.scores = Array(players).fill(0);
+    });
+}
+
+/**
+ * Sets up pairs dropdown
+ */
+function setupPairsDropdown() {
+    const trigger = document.getElementById('pairs-dropdown-trigger');
+    const menu = document.getElementById('pairs-dropdown-menu');
+    const text = document.getElementById('pairs-dropdown-text');
+    
+    if (!trigger || !menu || !text) return;
+    
+    // Toggle dropdown on trigger click
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns
+        closeAllDropdowns();
+        
+        // Toggle this dropdown
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) {
+            closeDropdown(menu, trigger);
+        } else {
+            openDropdown(menu, trigger);
+        }
+    });
+    
+    // Handle option selection
+    menu.addEventListener('click', function(e) {
+        const option = e.target.closest('.dropdown-option');
+        if (!option) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const pairs = parseInt(option.dataset.pairs);
+        const optionText = option.textContent.trim();
+        
+        // Update display text
+        text.textContent = optionText;
+        
+        // Update game state - map pairs to difficulty
+        const difficultyMap = {
+            6: 'easy',
+            8: 'medium',
+            10: 'hard',
+            12: 'expert',
+            15: 'master',
+            20: 'legend'
+        };
+        
+        gameState.difficulty = difficultyMap[pairs] || 'easy';
+        
+        // Close dropdown
+        closeDropdown(menu, trigger);
+    });
+}
+
+/**
+ * Opens a dropdown menu
+ */
+function openDropdown(menu, trigger) {
+    menu.classList.add('open');
+    trigger.classList.add('active');
+}
+
+/**
+ * Closes a dropdown menu
+ */
+function closeDropdown(menu, trigger) {
+    menu.classList.remove('open');
+    trigger.classList.remove('active');
+}
+
+/**
+ * Closes all dropdown menus
+ */
+function closeAllDropdowns() {
+    // Close players dropdown
+    const playersMenu = document.getElementById('players-dropdown-menu');
+    const playersTrigger = document.getElementById('players-dropdown-trigger');
+    if (playersMenu && playersTrigger) {
+        closeDropdown(playersMenu, playersTrigger);
+    }
+    
+    // Close pairs dropdown
+    const pairsMenu = document.getElementById('pairs-dropdown-menu');
+    const pairsTrigger = document.getElementById('pairs-dropdown-trigger');
+    if (pairsMenu && pairsTrigger) {
+        closeDropdown(pairsMenu, pairsTrigger);
+    }
+}
+
+/**
+ * Closes dropdowns when clicking outside
+ */
+function setupDropdownOutsideClick() {
+    document.addEventListener('click', function(e) {
+        const isDropdownClick = e.target.closest('.dropdown-wrapper');
+        if (!isDropdownClick) {
+            closeAllDropdowns();
+        }
+    });
+}
+
+/**
  * Sets up sound toggle
  */
 function setupSoundToggle() {
@@ -757,6 +921,28 @@ function setupNavigation() {
                 e.preventDefault();
                 console.log('🔄 Restarting game...');
                 startGame();
+            },
+            'game-home-btn': () => {
+                e.preventDefault();
+                console.log('🏠 Back to welcome...');
+                // Navigate back to welcome screen
+                const welcomeView = document.getElementById('welcome-view');
+                const memoryView = document.getElementById('memory-view');
+                if (welcomeView && memoryView) {
+                    memoryView.classList.remove('active');
+                    welcomeView.classList.add('active');
+                }
+            },
+            'config-back-btn': () => {
+                e.preventDefault();
+                console.log('🏠 Back to welcome from config...');
+                // Navigate back to welcome screen
+                const welcomeView = document.getElementById('welcome-view');
+                const memoryView = document.getElementById('memory-view');
+                if (welcomeView && memoryView) {
+                    memoryView.classList.remove('active');
+                    welcomeView.classList.add('active');
+                }
             },
             'back-from-memory': () => {
                 e.preventDefault();
@@ -811,6 +997,9 @@ function initializeEventListeners() {
     setupPlayerButtons();
     setupDifficultyButtons();
     setupThemeSelect();
+    setupPlayersDropdown();
+    setupPairsDropdown();
+    setupDropdownOutsideClick();
     setupSoundToggle();
     setupNavigation();
     

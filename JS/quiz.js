@@ -9,6 +9,10 @@
         return array;
     }
 
+    // Estado persistente (declarado antes de loadProgress para evitar ReferenceError)
+    let answeredQuestions = new Set(); // IDs já acertados
+    let questionErrors = {}; // erros por pergunta ID
+
     // Carrega progresso do localStorage
     function loadProgress() {
         try {
@@ -47,8 +51,7 @@
     let totalQuestions = 0;
     let currentStreak = 0;
     let timeSpent = 0;
-    let answeredQuestions = new Set(); // IDs já acertados
-    let questionErrors = {}; // erros por pergunta ID
+    // answeredQuestions e questionErrors já declarados acima
     let autoNextTimeout = null; // timeout para próxima pergunta automática
     let autoNextTimeLeft = 0; // tempo restante para próxima automática
     let correctAnswers = 0; // contador de respostas corretas

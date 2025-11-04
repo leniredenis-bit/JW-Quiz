@@ -2,9 +2,15 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
     <meta name="description" content="Teste seus conhecimentos bíblicos e desafie seus amigos!"/>
-    <meta name="theme-color" content="#007bff"/>
+    <meta name="theme-color" content="#3a6ea5"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <meta name="apple-mobile-web-app-title" content="JW Quiz"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="msapplication-TileColor" content="#3a6ea5"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
     <title>JW Quiz</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="CSS/style.css">
@@ -130,7 +136,7 @@
         <!-- TELA INICIAL ORIGINAL (mantida como backup) -->
         <section id="home-view" class="view" role="main" aria-labelledby="home-title">
             <header class="app-header">
-                <button id="back-to-welcome" class="btn btn-link" aria-label="Voltar à tela inicial" style="position: absolute; left: 1rem; top: 1rem;">🏠 Início</button>
+                <button id="back-to-welcome" class="btn-icon-only" aria-label="Voltar à tela inicial" style="position: absolute; left: 1rem; top: 1rem;">🏠</button>
                 <h1 id="home-title">JW Quiz</h1>
             </header>
 
@@ -141,9 +147,7 @@
                     <button id="start-multiplayer-btn" class="btn btn-secondary" aria-label="Entrar no modo partida em grupo online">🏆 Partida em Grupo</button>
                 </div>
 
-                <div class="stats-row">
-                    <button id="show-stats-btn" class="btn btn-link" aria-label="Ver minhas estatísticas pessoais">📊 Minhas Estatísticas</button>
-                </div>
+                
 
                 <div class="filter-section" role="region" aria-labelledby="theme-title">
                     <h2 id="theme-title">Quiz por Tema</h2>
@@ -163,9 +167,11 @@
                 </div>
 
                 <footer>
-                    <button id="manage-content-btn" class="btn btn-link" aria-label="Acessar painel de gerenciamento de perguntas">Gerenciar Perguntas</button>
-                    <button id="legal-btn" class="btn btn-link" aria-label="Ver informações legais e políticas">ℹ️ Legal</button>
-                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema escuro/claro">modo escuro</button>
+                    <button id="manage-content-btn" class="btn-icon-only" aria-label="Gerenciar perguntas">
+                        <span class="manage-icon">🛠️</span>
+                    </button>
+                    <button id="show-stats-btn" class="btn btn-link" aria-label="Ver minhas estatísticas pessoais">📊 Minhas Estatísticas</button>
+                    <!-- Botão Legal removido deste footer para evitar duplicidade -->
                 </footer>
             </main>
         </section>
@@ -324,21 +330,25 @@
         <!-- TELA DO JOGO DA MEMÓRIA - VERSÃO TURBINADA 2.0 -->
         <section id="memory-view" class="view" role="main" aria-labelledby="memory-title">
             <div class="memory-container quiz-card">
-                <header class="memory-main-header stats-header">
-                    <h1 id="memory-title">🧠 Jogo da Memória</h1>
-                    <button id="back-from-memory" class="btn-icon-link btn btn-link" aria-label="Voltar ao menu principal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path></svg>
-                        Voltar
-                    </button>
-                </header>
 
                 <!-- TELA DE CONFIGURAÇÃO - TURBINADA 2.0 -->
                 <div id="memory-config" class="memory-subview active">
-                    <div class="memory-welcome-section">
-                        <div class="memory-welcome-message">
-                            <h1>Bem-vindo ao Jogo da Memória!</h1>
-                            <p>Desafie sua memória com temas divertidos e dificuldades variadas. Jogue sozinho ou com amigos!</p>
-                        </div>
+
+                    <!-- Texto de boas vindas reorganizado -->
+                    <div class="memory-welcome-compact">
+                        <button id="back-from-memory" class="memory-config-back-btn" aria-label="Voltar ao início">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
+                        </button>
+                        <h1>🧠 Jogo da Memória</h1>
+                        <p>Desafie sua memória com temas divertidos!</p>
+                    </div>
+
+                    <!-- Botão iniciar movido para cima -->
+                    <div class="memory-start-early">
+                        <button id="start-game" class="start-game-btn memory-start-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path></svg>
+                            <span class="memory-start-text">Iniciar Jogo</span>
+                        </button>
                     </div>
 
                     <div class="config-grid memory-config-hero">
@@ -347,56 +357,84 @@
                             <p class="memory-config-subtitle">Escolha como você quer jogar</p>
                         </div>
 
-                        <fieldset class="config-group memory-config-group">
-                            <legend>👥 Jogadores</legend>
-                            <div class="btn-group memory-player-buttons" id="player-buttons">
-                                <button class="config-btn memory-player-btn active" data-players="1">1</button>
-                                <button class="config-btn memory-player-btn" data-players="2">2</button>
-                                <button class="config-btn memory-player-btn" data-players="3">3</button>
-                                <button class="config-btn memory-player-btn" data-players="4">4</button>
-                            </div>
-                        </fieldset>
+                        <!-- Grid 2x2 para configuração -->
+                        <div class="memory-config-grid-2x2">
+                            <fieldset class="config-group memory-config-group memory-config-item">
+                                <legend>👥 Jogadores</legend>
+                                <div class="dropdown-wrapper">
+                                    <button class="dropdown-trigger memory-dropdown-trigger" id="players-dropdown-trigger">
+                                        <span class="dropdown-text" id="players-dropdown-text">1 Jogador</span>
+                                        <span class="dropdown-arrow">▼</span>
+                                    </button>
+                                    <div class="dropdown-menu memory-dropdown-menu" id="players-dropdown-menu">
+                                        <button class="dropdown-option memory-dropdown-option" data-players="1">1 Jogador</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-players="2">2 Jogadores</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-players="3">3 Jogadores</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-players="4">4 Jogadores</button>
+                                    </div>
+                                </div>
+                            </fieldset>
 
-                        <fieldset class="config-group memory-config-group">
-                            <legend>🎨 Tema</legend>
-                            <div class="select-wrapper">
-                                <select id="theme-select" class="config-select memory-theme-select">
-                                    <option value="animais">Animais</option>
-                                    <option value="frutas">Frutas</option>
-                                    <option value="transportes">Transportes</option>
-                                    <option value="peixes">Vida Marinha</option>
-                                    <option value="aves">Aves</option>
-                                    <option value="numeros">Números e Símbolos</option>
-                                    <option value="objetos">Objetos</option>
-                                    <option value="natureza">Natureza</option>
-                                </select>
-                            </div>
-                        </fieldset>
+                            <fieldset class="config-group memory-config-group memory-config-item">
+                                <legend>🎨 Tema</legend>
+                                <div class="select-wrapper">
+                                    <select id="theme-select" class="config-select memory-theme-select">
+                                        <option value="animais">Animais</option>
+                                        <option value="frutas">Frutas</option>
+                                        <option value="transportes">Transportes</option>
+                                        <option value="peixes">Vida Marinha</option>
+                                        <option value="aves">Aves</option>
+                                        <option value="numeros">Números e Símbolos</option>
+                                        <option value="objetos">Objetos</option>
+                                        <option value="natureza">Natureza</option>
+                                    </select>
+                                </div>
+                            </fieldset>
 
-                        <fieldset class="config-group memory-config-group">
-                            <legend>🎯 Dificuldade</legend>
-                            <div class="btn-group memory-difficulty-buttons" id="difficulty-buttons">
-                                <button class="config-btn memory-difficulty-btn" data-difficulty="easy">Fácil <small>10 pares</small></button>
-                                <button class="config-btn memory-difficulty-btn active" data-difficulty="medium">Médio <small>15 pares</small></button>
-                                <button class="config-btn memory-difficulty-btn" data-difficulty="hard">Difícil <small>20 pares</small></button>
-                            </div>
-                        </fieldset>
-                        
-                        <div class="config-footer">
-                            <div class="sound-toggle-wrapper memory-sound-toggle">
-                                <input type="checkbox" id="sound-toggle" checked>
-                                <label for="sound-toggle">🔊 Efeitos Sonoros</label>
-                            </div>
-                            <button id="start-game" class="start-game-btn memory-start-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path></svg>
-                                <span class="memory-start-text">Iniciar Jogo</span>
-                            </button>
+                            <fieldset class="config-group memory-config-group memory-config-item">
+                                <legend>🎯 Pares</legend>
+                                <div class="dropdown-wrapper">
+                                    <button class="dropdown-trigger memory-dropdown-trigger" id="pairs-dropdown-trigger">
+                                        <span class="dropdown-text" id="pairs-dropdown-text">6 Pares</span>
+                                        <span class="dropdown-arrow">▼</span>
+                                    </button>
+                                    <div class="dropdown-menu memory-dropdown-menu" id="pairs-dropdown-menu">
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="6">6 Pares (Fácil)</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="8">8 Pares (Médio)</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="10">10 Pares (Difícil)</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="12">12 Pares (Expert)</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="15">15 Pares (Mestre)</button>
+                                        <button class="dropdown-option memory-dropdown-option" data-pairs="20">20 Pares (Lenda)</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="config-group memory-config-group memory-config-item">
+                                <legend>🔊 Áudio</legend>
+                                <div class="sound-toggle-wrapper memory-sound-toggle">
+                                    <input type="checkbox" id="sound-toggle" checked>
+                                    <label for="sound-toggle">Efeitos Sonoros</label>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
 
                 <!-- TELA DO JOGO - TURBINADA 2.0 -->
                 <div id="memory-game" class="memory-subview">
+                    <!-- Barra superior minimalista -->
+                    <div class="memory-game-header">
+                        <div class="memory-game-line"></div>
+                        <div class="memory-game-controls">
+                            <button id="game-home-btn" class="memory-game-btn" aria-label="Voltar ao início">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+                            </button>
+                            <button id="back-to-config" class="memory-game-btn" aria-label="Voltar às configurações">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="memory-content">
                         <!-- Barra superior com dados da partida -->
                         <div class="game-status-bar">
@@ -421,10 +459,6 @@
                             <button id="restart-game" class="btn-icon-link btn btn-secondary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path></svg>
                                 Reiniciar
-                            </button>
-                            <button id="back-to-config" class="btn-icon-link btn btn-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z"></path></svg>
-                                Configurações
                             </button>
                         </div>
                     </div>

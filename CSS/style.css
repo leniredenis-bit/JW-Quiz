@@ -1,3 +1,45 @@
+#home-view .btn-icon-only {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--btn-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+    box-shadow: none;
+}
+
+#home-view #back-to-welcome.btn-icon-only {
+    color: var(--btn-secondary);
+}
+#home-view #back-to-welcome.btn-icon-only:hover {
+    background: rgba(108,117,125,0.10); /* btn-secondary com opacidade */
+    color: var(--btn-secondary-hover);
+    box-shadow: 0 2px 8px var(--shadow-secondary);
+}
+#home-view #back-to-welcome.btn-icon-only:active {
+    background: rgba(108,117,125,0.18);
+    color: var(--btn-secondary);
+    box-shadow: 0 1px 4px var(--shadow-secondary);
+}
+
+#home-view #manage-content-btn.btn-icon-only {
+    color: var(--btn-primary);
+}
+#home-view #manage-content-btn.btn-icon-only:hover {
+    background: rgba(58,110,165,0.08);
+    color: var(--btn-primary-hover);
+    box-shadow: 0 2px 8px var(--shadow-accent);
+}
+#home-view #manage-content-btn.btn-icon-only:active {
+    background: rgba(58,110,165,0.16);
+    color: var(--btn-primary);
+    box-shadow: 0 1px 4px var(--shadow-accent);
+}
 /*
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                           JW QUIZ - STYLE.CSS                                ║
@@ -145,6 +187,23 @@ body, html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+    /* Melhorias para mobile */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+}
+
+/* Previne zoom no iOS quando focar inputs */
+@media screen and (max-width: 767px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="search"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
 }
 
 #app-container {
@@ -287,6 +346,7 @@ body, html {
     width: 100%;
     padding: 0.75rem;
     gap: 0.875rem;
+    flex: 1; /* ocupa o espaço disponível para empurrar o footer para o pé */
 }
 
 /* Bot\u00f5es principais - estilo hero */
@@ -298,26 +358,45 @@ body, html {
 
 #home-view .buttons-row .btn {
     width: 100%;
-    padding: 0.875rem;
+    padding: 1rem 1.2rem;
     font-size: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px var(--shadow-secondary);
+    border-radius: 16px; /* mesmo estilo do botão hero do início */
+    box-shadow: 0 4px 16px rgba(58, 110, 165, 0.18);
     background: var(--btn-primary);
     color: white;
     font-weight: 700;
+    border: none;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 #home-view .buttons-row .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px var(--shadow-accent);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 24px rgba(58, 110, 165, 0.28);
 }
 
 #home-view .buttons-row .btn-primary {
+    /* gradiente do botão de Quiz do início */
     background: linear-gradient(135deg, var(--btn-primary), var(--btn-primary-hover));
+    color: #fff;
+    box-shadow: 0 4px 16px var(--shadow-accent);
 }
 
 #home-view .buttons-row .btn-secondary {
     background: linear-gradient(135deg, var(--btn-secondary), var(--btn-secondary-hover));
+    color: #fff;
+    box-shadow: 0 4px 16px var(--shadow-secondary);
+}
+
+#home-view .buttons-row .btn-primary:hover {
+    background: linear-gradient(135deg, var(--btn-primary-hover), var(--btn-primary));
+    color: #fff;
+    box-shadow: 0 8px 24px var(--shadow-accent);
+}
+
+#home-view .buttons-row .btn-secondary:hover {
+    background: linear-gradient(135deg, var(--btn-secondary-hover), var(--btn-secondary));
+    color: #fff;
+    box-shadow: 0 8px 24px var(--shadow-secondary);
 }
 
 /* Seção de estatísticas compacta */
@@ -351,17 +430,36 @@ body, html {
 /* Footer do menu */
 #home-view footer {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-direction: row; /* lado a lado */
+    gap: 0.75rem;
     align-items: center;
-    padding: 0.625rem 0 0.25rem;
+    justify-content: center;
+    padding: 0.625rem 0 0.75rem;
     position: relative;
     z-index: 1;
+    margin-top: auto; /* gruda no pé do container */
 }
 
 #home-view footer .btn-link {
-    font-size: 0.8rem;
-    padding: 0.375rem;
+    font-size: 0.85rem;
+    padding: 0.375rem 0.5rem;
+}
+
+/* Ícone redondo do botão Legal no footer da Home */
+#home-view #legal-btn.btn-icon-only {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+#home-view #legal-btn.btn-icon-only:hover {
+    background: var(--bg-accent);
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+    transform: translateY(-2px);
 }
 
 .theme-toggle-btn {
@@ -630,6 +728,345 @@ footer {
 
 /* Utilities */
 .hidden { display:none; }
+
+
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║                                                                           ║
+   ║  RESPONSIVIDADE ESPECÍFICA DO QUIZ                                       ║
+   ║  Melhorias para webapp mobile-first                                      ║
+   ║                                                                           ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝ */
+
+/* === RESPONSIVE BREAKPOINTS PARA QUIZ === */
+@media (max-width: 768px) {
+    /* Quiz Card - Melhorar para tablets */
+    .quiz-card {
+        margin: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 12px;
+        max-width: none;
+    }
+
+    /* Header do Quiz */
+    .quiz-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .quiz-progress {
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .quiz-timer {
+        width: 100%;
+        min-width: auto;
+        justify-content: center;
+    }
+
+    .timer-bar {
+        height: 8px;
+    }
+
+    .timer-text {
+        min-width: 30px;
+        font-size: 0.9rem;
+    }
+
+    /* Área da Pergunta */
+    .question-area h2 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    /* Botões de Opção - Melhorar toque */
+    .option-btn {
+        padding: 1rem 1rem;
+        font-size: 1rem;
+        border-radius: 12px;
+        min-height: 48px; /* Tamanho mínimo para toque */
+        display: flex;
+        align-items: center;
+        text-align: left;
+        line-height: 1.4;
+    }
+
+    .option-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    /* Área de Referência */
+    .reference-area {
+        padding: 1rem;
+        margin-top: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .reference-title {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .correct-answer, .reference-text, .biblical-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* Contador Auto-Next */
+    .auto-next-counter {
+        margin-top: 1.25rem;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+
+    .auto-next-text {
+        font-size: 1.1em;
+    }
+
+    /* Footer do Quiz */
+    .quiz-footer {
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Quiz Card - Otimizado para mobile */
+    .quiz-card {
+        margin: 0.25rem;
+        padding: 0.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-primary);
+    }
+
+    /* Header do Quiz - Mobile */
+    .quiz-header {
+        gap: 0.5rem;
+    }
+
+    .quiz-progress {
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .quiz-timer {
+        padding: 0.5rem;
+    }
+
+    .timer-bar {
+        height: 6px;
+        border-radius: 3px;
+    }
+
+    .timer-text {
+        min-width: 28px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* Área da Pergunta - Mobile */
+    .question-area {
+        padding: 0.25rem 0 0.5rem 0;
+    }
+
+    .question-area h2 {
+        font-size: 1rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Container de Opções - Mobile */
+    .options-container {
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    /* Botões de Opção - Mobile First */
+    .option-btn {
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        min-height: 44px; /* Tamanho ideal para toque */
+        line-height: 1.3;
+        font-weight: 500;
+    }
+
+    .option-btn:hover {
+        transform: none; /* Remove hover em mobile */
+    }
+
+    .option-btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    /* Área de Referência - Mobile */
+    .reference-area {
+        padding: 0.875rem;
+        margin-top: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .reference-title {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    .correct-answer, .reference-text, .biblical-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-top: 0.5rem;
+    }
+
+    /* Contador Auto-Next - Mobile */
+    .auto-next-counter {
+        margin-top: 1rem;
+        padding: 0.625rem;
+        border-radius: 6px;
+    }
+
+    .auto-next-text {
+        font-size: 1em;
+    }
+
+    /* Footer do Quiz - Mobile */
+    .quiz-footer {
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+    }
+
+    /* Botões do Footer */
+    .quiz-footer button {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+        min-height: 44px;
+    }
+}
+
+/* === MELHORIAS GERAIS PARA WEBAPP === */
+@media (max-width: 480px) {
+    /* App Container - Full width em mobile */
+    #app-container {
+        padding: 0;
+        max-width: none;
+        min-height: 100vh;
+        /* Melhor scroll em mobile */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+
+    /* Views - Remover padding extra */
+    .view {
+        padding: 0;
+        min-height: 100vh;
+        /* Previne bounce scroll no iOS */
+        overscroll-behavior: contain;
+    }
+
+    /* Header Global - Mobile */
+    .app-header {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+        /* Safe area para iPhone X+ */
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
+
+    .app-header h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Botões - Melhor toque */
+    button {
+        min-height: 44px;
+        touch-action: manipulation;
+        /* Remove highlight azul no Android */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Inputs - Melhor toque */
+    input, select, textarea {
+        min-height: 44px;
+        font-size: 16px; /* Previne zoom no iOS */
+        /* Remove highlight */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Modal Content - Mobile */
+    .modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 1rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+        /* Safe area */
+        margin-top: max(1rem, env(safe-area-inset-top) + 1rem);
+        margin-bottom: max(1rem, env(safe-area-inset-bottom) + 1rem);
+    }
+
+    /* End Game Modal - Mobile */
+    .end-game-stats {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-item strong {
+        font-size: 0.9rem;
+    }
+
+    .stat-item span {
+        font-size: 1.3rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modal-actions button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* === ACESSIBILIDADE MELHORADA PARA MOBILE === */
+@media (max-width: 480px) {
+    /* Focus indicators - Mais visíveis em mobile */
+    .option-btn:focus,
+    button:focus,
+    input:focus,
+    select:focus {
+        outline: 3px solid var(--btn-primary);
+        outline-offset: 2px;
+    }
+
+    /* Textos - Melhor legibilidade */
+    .question-area h2 {
+        font-weight: 600;
+    }
+
+    .option-btn {
+        font-weight: 500;
+    }
+
+    /* Espaçamento - Melhor usabilidade */
+    .options-container {
+        gap: 0.75rem;
+    }
+
+    .reference-area {
+        margin-top: 1rem;
+    }
+}
 
 
 /* ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -1240,6 +1677,139 @@ footer {
     box-shadow: 0 0 0 3px rgba(58, 110, 165, 0.1);
 }
 
+/* === DROPDOWN WRAPPER === */
+.dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* === DROPDOWN TRIGGER === */
+.dropdown-trigger {
+    width: 100%;
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.dropdown-trigger:hover {
+    border-color: var(--btn-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.dropdown-trigger:focus {
+    outline: none;
+    border-color: var(--btn-primary);
+    box-shadow: 0 0 0 3px rgba(58, 110, 165, 0.1);
+}
+
+.dropdown-text {
+    flex: 1;
+    text-align: left;
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.dropdown-trigger.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* === DROPDOWN MENU === */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* === DROPDOWN OPTIONS === */
+.dropdown-option {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-align: left;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.dropdown-option:last-child {
+    border-bottom: none;
+}
+
+.dropdown-option:hover {
+    background: var(--bg-accent);
+    color: var(--text-primary);
+}
+
+.dropdown-option:active {
+    background: var(--btn-primary);
+    color: white;
+}
+
+/* === MEMORY DROPDOWN STYLES === */
+.memory-dropdown-trigger {
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.memory-dropdown-menu {
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    border-color: var(--border-primary);
+}
+
+.memory-dropdown-option {
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.memory-dropdown-option:hover {
+    background: var(--bg-accent);
+}
+
+.memory-dropdown-option:active {
+    background: var(--btn-primary);
+    color: white;
+}
+
 /* === CONFIG FOOTER === */
 .config-footer {
     display: flex;
@@ -1683,11 +2253,12 @@ footer {
     font-weight: 700;
     border: none;
     border-radius: 16px;
-    background: linear-gradient(135deg, #28a745, #20c997);
+    /* mesmo tema do botão "Jogo da Memória" da tela inicial */
+    background: linear-gradient(135deg, #ff6b35 60%, #f7931e 100%);
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    box-shadow: 0 6px 20px rgba(247, 147, 30, 0.35);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -1714,7 +2285,7 @@ footer {
 
 .memory-start-btn:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.5);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.45);
 }
 
 .memory-start-btn:active {
@@ -1761,7 +2332,7 @@ footer {
     opacity: 0.9;
 }
 
-/* === MEMORY GAME SUBVIEWS === 
+/* === MEMORY GAME SUBVIEWS ===
    Subviews dentro do Memory Game (config e game) */
 .memory-subview {
     display: none !important;  /* Esconde subview inativa */
@@ -1769,6 +2340,191 @@ footer {
 
 .memory-subview.active {
     display: block !important;  /* Mostra apenas subview ativa */
+}
+
+/* === MEMORY GAME HEADER (Página do Jogo) === */
+.memory-game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 5vh; /* 5% da altura da tela */
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.memory-game-line {
+    width: 33.333%; /* 1/3 da largura */
+    height: 100%; /* 5% da altura da tela */
+    background: var(--border-primary);
+    border-radius: 2px;
+}
+
+.memory-game-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.memory-game-btn {
+    width: 44px; /* Touch target mínimo */
+    height: 44px; /* Touch target mínimo */
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.memory-game-btn:hover {
+    background: var(--bg-accent);
+    transform: translateY(-1px);
+}
+
+.memory-game-btn:active {
+    transform: translateY(0);
+    background: var(--btn-primary);
+    color: white;
+}
+
+/* === MEMORY CONFIG HEADER SMALL === */
+.memory-config-header-small {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 5vh; /* 5% da altura da tela */
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.memory-config-back-btn {
+    width: 44px; /* Touch target mínimo */
+    height: 44px; /* Touch target mínimo */
+    border: none;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.memory-config-back-btn:hover {
+    background: var(--bg-accent);
+    transform: translateY(-1px);
+}
+
+.memory-config-back-btn:active {
+    transform: translateY(0);
+    background: var(--btn-primary);
+    color: white;
+}
+
+/* === MEMORY WELCOME COMPACT === */
+.memory-welcome-compact {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.memory-welcome-compact h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.memory-welcome-compact p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Scoped placement for the single back button inside the welcome block */
+#memory-view .memory-welcome-compact {
+    position: relative;
+    padding-top: 0.5rem; /* small top space so the button doesn’t feel cramped */
+}
+
+#memory-view .memory-welcome-compact .memory-config-back-btn {
+    position: absolute;
+    top: 0.25rem;
+    right: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-primary);
+}
+
+@media (max-width: 480px) {
+    #memory-view .memory-welcome-compact {
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    #memory-view .memory-welcome-compact .memory-config-back-btn {
+        top: max(0.25rem, env(safe-area-inset-top));
+        right: max(0.5rem, env(safe-area-inset-right));
+    }
+}
+
+/* === MEMORY START EARLY === */
+.memory-start-early {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+/* === MEMORY CONFIG GRID 2x2 === */
+.memory-config-grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem; /* levemente mais compacto para caber melhor na tela */
+    align-items: stretch; /* força todos os cards a esticarem igualmente */
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Cards do grid 2x2: alturas coerentes e melhor alinhamento interno */
+.memory-config-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    min-height: 120px; /* dá equilíbrio visual entre os quatro cards */
+}
+
+/* Legend como "pill" sobre a borda, eliminando o aspecto de linha quebrada */
+#memory-view .memory-config-item legend {
+    padding: 0 0.5rem;
+    margin: 0 0 0.25rem 0.5rem; /* leve deslocamento para dentro do card */
+    background: var(--bg-secondary);
+    line-height: 1.2;
+    border-radius: 6px;
+}
+
+/* Espaçamentos internos dos controles dentro de cada card */
+#memory-view .memory-config-item .dropdown-wrapper,
+#memory-view .memory-config-item .select-wrapper,
+#memory-view .memory-config-item .memory-sound-toggle {
+    margin-top: 0.25rem;
+}
+
+/* Consistência de altura dos triggers/inputs */
+#memory-view .dropdown-trigger,
+#memory-view .select-wrapper select {
+    min-height: 44px;
+    border-radius: 10px;
 }
 
 /* === MEMORY GAME BOARD === */
@@ -2075,16 +2831,19 @@ footer {
     .memory-player-btn {
         padding: 0.75rem;
         font-size: 1rem;
+        min-height: 44px; /* Touch target mínimo */
     }
 
     .memory-difficulty-btn {
         padding: 0.85rem 1rem;
         font-size: 0.9rem;
+        min-height: 44px; /* Touch target mínimo */
     }
 
     .memory-start-btn {
         padding: 1.1rem 1.5rem;
         font-size: 1.1rem;
+        min-height: 48px; /* Touch target confortável */
     }
 
     .game-board {
@@ -2097,6 +2856,13 @@ footer {
         font-size: 1.8rem;
         min-height: 100px;
         min-width: 100px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; /* Remove highlight azul no iOS */
+        touch-action: manipulation; /* Melhora resposta ao toque */
+    }
+
+    .memory-card:hover {
+        transform: translateY(-2px); /* Hover mais sutil no mobile */
     }
 
     .memory-card-front {
@@ -2154,6 +2920,23 @@ footer {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 480px) {
+    /* Safe area support para dispositivos modernos */
+    .memory-container,
+    .memory-config-hero,
+    .welcome-hero {
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+        padding-left: max(0.75rem, env(safe-area-inset-left));
+        padding-right: max(0.75rem, env(safe-area-inset-right));
+    }
+
+    /* Melhor scroll behavior para mobile */
+    .memory-container,
+    .memory-config-hero {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
     /* Welcome */
     .welcome-hero {
         min-height: 100vh;
@@ -2175,6 +2958,9 @@ footer {
     .btn-hero {
         padding: 1rem 1.25rem;
         font-size: 0.95rem;
+        min-height: 48px; /* Touch target confortável */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 
     .button-icon {
@@ -2208,10 +2994,11 @@ footer {
         gap: 0.5rem;
     }
 
-    /* Memory Config */
+    /* Memory Config - Mobile First */
     .memory-config-hero {
         min-height: 100vh;
         padding: 0.75rem;
+        margin: 0;
     }
 
     .memory-config-header h2 {
@@ -2224,6 +3011,7 @@ footer {
 
     .memory-config-group {
         padding: 0.875rem;
+        margin-bottom: 1rem;
     }
 
     .memory-config-group legend {
@@ -2238,11 +3026,17 @@ footer {
         padding: 0.75rem;
         font-size: 0.95rem;
         min-width: 45px;
+        min-height: 44px; /* Touch target mínimo */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 
     .memory-difficulty-btn {
         padding: 0.75rem 1rem;
         font-size: 0.875rem;
+        min-height: 44px; /* Touch target mínimo */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 
     .memory-difficulty-btn small {
@@ -2252,6 +3046,9 @@ footer {
     .memory-start-btn {
         padding: 1rem 1.25rem;
         font-size: 1rem;
+        min-height: 48px; /* Touch target confortável */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 
     .memory-sound-toggle {
@@ -2262,16 +3059,36 @@ footer {
         font-size: 0.875rem;
     }
 
+    /* Game Board - Otimizado para Mobile */
+    .game-container {
+        padding: 0.5rem;
+    }
+
     .game-board {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
         max-width: 350px;
+        padding: 0.5rem;
     }
 
     .memory-card {
         font-size: 1.5rem;
         min-height: 80px;
         min-width: 80px;
+        border-radius: 8px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; /* Remove highlight azul no iOS */
+        touch-action: manipulation; /* Melhora resposta ao toque */
+        transition: all 0.2s ease; /* Transição mais rápida no mobile */
+    }
+
+    .memory-card:hover {
+        transform: none; /* Remove hover no mobile para melhor performance */
+    }
+
+    .memory-card:active {
+        transform: scale(0.95); /* Feedback tátil no toque */
+        transition: transform 0.1s ease;
     }
 
     .memory-card-front {
@@ -2322,20 +3139,158 @@ footer {
         text-overflow: ellipsis;
     }
 
+    /* Game Status - Mobile */
     .game-status-bar {
         flex-direction: column;
         gap: 1rem;
         padding: 0.75rem;
+        margin-bottom: 1rem;
     }
 
     .status-item {
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
+        padding: 0.5rem;
+        background: var(--bg-tertiary);
+        border-radius: 8px;
+        min-height: 44px; /* Touch target se necessário */
     }
 
     .status-main {
         order: -1;
+    }
+
+    /* Game Controls - Mobile */
+    .game-controls {
+        padding: 0 0.75rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .game-controls button {
+        min-height: 44px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [MEDIA: SMALL MOBILE] - AJUSTES PARA TELAS MUITO PEQUENAS (360px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 360px) {
+    .game-board {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas para telas muito pequenas */
+        gap: 0.4rem;
+        max-width: 280px;
+        padding: 0.4rem;
+    }
+
+    .memory-card {
+        min-height: 70px;
+        min-width: 70px;
+        font-size: 1.3rem;
+    }
+
+    .memory-card-front {
+        font-size: 1.6rem;
+        padding-top: 20%;
+    }
+
+    .memory-animal {
+        font-size: 2.5rem;
+    }
+
+    .memory-name {
+        font-size: 0.65rem;
+        bottom: 8px;
+        left: 4px;
+        right: 4px;
+    }
+
+    .memory-config-group {
+        padding: 0.75rem;
+    }
+
+    .memory-player-btn,
+    .memory-difficulty-btn {
+        min-height: 40px; /* Mínimo aceitável para telas muito pequenas */
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .memory-start-btn {
+        min-height: 44px;
+        padding: 0.9rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [MEMORY GAME RESPONSIVE ENHANCEMENTS]
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Melhorar indicadores de foco para acessibilidade mobile */
+.memory-card:focus,
+.memory-player-btn:focus,
+.memory-difficulty-btn:focus,
+.memory-start-btn:focus {
+    outline: 2px solid var(--btn-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(58, 110, 165, 0.2);
+}
+
+/* Otimizar grid dinâmico baseado no tamanho da tela */
+@media (min-width: 481px) and (max-width: 600px) {
+    .game-board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.6rem;
+        max-width: 400px;
+    }
+
+    .memory-card {
+        min-height: 90px;
+        min-width: 90px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 767px) {
+    .game-board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.7rem;
+        max-width: 480px;
+    }
+
+    .memory-card {
+        min-height: 100px;
+        min-width: 100px;
+    }
+}
+
+/* Melhorar experiência de toque para iOS */
+@media screen and (max-width: 768px) {
+    .memory-card,
+    .memory-player-btn,
+    .memory-difficulty-btn,
+    .memory-start-btn {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
+/* Otimizar animações para mobile (melhor performance) */
+@media (max-width: 768px) {
+    .memory-card {
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .memory-card.flipped {
+        transition: transform 0.3s ease;
+    }
+
+    .memory-card.matched {
+        animation: match-pop 0.4s ease; /* Animação mais rápida no mobile */
     }
 }
 
