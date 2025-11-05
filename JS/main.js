@@ -168,7 +168,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (d === 1) btn.classList.add('difficulty-easy');
             else if (d === 2) btn.classList.add('difficulty-medium');
             else if (d === 3) btn.classList.add('difficulty-hard');
-            btn.innerHTML = '★'.repeat(d) + '☆'.repeat(3-d);
+            // Usar emoji de estrela dourada (⭐)
+            let stars = '';
+            if (d === 1) stars = '⭐';
+            else if (d === 2) stars = '⭐⭐';
+            else if (d === 3) stars = '⭐⭐⭐';
+            btn.innerHTML = stars;
             btn.onclick = () => {
                 window.startQuiz({ type: 'difficulty', value: d });
             };
