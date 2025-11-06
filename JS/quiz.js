@@ -1,3 +1,5 @@
+    // Elementos do popup de explicação
+    let explainBtn, explainPopup, explainPopupBody;
 // Quiz logic: depends on window.allQuestions and window.showView
 (function () {
     // Função auxiliar para embaralhar array
@@ -58,9 +60,12 @@
     let isStudyMode = false; // flag para modo estudo
 
     // DOM - só buscar quando necessário
-    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn, autoNextCounter, autoNextText, soundToggle;
+    let progressEl, questionTextEl, optionsContainer, timerBarElem, timerText, referenceArea, correctAnswerEl, referenceTextEl, biblicalTextEl, nextBtn, quitBtn, autoNextCounter, autoNextText, soundToggle, questionIdLabel;
 
     function getDOMElements() {
+    if (!explainBtn) explainBtn = document.getElementById('explain-btn');
+    if (!explainPopup) explainPopup = document.getElementById('explain-popup');
+    if (!explainPopupBody) explainPopupBody = document.getElementById('explain-popup-body');
         if (!progressEl) {
             progressEl = document.getElementById('quiz-progress');
             questionTextEl = document.getElementById('question-text');
@@ -76,6 +81,7 @@
             autoNextCounter = document.getElementById('auto-next-counter');
             autoNextText = document.getElementById('auto-next-text');
             soundToggle = document.getElementById('sound-toggle');
+            questionIdLabel = document.getElementById('question-id');
         }
     }
 
@@ -213,13 +219,25 @@
 
     // Atualiza barra visual do timer (usa width %)
     function setTimerVisual(percentage) {
-        // utilizaremos style.setProperty em pseudoelemento não é trivial; em vez disso, mudamos background via linear-gradient e width via inner element
-        timerBarElem.style.setProperty('--timer-percent', `${percentage}%`);
-        timerBarElem.style.width = `${percentage}%`;
-        // também alteramos cor conforme %:
-        if (percentage > 60) timerBarElem.style.background = 'linear-gradient(90deg,#28a745,#7bd389)';
-        else if (percentage > 30) timerBarElem.style.background = 'linear-gradient(90deg,#ffc107,#ffd479)';
-        else timerBarElem.style.background = 'linear-gradient(90deg,#dc3545,#f08a8a)';
+        // Aplica largura no pseudo-elemento via CSS custom property
+        timerBarElem.style.setProperty('--timer-bar-width', `${percentage}%`);
+
+        // Até 50% do tempo, mantém degradê azul
+        // Depois de 50%, muda para verde, amarelo, vermelho
+        let bg;
+        if (percentage > 50) {
+            bg = 'linear-gradient(90deg, var(--primary-blue, #2196f3), var(--secondary-blue, #1565c0))';
+        } else if (percentage > 30) {
+            // Verde
+            bg = 'linear-gradient(90deg, #43e97b, #38f9d7)';
+        } else if (percentage > 15) {
+            // Amarelo
+            bg = 'linear-gradient(90deg, #f9d423, #ff4e50)';
+        } else {
+            // Vermelho
+            bg = 'linear-gradient(90deg, #ff5858, #f857a6)';
+        }
+        timerBarElem.style.setProperty('--timer-bar-bg', bg);
     }
 
     // Mostra resultados finais simples e volta para home em botão
@@ -281,27 +299,40 @@
 
     // Exibe pergunta atual
     function renderQuestion() {
+        // Ao trocar de pergunta, sempre fecha popup e reseta botão
+        if (!explainBtn) explainBtn = document.getElementById('explain-btn');
+        if (!explainPopup) explainPopup = document.getElementById('explain-popup');
+        if (!explainPopupBody) explainPopupBody = document.getElementById('explain-popup-body');
+        if (explainBtn) {
+            explainBtn.style.display = 'none';
+            explainBtn.textContent = 'Ver explicação';
+            explainBtn.classList.remove('active');
+        }
+        if (explainPopup) explainPopup.classList.add('hidden');
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
-
-        console.log('renderQuestion chamada');
-        console.log('questions array:', questions);
-        console.log('currentIndex:', currentIndex);
-        console.log('totalQuestions:', totalQuestions);
 
         stopAutoNextTimer(); // Parar temporizador automático da pergunta anterior
         referenceArea.classList.add('hidden');
         nextBtn.disabled = true;
+        nextBtn.classList.add('hidden'); // Esconde o botão "Próximo" até responder
 
         const q = questions[currentIndex];
-        console.log('Pergunta atual (q):', q);
-
         if (!q) {
-            console.log('Nenhuma pergunta encontrada, chamando finishQuiz');
             finishQuiz();
             return;
         }
 
-        console.log('Renderizando pergunta:', q.pergunta);
+        // Exibir código/ID da pergunta
+        if (questionIdLabel) {
+            let id = q.id || q.codigo || q.code || '';
+            if (id) {
+                questionIdLabel.textContent = `#${id}`;
+                questionIdLabel.style.display = '';
+            } else {
+                questionIdLabel.textContent = '';
+                questionIdLabel.style.display = 'none';
+            }
+        }
 
         // 📖 Som de nova pergunta
         if (soundToggle && soundToggle.checked) {
@@ -313,7 +344,6 @@
 
         // Exibe pergunta
         questionTextEl.textContent = q.pergunta;
-        console.log('Pergunta exibida no DOM:', questionTextEl.textContent);
 
         // Prepara opções embaralhadas
         const opts = q.opcoes.map(o => ({ text: o }));
@@ -329,8 +359,6 @@
             optionsContainer.appendChild(btn);
         });
 
-        console.log('Opções criadas:', opts.length);
-
         // Calcula tempo e inicia countdown (apenas se não for modo estudo)
         if (!isStudyMode) {
             const seconds = calculateTimeForQuestion(q.pergunta);
@@ -344,6 +372,23 @@
 
     // Lida com clique na opção (cinza -> 0.5s -> verde/vermelho)
     function handleOptionClick(btn, q) {
+        // Preenche explicação no popup e mostra botão
+        if (!explainBtn) explainBtn = document.getElementById('explain-btn');
+        if (!explainPopup) explainPopup = document.getElementById('explain-popup');
+        if (!explainPopupBody) explainPopupBody = document.getElementById('explain-popup-body');
+        if (explainBtn && explainPopup && explainPopupBody) {
+            explainBtn.style.display = '';
+            explainBtn.textContent = 'Ver explicação';
+            explainBtn.classList.remove('active');
+            explainPopup.classList.add('hidden');
+            explainPopupBody.innerHTML =
+                (q.referencia ? `<div><strong>Referência:</strong> ${q.referencia}</div>` : '') +
+                (q.texto_biblico ? `<div><strong>Texto Bíblico (TNM):</strong><br>${q.texto_biblico}</div>` : '');
+        }
+        
+        // Mostra o botão "Próximo" imediatamente ao clicar (mesmo tempo que o botão explicação)
+        nextBtn.classList.remove('hidden');
+        
         // prevenir múltiplos cliques
         const allBtns = Array.from(optionsContainer.querySelectorAll('.option-btn'));
         if (allBtns.some(b => b.classList.contains('disabled'))) return;
@@ -426,13 +471,14 @@
             score += pointsEarned;
             saveProgress();
 
-            // mostrar referência e texto
-            correctAnswerEl.textContent = q.resposta_correta;
-            referenceTextEl.textContent = q.referencia || '';
-            biblicalTextEl.textContent = q.texto_biblico || '';
+            // NÃO mostrar referência e texto automaticamente
+            //correctAnswerEl.textContent = q.resposta_correta;
+            //referenceTextEl.textContent = q.referencia || '';
+            //biblicalTextEl.textContent = q.texto_biblico || '';
 
-            referenceArea.classList.remove('hidden');
+            //referenceArea.classList.remove('hidden');
             nextBtn.disabled = false;
+            // Botão já foi mostrado imediatamente ao clicar (não precisa mostrar novamente aqui)
 
             // Iniciar temporizador automático para próxima pergunta
             startAutoNextTimer();
@@ -519,6 +565,34 @@
 
     // Inicializar event listeners quando necessário
     function initEventListeners() {
+        // Explicação: abre/fecha popup e pausa/retoma auto-next
+        if (!explainBtn) explainBtn = document.getElementById('explain-btn');
+        if (!explainPopup) explainPopup = document.getElementById('explain-popup');
+        if (!explainPopupBody) explainPopupBody = document.getElementById('explain-popup-body');
+        let pausedAutoNext = false;
+        if (explainBtn && explainPopup) {
+            explainBtn.addEventListener('click', () => {
+                if (explainPopup.classList.contains('hidden')) {
+                    explainPopup.classList.remove('hidden');
+                    explainBtn.textContent = 'Fechar';
+                    explainBtn.classList.add('active');
+                    // Pausa auto-next
+                    if (autoNextTimeout) {
+                        stopAutoNextTimer();
+                        pausedAutoNext = true;
+                    }
+                } else {
+                    explainPopup.classList.add('hidden');
+                    explainBtn.textContent = 'Ver explicação';
+                    explainBtn.classList.remove('active');
+                    // Retoma auto-next
+                    if (pausedAutoNext) {
+                        startAutoNextTimer();
+                        pausedAutoNext = false;
+                    }
+                }
+            });
+        }
         getDOMElements(); // Garante que os elementos DOM estão disponíveis
 
         // Próxima pergunta
@@ -532,14 +606,55 @@
             }
         });
 
-        // Sair para home
-        if (quitBtn) quitBtn.addEventListener('click', () => {
+        // Sair: abre modal de confirmação
+        if (quitBtn) quitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modal = document.getElementById('quit-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('show');
+            }
+        });
+
+        // Modal: confirmar saída
+        const confirmQuitBtn = document.getElementById('confirm-quit-btn');
+        if (confirmQuitBtn) confirmQuitBtn.addEventListener('click', () => {
+            // Se marcado "não perguntar novamente", salvar no localStorage
+            const dontAsk = document.getElementById('dont-ask-again-quit');
+            if (dontAsk && dontAsk.checked) {
+                localStorage.setItem('jwquiz_skip_quit_confirm', '1');
+            }
             stopTimer();
-            stopAutoNextTimer(); // Parar temporizador automático
+            stopAutoNextTimer();
             window.showView('home-view');
-            // reset quiz view content to original HTML by reloading page or re-rendering minimal
             window.location.reload();
         });
+
+        // Modal: cancelar saída
+        const cancelQuitBtn = document.getElementById('cancel-quit-btn');
+        if (cancelQuitBtn) cancelQuitBtn.addEventListener('click', () => {
+            const modal = document.getElementById('quit-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('show');
+            }
+        });
+    // Ao abrir quiz, se "não perguntar novamente" estiver marcado, sair direto
+    function checkSkipQuitConfirm() {
+        const skip = localStorage.getItem('jwquiz_skip_quit_confirm');
+        if (skip === '1') {
+            // Substitui handler do quitBtn para sair direto
+            if (quitBtn) {
+                quitBtn.onclick = function () {
+                    stopTimer();
+                    stopAutoNextTimer();
+                    window.showView('home-view');
+                    window.location.reload();
+                };
+            }
+        }
+    }
+    checkSkipQuitConfirm();
     }
 
     // Função pública para iniciar quiz
