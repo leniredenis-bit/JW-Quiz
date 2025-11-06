@@ -298,8 +298,7 @@ const DIFFICULTY_CONFIG = {
     medium: { pairs: 8, time: 0 },
     hard: { pairs: 10, time: 0 },
     expert: { pairs: 12, time: 0 },
-    master: { pairs: 15, time: 0 },
-    legend: { pairs: 20, time: 120 }
+    master: { pairs: 15, time: 0 }
 };
 
 /**
@@ -324,28 +323,35 @@ function createBoard() {
     
     // Clear previous board
     DOM.gameBoard.innerHTML = '';
-    
+
     // Get configuration
     const { pairs } = DIFFICULTY_CONFIG[gameState.difficulty];
     gameState.totalPairs = pairs;
     gameState.pairsFound = 0;
-    
+
+    // Ajusta a grade dinamicamente conforme dificuldade
+    if (gameState.difficulty === 'easy' || gameState.difficulty === 'medium') {
+        DOM.gameBoard.style.gridTemplateColumns = 'repeat(4, 1fr)';
+    } else {
+        DOM.gameBoard.style.gridTemplateColumns = 'repeat(5, 1fr)';
+    }
+
     // Get theme items and select random ones
     const themeItems = THEMES[gameState.theme];
-    
+
     // Shuffle the theme items and select the first 'pairs' items
     const shuffledItems = shuffleArray([...themeItems]);
     const selectedItems = shuffledItems.slice(0, pairs);
-    
+
     // Add pairId to each item before duplicating
     const itemsWithIds = selectedItems.map((item, index) => ({
         ...item,
         pairId: index
     }));
-    
+
     // Duplicate items to create pairs
     const cardItems = shuffleArray([...itemsWithIds, ...itemsWithIds]);
-    
+
     // Create card elements
     const fragment = document.createDocumentFragment();
     
@@ -709,10 +715,41 @@ function setupDifficultyButtons() {
  * Sets up theme selection
  */
 function setupThemeSelect() {
-    if (!DOM.themeSelect) return;
-    
-    DOM.themeSelect.addEventListener('change', function() {
-        gameState.theme = this.value;
+    const trigger = document.getElementById('theme-dropdown-trigger');
+    const menu = document.getElementById('theme-dropdown-menu');
+    const text = document.getElementById('theme-dropdown-text');
+    if (!trigger || !menu || !text) return;
+    // Valor inicial correto
+    const currentTheme = gameState.theme || 'animais';
+    const currentOption = menu.querySelector(`.dropdown-option[data-value="${currentTheme}"]`);
+    if (currentOption) {
+        text.textContent = currentOption.textContent;
+        gameState.theme = currentOption.dataset.value;
+    }
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) {
+            closeDropdown(menu, trigger);
+        } else {
+            closeAllDropdowns();
+            openDropdown(menu, trigger);
+        }
+    });
+    menu.addEventListener('click', function(e) {
+        const option = e.target.closest('.dropdown-option');
+        if (!option) return;
+        e.preventDefault();
+        e.stopPropagation();
+        text.textContent = option.textContent;
+        gameState.theme = option.dataset.value;
+        closeDropdown(menu, trigger);
+    });
+    document.addEventListener('click', function(e) {
+        if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+            closeDropdown(menu, trigger);
+        }
     });
 }
 
@@ -815,10 +852,8 @@ function setupPairsDropdown() {
             8: 'medium',
             10: 'hard',
             12: 'expert',
-            15: 'master',
-            20: 'legend'
+            15: 'master'
         };
-        
         gameState.difficulty = difficultyMap[pairs] || 'easy';
         
         // Close dropdown

@@ -388,63 +388,69 @@
 
                         <!-- Grid 2x2 para configuração -->
                         <div class="memory-config-grid-2x2">
-                            <fieldset class="config-group memory-config-group memory-config-item">
-                                <legend>👥 Jogadores</legend>
-                                <div class="dropdown-wrapper">
-                                    <button class="dropdown-trigger memory-dropdown-trigger" id="players-dropdown-trigger">
-                                        <span class="dropdown-text" id="players-dropdown-text">1 Jogador</span>
-                                        <span class="dropdown-arrow">▼</span>
-                                    </button>
-                                    <div class="dropdown-menu memory-dropdown-menu" id="players-dropdown-menu">
-                                        <button class="dropdown-option memory-dropdown-option" data-players="1">1 Jogador</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-players="2">2 Jogadores</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-players="3">3 Jogadores</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-players="4">4 Jogadores</button>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="config-group memory-config-group memory-config-item">
-                                <legend>🎨 Tema</legend>
-                                <div class="select-wrapper">
-                                    <select id="theme-select" class="config-select memory-theme-select">
-                                        <option value="animais">Animais</option>
-                                        <option value="frutas">Frutas</option>
-                                        <option value="transportes">Transportes</option>
-                                        <option value="peixes">Vida Marinha</option>
-                                        <option value="aves">Aves</option>
-                                        <option value="numeros">Números e Símbolos</option>
-                                        <option value="objetos">Objetos</option>
-                                        <option value="natureza">Natureza</option>
-                                    </select>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="config-group memory-config-group memory-config-item">
-                                <legend>🎯 Pares</legend>
-                                <div class="dropdown-wrapper">
-                                    <button class="dropdown-trigger memory-dropdown-trigger" id="pairs-dropdown-trigger">
-                                        <span class="dropdown-text" id="pairs-dropdown-text">6 Pares</span>
-                                        <span class="dropdown-arrow">▼</span>
-                                    </button>
-                                    <div class="dropdown-menu memory-dropdown-menu" id="pairs-dropdown-menu">
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="6">6 Pares (Fácil)</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="8">8 Pares (Médio)</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="10">10 Pares (Difícil)</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="12">12 Pares (Expert)</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="15">15 Pares (Mestre)</button>
-                                        <button class="dropdown-option memory-dropdown-option" data-pairs="20">20 Pares (Lenda)</button>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="config-group memory-config-group memory-config-item">
-                                <legend>🔊 Áudio</legend>
-                                <div class="sound-toggle-wrapper memory-sound-toggle">
-                                    <input type="checkbox" id="sound-toggle" checked>
-                                    <label for="sound-toggle">Efeitos Sonoros</label>
-                                </div>
-                            </fieldset>
+                                                        <section class="card" aria-labelledby="players-label">
+                                                            <div class="cardHeader">
+                                                                <span class="icon">👥</span>
+                                                                <h2 class="cardTitle">Jogadores</h2>
+                                                            </div>
+                                                                                            <div class="row">
+                                                                                                                                <span class="select-row">
+                                                                                                                                    <select id="players" class="select" name="players">
+                                                                    <option value="1">1 Jogador</option>
+                                                                    <option value="2">2 Jogadores</option>
+                                                                    <option value="3">3 Jogadores</option>
+                                                                    <option value="4">4 Jogadores</option>
+                                                                                                    </select>
+                                                                                                </span>
+                                                            </div>
+                                                        </section>
+                                                        <section class="card" aria-labelledby="theme-label">
+                                                            <div class="cardHeader">
+                                                                <span class="icon">🎨</span>
+                                                                <h2 class="cardTitle">Tema</h2>
+                                                            </div>
+                                                                                            <div class="row">
+                                                                                                                                <span class="select-row">
+                                                                                                                                    <select id="theme" class="select" name="theme">
+                                                                    <option value="animais">Animais</option>
+                                                                    <option value="frutas">Frutas</option>
+                                                                    <option value="transportes">Transportes</option>
+                                                                    <option value="peixes">Vida Marinha</option>
+                                                                    <option value="aves">Aves</option>
+                                                                    <option value="numeros">Números e Símbolos</option>
+                                                                    <option value="objetos">Objetos</option>
+                                                                    <option value="natureza">Natureza</option>
+                                                                                                    </select>
+                                                                                                </span>
+                                                            </div>
+                                                        </section>
+                                                        <section class="card" aria-labelledby="pairs-label">
+                                                            <div class="cardHeader">
+                                                                <span class="icon">💞</span>
+                                                                <h2 class="cardTitle">Pares</h2>
+                                                            </div>
+                                                                                            <div class="row">
+                                                                                                                                <span class="select-row">
+                                                                                                                                    <select id="pairs" class="select" name="pairs">
+                                                                    <option value="6">6 Pares</option>
+                                                                    <option value="10">10 Pares</option>
+                                                                    <option value="15">15 Pares</option>
+                                                                                                    </select>
+                                                                                                </span>
+                                                            </div>
+                                                        </section>
+                                                        <section class="card" aria-labelledby="audio-label">
+                                                            <div class="cardHeader">
+                                                                <span class="icon">🔊</span>
+                                                                <h2 class="cardTitle">Áudio</h2>
+                                                            </div>
+                                                            <div class="row">
+                                                                <label class="checkboxLabel">
+                                                                    <input type="checkbox" class="checkbox" id="sound-toggle" checked>
+                                                                    <span>Efeitos Sonoros</span>
+                                                                </label>
+                                                            </div>
+                                                        </section>
                         </div>
                     </div>
                 </div>

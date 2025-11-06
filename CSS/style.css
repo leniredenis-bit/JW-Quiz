@@ -1876,11 +1876,11 @@ footer {
 /* === DROPDOWN TRIGGER === */
 .dropdown-trigger {
     width: 100%;
-    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    padding: 0.7rem 2.2rem 0.7rem 1rem;
     font-size: 1rem;
     font-weight: 600;
     border: 2px solid var(--border-primary);
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     background: var(--bg-secondary);
     color: var(--text-primary);
     cursor: pointer;
@@ -1889,6 +1889,7 @@ footer {
     align-items: center;
     justify-content: space-between;
     position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .dropdown-trigger:hover {
@@ -1908,10 +1909,11 @@ footer {
 }
 
 .dropdown-arrow {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
     transition: transform 0.3s ease;
-    margin-left: 0.5rem;
+    margin-left: 0.7rem;
+    font-weight: bold;
 }
 
 .dropdown-trigger.active .dropdown-arrow {
@@ -1921,20 +1923,20 @@ footer {
 /* === DROPDOWN MENU === */
 .dropdown-menu {
     position: absolute;
-    top: 100%;
+    bottom: 100%;
     left: 0;
     right: 0;
     background: var(--bg-secondary);
     border: 2px solid var(--border-primary);
-    border-top: none;
-    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-    box-shadow: var(--shadow-md);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
+    transform: translateY(10px);
     transition: all 0.3s ease;
 }
 
@@ -2713,6 +2715,63 @@ footer {
 #memory-view .select-wrapper select {
     min-height: 44px;
     border-radius: 10px;
+}
+
+#memory-view select {
+    width: 160px;
+    min-width: 120px;
+    max-width: 200px;
+    padding-right: 2.2em;
+    position: relative;
+    background: #181a1b !important;
+    color: #e6eef6 !important;
+    border: 1.5px solid #333 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    caret-color: #e6eef6;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+#memory-view select option {
+    background: #181a1b;
+    color: #e6eef6;
+}
+
+#memory-view .select-row {
+    position: relative;
+    display: inline-block;
+}
+
+#memory-view .select-row::after {
+    content: '▲';
+    position: absolute;
+    right: 0.8em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e6eef6;
+    font-size: 1em;
+    pointer-events: none;
+    z-index: 2;
+}
+    background: #181a1b !important;
+    color: #e6eef6 !important;
+    border: 1.5px solid #333 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    caret-color: #e6eef6;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+#memory-view select option {
+    background: #181a1b;
+    color: #e6eef6;
+}
 }
 
 /* === MEMORY GAME BOARD === */
