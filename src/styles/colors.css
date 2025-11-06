@@ -45,11 +45,48 @@
   --difficulty-hard: #f44336;
   --difficulty-hard-light: #ef5350;
 
+  /* Semantic aliases for components */
+  --bg-primary: var(--bg);
+  --bg-secondary: var(--surface);
+  --bg-tertiary: var(--muted-bg);
+  --bg-quaternary: var(--muted-bg);
+  --bg-accent: var(--muted-bg);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--text-muted);
+  --text-tertiary: var(--text-muted);
+  --text-accent: var(--color-primary);
+
+  --border-primary: var(--border);
+  --border-secondary: var(--border);
+  --border-accent: var(--border);
+
+  --shadow-primary: var(--shadow-elev);
+  --shadow-secondary: var(--shadow-elev);
+  --shadow-accent: rgba(43,108,176,0.3);
+
+  --btn-primary: var(--color-primary);
+  --btn-primary-hover: var(--color-primary-600);
+  --btn-secondary: var(--text-muted);
+  --btn-secondary-hover: var(--text);
+
+  --correct-bg: var(--success);
+  --correct-border: var(--success);
+  --correct-text: var(--success);
+  --wrong-bg: var(--danger);
+  --wrong-border: var(--danger);
+  --wrong-text: var(--danger);
+
+  --timer-bg: var(--muted-bg);
+  --auto-next-bg: var(--muted-bg);
+  --auto-next-border: var(--color-primary);
+  --auto-next-text: var(--color-primary);
+  --auto-next-text-strong: var(--color-primary-600);
+
   /* Accessibility helpers */
   --focus-ring: rgba(43,108,176,0.18);
 }
 
-/* Dark theme tokens (ativa com [data-theme="dark"] no body) */
 body[data-theme="dark"]{
   --bg: #0f1113;
   --surface: #141416;
@@ -86,6 +123,47 @@ body[data-theme="dark"]{
   --modern-accent-orange-light: #ff9a3d;
   --modern-bg-light: #f8f9fa;
   --modern-bg-light-end: #e9ecef;
+
+  /* Semantic aliases for components - Dark Theme */
+  --bg-primary: var(--bg);
+  --bg-secondary: var(--surface);
+  --bg-tertiary: var(--muted-bg);
+  --bg-quaternary: var(--muted-bg);
+  --bg-accent: var(--muted-bg);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--text-muted);
+  --text-tertiary: var(--text-muted);
+  --text-accent: var(--color-primary);
+
+  --border-primary: var(--border);
+  --border-secondary: var(--border);
+  --border-accent: var(--border);
+
+  --shadow-primary: var(--shadow-elev);
+  --shadow-secondary: var(--shadow-elev);
+  --shadow-accent: rgba(100,181,246,0.3);
+
+  --btn-primary: var(--color-primary);
+  --btn-primary-hover: var(--color-primary-600);
+  --btn-secondary: var(--text-muted);
+  --btn-secondary-hover: var(--text);
+
+  --correct-bg: var(--success);
+  --correct-border: var(--success);
+  --correct-text: var(--success);
+  --wrong-bg: var(--danger);
+  --wrong-border: var(--danger);
+  --wrong-text: var(--danger);
+
+  --timer-bg: var(--muted-bg);
+  --auto-next-bg: var(--muted-bg);
+  --auto-next-border: var(--color-primary);
+  --auto-next-text: var(--color-primary);
+  --auto-next-text-strong: var(--color-primary-600);
+
+  /* Accessibility helpers */
+  --focus-ring: rgba(100,181,246,0.18);
 }
 
 /* Common utilities — exemplo de uso */

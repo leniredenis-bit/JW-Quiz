@@ -77,12 +77,14 @@
     left: 50%;
     top: 40%;
     transform: translate(-50%, -50%);
-    background: var(--bg-secondary, #fff);
-    border-radius: 14px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: linear-gradient(135deg, var(--bg-accent, #e3f2fd) 0%, var(--bg-secondary, #f8f9fa) 100%);
+    border: 3px solid var(--btn-primary, #3a6aa5);
+    border-radius: 18px;
+    box-shadow: 0 16px 48px rgba(58, 110, 165, 0.3);
     padding: 2em 2.5em;
     min-width: 320px;
-    max-width: 90vw;
+    max-width: min(75vw, 500px);
+    margin: 0 2vw;
     z-index: 2000;
     display: flex;
     flex-direction: column;
@@ -93,18 +95,25 @@
 }
 .explain-popup-content h4 {
     margin-top: 0;
-    color: var(--text-accent);
-    font-size: 1.2em;
-    margin-bottom: 0.7em;
+    color: var(--btn-primary, #3a6aa5);
+    font-size: 1.4em;
+    font-weight: 800;
+    margin-bottom: 0.8em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 .explain-popup-content {
-    font-size: 1.05em;
+    font-size: 1.08em;
     color: var(--text-primary, #222);
+    line-height: 1.6;
 }
 @media (max-width: 600px) {
     .explain-popup {
-        min-width: 90vw;
-        padding: 1.2em 0.7em;
+        min-width: 80vw;
+        max-width: 85vw;
+        padding: 1.8em 1.5em;
+        border-radius: 16px;
+        border-width: 2px;
+        margin: 0 1vw;
     }
 }
 #home-view .btn-icon-only {
@@ -184,104 +193,10 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   [VARIÁVEIS] - TEMAS E CORES
+   IMPORTAÇÕES DE CSS
    ═══════════════════════════════════════════════════════════════════════════ */
 
-:root {
-    /* Tema Claro (padrão) - Sabedoria e Luz */
-    --bg-primary: var(--bg);
-    --bg-secondary: var(--surface);
-    --bg-tertiary: var(--muted-bg);  /* Cinza azul neutro */
-    --bg-quaternary: var(--muted-bg);
-    --bg-accent: var(--muted-bg);    /* Cinza azul neutro */
-
-    --text-primary: var(--text);
-    --text-secondary: var(--text-muted);
-    --text-tertiary: var(--text-muted);
-    --text-accent: var(--color-primary);  /* Azul divino */
-
-    --border-primary: var(--border);
-    --border-secondary: var(--border);
-    --border-accent: var(--border);
-
-    --shadow-primary: var(--shadow-elev);
-    --shadow-secondary: var(--shadow-elev);
-    --shadow-accent: rgba(43,108,176,0.3);  /* Azul divino com transparência */
-
-    --btn-primary: var(--color-primary);  /* Azul divino */
-    --btn-primary-hover: var(--color-primary-600);  /* Azul divino mais escuro */
-    --btn-secondary: var(--text-muted);
-    --btn-secondary-hover: var(--text);
-
-    --correct-bg: var(--success);  /* Verde esperança */
-    --correct-border: var(--success);
-    --correct-text: var(--success);
-    --wrong-bg: var(--danger);    /* Vermelho suave */
-    --wrong-border: var(--danger);
-    --wrong-text: var(--danger);
-
-    --timer-bg: var(--muted-bg);    /* Cinza azul neutro */
-    --auto-next-bg: var(--muted-bg);
-    --auto-next-border: var(--color-primary);  /* Azul divino */
-    --auto-next-text: var(--color-primary);    /* Azul divino */
-    --auto-next-text-strong: var(--color-primary-600);  /* Azul divino mais escuro */
-
-    /* Memory Game 2.0 Variables */
-    --radius-sm: var(--radius);
-    --radius-md: var(--radius);
-    --radius-lg: 16px;
-    --shadow-sm: var(--shadow-elev);
-    --shadow-md: 0 4px 16px rgba(2,6,23,0.1);
-    --transition-smooth: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-[data-theme="dark"] {
-    /* Tema Escuro - Sabedoria e Luz */
-    --bg-primary: var(--bg);
-    --bg-secondary: var(--surface);
-    --bg-tertiary: var(--muted-bg);  /* Cinza azulado mais claro para melhor contraste */
-    --bg-quaternary: var(--muted-bg);  /* Mais claro para áreas de referência */
-    --bg-accent: var(--muted-bg);    /* Cinza azulado mais claro */
-
-    --text-primary: var(--text);
-    --text-secondary: var(--text-muted);  /* Cinza azulado leve */
-    --text-tertiary: var(--text-muted);  /* Mais claro para melhor legibilidade */
-    --text-accent: var(--color-primary);  /* Azul divino escuro */
-
-    --border-primary: var(--border);  /* Bordas mais claras */
-    --border-secondary: var(--border); /* Mais claras */
-    --border-accent: var(--border);   /* Mais claras */
-
-    --shadow-primary: var(--shadow-elev);
-    --shadow-secondary: var(--shadow-elev);
-    --shadow-accent: rgba(100,181,246,0.3);  /* Azul divino escuro com transparência */
-
-    --btn-primary: var(--color-primary);  /* Azul divino escuro */
-    --btn-primary-hover: var(--color-primary-600);  /* Azul divino escuro mais claro */
-    --btn-secondary: var(--text-muted);  /* Mais claro */
-    --btn-secondary-hover: var(--text);  /* Mais claro */
-
-    --correct-bg: var(--success);  /* Verde esperança escuro */
-    --correct-border: var(--success);
-    --correct-text: var(--success);
-    --wrong-bg: var(--danger);    /* Vermelho suave escuro */
-    --wrong-border: var(--danger);
-    --wrong-text: var(--danger);
-
-    --timer-bg: var(--muted-bg);    /* Cinza azulado mais claro */
-    --auto-next-bg: var(--muted-bg);
-    --auto-next-border: var(--color-primary);  /* Azul divino escuro */
-    --auto-next-text: var(--color-primary);    /* Azul divino escuro */
-    --auto-next-text-strong: var(--color-primary-600);  /* Azul divino escuro mais claro */
-
-    /* Memory Game 2.0 Variables */
-    --radius-sm: var(--radius);
-    --radius-md: var(--radius);
-    --radius-lg: 16px;
-    --shadow-sm: var(--shadow-elev);
-    --shadow-md: var(--shadow-elev);
-    --transition-smooth: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
-}
+@import url('./../src/styles/colors.css');
 
 /* ═══════════════════════════════════════════════════════════════════════════
    [RESET] - ESTILOS BÁSICOS E GLOBAIS

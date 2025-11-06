@@ -80,28 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.showView = showView;
 
-    // Função global para atualizar o botão de tema
-    function updateThemeButton(theme) {
-        const themeToggle = document.getElementById('theme-toggle');
-        const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
-
-        // LÓGICA CORRETA: Se está em DARK, mostrar SOL (para ir para LIGHT)
-        //                 Se está em LIGHT, mostrar LUA (para ir para DARK)
-        if (themeToggle) {
-            themeToggle.textContent = theme === 'dark' ? '☀️ modo claro' : '🌙 modo escuro';
-            themeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
-        }
-
-        if (welcomeThemeToggle) {
-            const themeIcon = welcomeThemeToggle.querySelector('.theme-icon');
-            if (themeIcon) {
-                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-            }
-            welcomeThemeToggle.setAttribute('aria-label', `Alternar para ${theme === 'dark' ? 'modo claro' : 'modo escuro'}`);
-        }
-    }
-    window.updateThemeButton = updateThemeButton;
-
     // Carrega perguntas do JSON
     async function loadQuestions() {
         // Mostrar loading overlay
@@ -531,11 +509,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
-    // Modificar showView para incluir foco
+    // Mapeamento de views para tracks de música
+    const VIEW_MUSIC_MAP = {
+        'welcome-view': 'home',
+        'home-view': 'quizHome',
+        'quiz-view': 'quiz',
+        'memory-view': 'memoryHome',
+        'stats-view': 'home',
+        'legal-view': 'home',
+        'admin-view': 'home',
+        'group-view': 'home',
+        'analytics-view': 'home'
+    };
+
+    // Modificar showView para incluir foco e mudança de música
     const originalShowView = window.showView;
     window.showView = function(viewId) {
         originalShowView(viewId);
         focusFirstInteractive(viewId);
+
+        // Mudar música baseada na view
+        const trackKey = VIEW_MUSIC_MAP[viewId];
+        if (trackKey && window.playMusic) {
+            console.log(`🎵 Mudando música para: ${trackKey} (view: ${viewId})`);
+            window.playMusic(trackKey);
+        }
     };
 
     // Inicialização
@@ -1601,15 +1599,15 @@ document.addEventListener('DOMContentLoaded', function() {
     */
 
     // Adicionar event listener para o botão do jogo da memória com debug
-    const memoryBtn = document.getElementById('start-memory-game-btn');
+    const memoryBtn = document.getElementById('start-game');
     if (memoryBtn) {
-        console.log('Adding event listener to start-memory-game-btn');
+        console.log('Adding event listener to start-game');
         memoryBtn.addEventListener('click', function(e) {
-            console.log('start-memory-game-btn clicked');
+            console.log('start-game clicked');
             showMemoryView();
         });
     } else {
-        console.log('start-memory-game-btn not found');
+        console.log('start-game not found');
     }
 
     // Adicionar event listener para o botão de voltar ao início

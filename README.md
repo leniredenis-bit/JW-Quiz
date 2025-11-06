@@ -26,6 +26,33 @@ Um quiz interativo sobre conhecimentos bíblicos com sistema de pontuação avan
 - **Armazenamento**: LocalStorage para progresso e analytics
 - **Audio**: Web Audio API para efeitos sonoros
 
+## 💻 Desenvolvimento
+
+### Pré-requisitos
+- Navegador web moderno
+- Python 3.x (para servidor de desenvolvimento)
+
+### Como executar localmente
+
+1. **Clone ou baixe** o repositório
+2. **Execute o servidor de desenvolvimento**:
+   ```bash
+   # Windows
+   start-server.bat
+
+   # Ou manualmente:
+   python -m http.server 8000
+   ```
+3. **Abra no navegador**: `http://localhost:8000`
+
+> **⚠️ Importante**: Não abra o `index.html` diretamente no navegador (file://), pois causará erros de CORS. Sempre use um servidor HTTP local.
+
+### Estrutura de Desenvolvimento
+
+- **Hot Reload**: O servidor Python suporta recarregamento automático
+- **Debug**: Use as ferramentas de desenvolvedor do navegador (F12)
+- **Testes**: Abra `test-debug.html` para testes específicos
+
 ## 📁 Estrutura do Projeto
 
 ```

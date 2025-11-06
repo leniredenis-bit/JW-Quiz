@@ -28,7 +28,11 @@
     // Função para aplicar o tema ao documento
     function applyTheme(theme) {
         const root = document.documentElement;
+        const body = document.body;
+
+        // Aplicar no documentElement E no body para compatibilidade
         root.setAttribute('data-theme', theme);
+        body.setAttribute('data-theme', theme);
 
         // Atualizar botões de tema se existirem
         updateThemeButtons(theme);
@@ -107,21 +111,65 @@
 
         // Configurar event listeners para botões de tema
         setupThemeListeners();
+
+        // Observar mudanças de view para reaplicar tema se necessário
+        setupViewObserver();
+
+        // Log para debug
+        console.log('ThemeManager inicializado. Tema atual:', getSavedTheme());
+    }
+
+    // Configurar observer para mudanças de view
+    function setupViewObserver() {
+        // Usar MutationObserver para detectar quando uma view fica ativa
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    // Verificar se uma view ficou ativa
+                    if (target.classList.contains('view') && target.classList.contains('active')) {
+                        // Reaplicar tema para garantir consistência
+                        const currentTheme = getSavedTheme();
+                        applyTheme(currentTheme);
+                    }
+                }
+            });
+        });
+
+        // Observar mudanças de classe em todas as views
+        const views = document.querySelectorAll('.view');
+        views.forEach(view => {
+            observer.observe(view, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        });
+
+        // Também observar mudanças no atributo data-theme do documentElement
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
     }
 
     // Configurar event listeners para botões de tema
     function setupThemeListeners() {
-        // Botão de tema na tela de boas-vindas
-        const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
-        if (welcomeThemeToggle) {
-            welcomeThemeToggle.addEventListener('click', toggleTheme);
-        }
+        // Usar setTimeout para garantir que os elementos existem
+        setTimeout(() => {
+            // Botão de tema na tela de boas-vindas
+            const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
+            if (welcomeThemeToggle) {
+                welcomeThemeToggle.addEventListener('click', toggleTheme);
+                console.log('Event listener adicionado ao welcome-theme-toggle');
+            }
 
-        // Botão de tema na tela principal (se existir)
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', toggleTheme);
-        }
+            // Botão de tema na tela principal (se existir)
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+                console.log('Event listener adicionado ao theme-toggle');
+            }
+        }, 100);
     }
 
     // Expor funções globalmente

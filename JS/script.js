@@ -271,6 +271,11 @@ function showMemoryMenu() {
 function showMemoryConfig() {
     hideAllMemorySubviews();
     DOM.memoryConfig?.classList.add('active');
+    
+    // Change music to home track when going back to menu
+    if (window.playMusic) {
+        window.playMusic('memoryHome');
+    }
 }
 
 /**
@@ -279,6 +284,11 @@ function showMemoryConfig() {
 function showMemoryGame() {
     hideAllMemorySubviews();
     DOM.memoryGame?.classList.add('active');
+    
+    // Change music to game track when starting gameplay
+    if (window.playMusic) {
+        window.playMusic('memoryGame');
+    }
 }
 
 // Export functions to global scope for main.js
