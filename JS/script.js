@@ -295,8 +295,8 @@ window.showMemoryGame = showMemoryGame;
  */
 const DIFFICULTY_CONFIG = {
     easy: { pairs: 6, time: 0 },
-    medium: { pairs: 8, time: 0 },
-    hard: { pairs: 10, time: 0 },
+    medium: { pairs: 10, time: 0 },
+    hard: { pairs: 15, time: 0 },
     expert: { pairs: 12, time: 0 },
     master: { pairs: 15, time: 0 }
 };
@@ -328,6 +328,11 @@ function createBoard() {
     const { pairs } = DIFFICULTY_CONFIG[gameState.difficulty];
     gameState.totalPairs = pairs;
     gameState.pairsFound = 0;
+
+    console.log('🎯 createBoard() - Criando tabuleiro com', pairs, 'pares');
+    console.log('Dificuldade atual:', gameState.difficulty);
+    console.log('Tema atual:', gameState.theme);
+    console.log('Jogadores:', gameState.numPlayers);
 
     // Ajusta a grade dinamicamente conforme dificuldade
     if (gameState.difficulty === 'easy' || gameState.difficulty === 'medium') {
@@ -1019,6 +1024,45 @@ function setupNavigation() {
 }
 
 /**
+ * Sets up normal select elements for configuration
+ */
+function setupNormalSelects() {
+    // Setup players select
+    const playersSelect = document.getElementById('players');
+    if (playersSelect) {
+        playersSelect.addEventListener('change', function() {
+            gameState.numPlayers = parseInt(this.value);
+            console.log('✅ Número de jogadores selecionado:', this.value);
+        });
+    }
+
+    // Setup theme select
+    const themeSelect = document.getElementById('theme');
+    if (themeSelect) {
+        themeSelect.addEventListener('change', function() {
+            gameState.theme = this.value;
+            console.log('✅ Tema selecionado:', this.value);
+        });
+    }
+
+    // Setup pairs select
+    const pairsSelect = document.getElementById('pairs');
+    if (pairsSelect) {
+        pairsSelect.addEventListener('change', function() {
+            // Map pairs to difficulty
+            const pairsValue = parseInt(this.value);
+            const difficultyMap = {
+                6: 'easy',
+                10: 'medium',
+                15: 'hard'
+            };
+            gameState.difficulty = difficultyMap[pairsValue] || 'easy';
+            console.log('✅ Pares selecionados:', this.value, '-> dificuldade:', gameState.difficulty);
+        });
+    }
+}
+
+/**
  * Initialize all event listeners
  */
 function initializeEventListeners() {
@@ -1037,6 +1081,7 @@ function initializeEventListeners() {
     setupDropdownOutsideClick();
     setupSoundToggle();
     setupNavigation();
+    setupNormalSelects(); // Add normal selects setup
     
     console.log('✅ Memory Game initialized!');
 }

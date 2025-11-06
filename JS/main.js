@@ -1,5 +1,55 @@
 // Aguardar DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
+    // Música de fundo: lógica do botão e slider na tela inicial
+    const musicBtn = document.getElementById('music-toggle-btn');
+    const musicIcon = document.getElementById('music-icon');
+    const musicSlider = document.getElementById('music-volume-slider');
+    let musicSliderTimeout = null;
+
+    function updateMusicIcon() {
+        if (window.getMusicEnabled && !window.getMusicEnabled()) {
+            musicIcon.textContent = '🎵';
+            musicIcon.style.opacity = '0.4';
+            musicIcon.style.textDecoration = 'line-through';
+        } else {
+            musicIcon.textContent = '🎵';
+            musicIcon.style.opacity = '1';
+            musicIcon.style.textDecoration = 'none';
+        }
+    }
+
+    if (musicBtn && musicIcon && musicSlider) {
+        musicBtn.addEventListener('click', function() {
+            if (window.setMusicEnabled) {
+                const enabled = !window.getMusicEnabled();
+                window.setMusicEnabled(enabled);
+                updateMusicIcon();
+            }
+            // Mostrar slider de volume ao tocar no botão
+            musicSlider.style.display = 'block';
+            clearTimeout(musicSliderTimeout);
+            musicSliderTimeout = setTimeout(()=>{
+                musicSlider.style.display = 'none';
+            }, 3500);
+        });
+        musicSlider.addEventListener('input', function() {
+            if (window.setMusicVolume) {
+                window.setMusicVolume(Number(musicSlider.value));
+            }
+        });
+        // Ocultar slider ao sair do foco
+        musicSlider.addEventListener('blur', function() {
+            musicSlider.style.display = 'none';
+        });
+        // Inicializar estado
+        updateMusicIcon();
+        musicSlider.value = window.getMusicVolume ? window.getMusicVolume() : 0.2;
+    }
+
+    // Tocar música de fundo da Home ao carregar
+    if (window.playMusic) {
+        window.playMusic('home');
+    }
     console.log('DOM fully loaded, initializing app...');
 
     // Views and containers
@@ -62,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             console.log('Tentando carregar perguntas do JSON...');
-            const res = await fetch('DATA/perguntas.json');
+            const res = await fetch('DATA/perguntas_novo.json');
             console.log('Resposta do fetch:', res.status, res.statusText);
             if (!res.ok) {
                 throw new Error(`HTTP error ${res.status}`);
@@ -103,9 +153,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Extrair tags únicas
+        // Extrair tags únicas, suportando tags como strings ou objetos com range
         const tags = new Set();
-        window.allQuestions.forEach(q => (q.tags || []).forEach(t => tags.add(t)));
+        window.allQuestions.forEach(q => {
+            if (q.tags) {
+                q.tags.forEach(tag => {
+                    if (typeof tag === 'string') {
+                        tags.add(tag);
+                    } else if (tag && tag.name) {
+                        tags.add(tag.name);
+                    }
+                });
+            }
+        });
 
         const sortedTags = Array.from(tags).sort();
 
@@ -130,12 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const hasMore = sortedTags.length > picked.length;
 
         tagsContainer.innerHTML = '';
-        picked.forEach(tag => {
+        picked.forEach(tagName => {
             const btn = document.createElement('button');
             btn.className = 'tag-btn';
-            btn.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
+            btn.textContent = tagName.charAt(0).toUpperCase() + tagName.slice(1);
             btn.onclick = () => {
-                window.startQuiz({ type: 'tag', value: tag });
+                window.startQuiz({ type: 'tag', value: tagName });
             };
             tagsContainer.appendChild(btn);
         });
@@ -165,18 +225,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // Extrair dificuldades únicas
         const difficulties = [...new Set(window.allQuestions.map(q => q.dificuldade || 1))].sort((a,b)=>a-b);
         difficultyContainer.innerHTML = '';
+        
+        // Mapeamento de dificuldade numérica para texto
+        const difficultyLabels = {
+            1: 'Fácil',
+            2: 'Médio',
+            3: 'Difícil'
+        };
+        
         difficulties.forEach(d => {
             const btn = document.createElement('button');
             btn.className = 'difficulty-btn';
             if (d === 1) btn.classList.add('difficulty-easy');
             else if (d === 2) btn.classList.add('difficulty-medium');
             else if (d === 3) btn.classList.add('difficulty-hard');
-            // Usar emoji de estrela dourada (⭐)
+            // Usar emoji de estrela dourada (⭐) baseado no nível
             let stars = '';
             if (d === 1) stars = '⭐';
             else if (d === 2) stars = '⭐⭐';
             else if (d === 3) stars = '⭐⭐⭐';
-            btn.innerHTML = stars;
+            
+            // Incluir texto descritivo junto com estrelas
+            const label = difficultyLabels[d] || `Nível ${d}`;
+            btn.innerHTML = `${stars}<br><small>${label}</small>`;
             btn.onclick = () => {
                 window.startQuiz({ type: 'difficulty', value: d });
             };
@@ -470,33 +541,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicialização
     loadQuestions();
 
-    // Sistema de Tema Escuro/Claro
-    function initTheme() {
-        const themeToggle = document.getElementById('theme-toggle');
-        const savedTheme = localStorage.getItem('theme') || 'light'; // Tema claro como padrão
+    // Sistema de Tema Escuro/Claro - Agora gerenciado pelo themeManager.js
+    // A função initTheme foi removida pois o themeManager.js cuida da inicialização automática
 
-        // Aplicar tema salvo
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeButton(savedTheme);
-
-        // Event listener para alternar tema (opcional, botão pode não existir)
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeButton(newTheme);
-
-                // Analytics
-                window.analytics.track('theme_changed', { theme: newTheme });
-            });
-        }
-    }
-
-    // Inicializar tema
-    initTheme();
+    // Inicializar tema - Agora feito automaticamente pelo themeManager.js
+    // initTheme(); // Removido - themeManager.js cuida disso
 
     // Sistema de Estatísticas Pessoais
     function showStatsView() {
@@ -1598,17 +1647,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const welcomeThemeToggle = document.getElementById('welcome-theme-toggle');
     if (welcomeThemeToggle) {
-        welcomeThemeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeButton(newTheme);
-
-            // Analytics
-            window.analytics.track('theme_changed', { theme: newTheme });
-        });
+        // Event listener removido - themeManager.js cuida disso agora
+        // welcomeThemeToggle.addEventListener('click', () => { ... });
     }
 
     const welcomeLegalBtn = document.getElementById('welcome-legal-btn');

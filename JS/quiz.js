@@ -627,7 +627,7 @@
             stopTimer();
             stopAutoNextTimer();
             window.showView('home-view');
-            window.location.reload();
+            // Removido: window.location.reload();
         });
 
         // Modal: cancelar saída
@@ -649,7 +649,7 @@
                     stopTimer();
                     stopAutoNextTimer();
                     window.showView('home-view');
-                    window.location.reload();
+                    // Removido: window.location.reload();
                 };
             }
         }

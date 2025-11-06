@@ -81,7 +81,7 @@ def build(csv_path: Path, out_path: Path):
                 dificuldade = 1
             elif raw in ['intermediário', 'intermediario', '2']:
                 dificuldade = 2
-            elif raw in ['avançado', 'avancado', '3']:
+            elif raw in ['avançado', 'avancado', 'expert', '3']:
                 dificuldade = 3
             else:
                 try:

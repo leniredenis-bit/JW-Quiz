@@ -1,0 +1,189 @@
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║                                                                           ║
+   ║  [WELCOME VIEW] - TELA INICIAL MODERNA                                   ║
+   ║  Design moderno e escuro inspirado no código fornecido                   ║
+   ║                                                                           ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝ */
+
+/* Tema Moderno Escuro para Welcome View */
+.welcome-modern {
+    --modern-bg: #0b0c0e;
+    --modern-card: #121316;
+    --modern-muted: #9aa3ad;
+    --modern-accent-blue: #4da6ff;
+    --modern-accent-orange: #ff9a3d;
+    --modern-radius: 14px;
+    --modern-gap: 16px;
+    --modern-btn-height: 56px;
+    --modern-text: #eef3f8;
+    --modern-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    --modern-transition: 160ms;
+}
+
+/* Container Moderno */
+.welcome-modern .main-container {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    gap: 20px;
+    background: linear-gradient(180deg, #07080a 0%, #0f1113 100%);
+    color: var(--modern-text);
+    padding: 20px;
+    border-radius: 0;
+}
+
+/* Hero Section Moderna */
+.welcome-modern .welcome-header {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.welcome-modern .welcome-header h1 {
+    font-size: 34px;
+    margin: 0;
+    color: var(--modern-accent-blue);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.welcome-modern .welcome-subtitle {
+    margin: 6px 0 18px;
+    color: var(--modern-muted);
+    font-size: 13px;
+}
+
+/* Menu Moderno */
+.welcome-modern .welcome-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 6px 6px 0;
+}
+
+/* Botões Modernos */
+.welcome-modern .menu-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    padding: 12px;
+    min-height: var(--modern-btn-height);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--modern-shadow);
+    transition: transform var(--modern-transition) ease, box-shadow var(--modern-transition) ease;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    color: var(--modern-text);
+    text-align: left;
+    width: 100%;
+}
+
+.welcome-modern .menu-button:active {
+    transform: translateY(1px);
+}
+
+/* Gradientes específicos para cada botão */
+.welcome-modern .quiz-button {
+    background: linear-gradient(90deg, var(--modern-accent-blue), #2f8fe6);
+}
+
+.welcome-modern .memory-game-button {
+    background: linear-gradient(90deg, var(--modern-accent-orange), #ff7a2b);
+    color: #1b1a1a;
+}
+
+/* Ícone do botão */
+.welcome-modern .button-icon {
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+}
+
+/* Conteúdo do botão */
+.welcome-modern .button-title {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.welcome-modern .button-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+}
+
+/* Footer Controls Moderno */
+.welcome-modern .welcome-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 0 20px;
+    margin-top: auto;
+}
+
+.welcome-modern .btn-icon-only {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.03);
+    color: var(--modern-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    transition: transform var(--modern-transition);
+}
+
+.welcome-modern .btn-icon-only[aria-pressed="true"] {
+    background: rgba(77,166,255,0.12);
+    transform: translateY(-2px);
+}
+
+/* Foco para acessibilidade */
+.welcome-modern .menu-button:focus,
+.welcome-modern .btn-icon-only:focus {
+    outline: 3px solid rgba(77,166,255,0.18);
+    outline-offset: 4px;
+}
+
+/* Responsividade */
+@media (min-width: 720px) {
+    .welcome-modern .welcome-actions {
+        flex-direction: row;
+    }
+    .welcome-modern .menu-button {
+        flex: 1;
+    }
+}
+
+/* Integração com tema claro (fallback) */
+[data-theme="light"] .welcome-modern {
+    --modern-bg: #f8f9fa;
+    --modern-card: #ffffff;
+    --modern-muted: #6c757d;
+    --modern-text: #212529;
+    --modern-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .welcome-modern .main-container {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+[data-theme="light"] .welcome-modern .quiz-button {
+    background: linear-gradient(90deg, #3a6ea5, #5c8fd1);
+    color: white;
+}
+
+[data-theme="light"] .welcome-modern .memory-game-button {
+    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    color: white;
+}

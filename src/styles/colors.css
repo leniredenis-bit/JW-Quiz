@@ -1,0 +1,111 @@
+:root{
+  /* Design tokens - Light Theme (Padrão) */
+  --bg: #f0f2f5;                /* página */
+  --surface: #ffffff;           /* cards, inputs */
+  --muted-bg: #e9ecef;         /* elementos secundários */
+  --text: #0b1220;             /* texto principal (escuro para contraste) */
+  --text-muted: #6b7280;       /* labels e descrições */
+  --color-primary: #2b6cb0;    /* principal (ajustado do #3a6ea5) */
+  --color-primary-contrast: #ffffff;
+  --color-primary-600: #1f4f82; /* hover/active */
+  --color-primary-300: #7aa8e0; /* suave / borders */
+  --border: rgba(15,23,36,0.06);
+  --radius: 12px;
+  --shadow-elev: 0 8px 20px rgba(2,6,23,0.06);
+
+  /* Status */
+  --success: #218838; /* verde (um pouco mais escuro que #28a745 para contraste) */
+  --danger:  #c82333; /* vermelho (um pouco mais profundo que #dc3545) */
+
+  /* Accessibility helpers */
+  --focus-ring: rgba(43,108,176,0.18);
+}
+
+/* Dark theme tokens (ativa com [data-theme="dark"] no body) */
+body[data-theme="dark"]{
+  --bg: #0f1113;
+  --surface: #141416;
+  --muted-bg: #1e1e1e;
+  --text: #e6eef6;               /* texto principal claro */
+  --text-muted: #aab6c6;
+  --color-primary: #64b5f6;      /* acento claro brilhante */
+  --color-primary-contrast: #081124;
+  --color-primary-600: #4fa7ff;  /* hover */
+  --color-primary-300: #2b90d8;
+  --border: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --shadow-elev: 0 8px 20px rgba(0,0,0,0.6);
+
+  --success: #1f7a2f;
+  --danger:  #a42a2a;
+  --focus-ring: rgba(100,181,246,0.16);
+}
+
+/* Common utilities — exemplo de uso */
+:root, body[data-theme="dark"] {
+  --gap: 16px;
+  --btn-height: 48px;
+  --transition: 160ms;
+}
+
+/* Buttons (exemplo reutilizável) */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+  height:var(--btn-height);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight:600;
+  cursor:pointer;
+  transition: transform var(--transition) ease, box-shadow var(--transition) ease, background-color var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn--primary {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
+  color: var(--color-primary-contrast);
+  border-color: transparent;
+  box-shadow: var(--shadow-elev);
+}
+.btn--primary:hover { transform: translateY(-2px); }
+.btn--primary:active { transform: translateY(0); opacity: .98; }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary-300);
+}
+.btn--secondary {
+  background: var(--muted-bg);
+  color: var(--text);
+}
+
+/* Focus (acessibilidade) */
+.btn:focus,
+.input:focus,
+button:focus {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Text helpers */
+.text-muted { color: var(--text-muted); font-size: 0.92rem; }
+
+/* Surface / Cards */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-elev);
+  padding: 12px;
+  color: var(--text);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .card { transition: none !important; }
+}

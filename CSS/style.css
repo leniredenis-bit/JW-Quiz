@@ -189,98 +189,98 @@
 
 :root {
     /* Tema Claro (padrão) - Sabedoria e Luz */
-    --bg-primary: #f0f2f5;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #e9ecef;  /* Cinza azul neutro */
+    --bg-primary: var(--bg);
+    --bg-secondary: var(--surface);
+    --bg-tertiary: var(--muted-bg);  /* Cinza azul neutro */
     --bg-quaternary: #f7f9fb;
-    --bg-accent: #e9ecef;    /* Cinza azul neutro */
+    --bg-accent: var(--muted-bg);    /* Cinza azul neutro */
 
-    --text-primary: #1c1e21;
-    --text-secondary: #495057;
-    --text-tertiary: #6c757d;
-    --text-accent: #3a6ea5;  /* Azul divino */
+    --text-primary: var(--text);
+    --text-secondary: var(--text-muted);
+    --text-tertiary: var(--text-muted);
+    --text-accent: var(--color-primary);  /* Azul divino */
 
-    --border-primary: #e6e6e6;
-    --border-secondary: #dee2e6;
-    --border-accent: #adb5bd;
+    --border-primary: var(--border);
+    --border-secondary: var(--border);
+    --border-accent: var(--border);
 
-    --shadow-primary: rgba(0,0,0,0.06);
-    --shadow-secondary: rgba(0,0,0,0.1);
-    --shadow-accent: rgba(58,110,165,0.3);  /* Azul divino com transparência */
+    --shadow-primary: var(--shadow-elev);
+    --shadow-secondary: var(--shadow-elev);
+    --shadow-accent: rgba(43,108,176,0.3);  /* Azul divino com transparência */
 
-    --btn-primary: #3a6ea5;  /* Azul divino */
-    --btn-primary-hover: #2e5a8a;  /* Azul divino mais escuro */
-    --btn-secondary: #6c757d;
-    --btn-secondary-hover: #5a6268;
+    --btn-primary: var(--color-primary);  /* Azul divino */
+    --btn-primary-hover: var(--color-primary-600);  /* Azul divino mais escuro */
+    --btn-secondary: var(--text-muted);
+    --btn-secondary-hover: var(--text);
 
-    --correct-bg: #28a745;  /* Verde esperança */
-    --correct-border: #28a745;
+    --correct-bg: var(--success);  /* Verde esperança */
+    --correct-border: var(--success);
     --correct-text: #155724;
-    --wrong-bg: #dc3545;    /* Vermelho suave */
-    --wrong-border: #dc3545;
+    --wrong-bg: var(--danger);    /* Vermelho suave */
+    --wrong-border: var(--danger);
     --wrong-text: #721c24;
 
-    --timer-bg: #e9ecef;    /* Cinza azul neutro */
+    --timer-bg: var(--muted-bg);    /* Cinza azul neutro */
     --auto-next-bg: #e3f2fd;
-    --auto-next-border: #3a6ea5;  /* Azul divino */
-    --auto-next-text: #3a6ea5;    /* Azul divino */
-    --auto-next-text-strong: #2e5a8a;  /* Azul divino mais escuro */
+    --auto-next-border: var(--color-primary);  /* Azul divino */
+    --auto-next-text: var(--color-primary);    /* Azul divino */
+    --auto-next-text-strong: var(--color-primary-600);  /* Azul divino mais escuro */
 
     /* Memory Game 2.0 Variables */
-    --radius-sm: 8px;
-    --radius-md: 12px;
+    --radius-sm: var(--radius);
+    --radius-md: var(--radius);
     --radius-lg: 16px;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-sm: var(--shadow-elev);
+    --shadow-md: 0 4px 16px rgba(2,6,23,0.1);
+    --transition-smooth: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
     /* Tema Escuro - Sabedoria e Luz */
-    --bg-primary: #121212;
-    --bg-secondary: #1e1e1e;
-    --bg-tertiary: #37474f;  /* Cinza azulado mais claro para melhor contraste */
+    --bg-primary: var(--bg);
+    --bg-secondary: var(--surface);
+    --bg-tertiary: var(--muted-bg);  /* Cinza azulado mais claro para melhor contraste */
     --bg-quaternary: #263238;  /* Mais claro para áreas de referência */
-    --bg-accent: #37474f;    /* Cinza azulado mais claro */
+    --bg-accent: var(--muted-bg);    /* Cinza azulado mais claro */
 
-    --text-primary: #ffffff;
-    --text-secondary: #b0bec5;  /* Cinza azulado leve */
-    --text-tertiary: #90a4ae;  /* Mais claro para melhor legibilidade */
-    --text-accent: #64b5f6;  /* Azul divino escuro */
+    --text-primary: var(--text);
+    --text-secondary: var(--text-muted);  /* Cinza azulado leve */
+    --text-tertiary: var(--text-muted);  /* Mais claro para melhor legibilidade */
+    --text-accent: var(--color-primary);  /* Azul divino escuro */
 
-    --border-primary: #546e7a;  /* Bordas mais claras */
-    --border-secondary: #607d8b; /* Mais claras */
-    --border-accent: #78909c;   /* Mais claras */
+    --border-primary: var(--border);  /* Bordas mais claras */
+    --border-secondary: var(--border); /* Mais claras */
+    --border-accent: var(--border);   /* Mais claras */
 
-    --shadow-primary: rgba(0,0,0,0.3);
-    --shadow-secondary: rgba(0,0,0,0.5);
+    --shadow-primary: var(--shadow-elev);
+    --shadow-secondary: var(--shadow-elev);
     --shadow-accent: rgba(100,181,246,0.3);  /* Azul divino escuro com transparência */
 
-    --btn-primary: #64b5f6;  /* Azul divino escuro */
-    --btn-primary-hover: #42a5f5;  /* Azul divino escuro mais claro */
-    --btn-secondary: #78909c;  /* Mais claro */
-    --btn-secondary-hover: #607d8b;  /* Mais claro */
+    --btn-primary: var(--color-primary);  /* Azul divino escuro */
+    --btn-primary-hover: var(--color-primary-600);  /* Azul divino escuro mais claro */
+    --btn-secondary: var(--text-muted);  /* Mais claro */
+    --btn-secondary-hover: var(--text);  /* Mais claro */
 
-    --correct-bg: #66bb6a;  /* Verde esperança escuro */
-    --correct-border: #66bb6a;
+    --correct-bg: var(--success);  /* Verde esperança escuro */
+    --correct-border: var(--success);
     --correct-text: #e8f5e8;
-    --wrong-bg: #f44336;    /* Vermelho suave escuro */
-    --wrong-border: #f44336;
+    --wrong-bg: var(--danger);    /* Vermelho suave escuro */
+    --wrong-border: var(--danger);
     --wrong-text: #ffebee;
 
-    --timer-bg: #37474f;    /* Cinza azulado mais claro */
+    --timer-bg: var(--muted-bg);    /* Cinza azulado mais claro */
     --auto-next-bg: #0d47a1;
-    --auto-next-border: #64b5f6;  /* Azul divino escuro */
-    --auto-next-text: #64b5f6;    /* Azul divino escuro */
-    --auto-next-text-strong: #bbdefb;  /* Azul divino escuro mais claro */
+    --auto-next-border: var(--color-primary);  /* Azul divino escuro */
+    --auto-next-text: var(--color-primary);    /* Azul divino escuro */
+    --auto-next-text-strong: var(--color-primary-600);  /* Azul divino escuro mais claro */
 
     /* Memory Game 2.0 Variables */
-    --radius-sm: 8px;
-    --radius-md: 12px;
+    --radius-sm: var(--radius);
+    --radius-md: var(--radius);
     --radius-lg: 16px;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-sm: var(--shadow-elev);
+    --shadow-md: var(--shadow-elev);
+    --transition-smooth: all var(--transition) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -380,26 +380,27 @@ body, html {
 
 /* Botões Globais */
 .btn {
-    padding: 0.9rem 1.1rem;
-    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    height: var(--btn-height);
+    border-radius: calc(var(--radius) - 2px);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
     font-weight: 600;
-    border: none;
-    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-    background-color: var(--btn-primary);
-    color: white;
+    transition: transform var(--transition) ease, box-shadow var(--transition) ease, background-color var(--transition);
+    -webkit-tap-highlight-color: transparent;
 }
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-accent);
-    background-color: var(--btn-primary-hover);
+    box-shadow: var(--shadow-elev);
 }
 .btn:active {
     transform: translateY(0);
-    transition: transform 0.1s ease;
+    opacity: .98;
 }
 .btn:disabled {
     opacity: 0.6;
@@ -407,16 +408,23 @@ body, html {
     transform: none;
 }
 
-.btn-primary { background-color: var(--btn-primary); color: white; }
-.btn-primary:hover { background-color: var(--btn-primary-hover); }
+.btn--primary {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
+    color: var(--color-primary-contrast);
+    border-color: transparent;
+    box-shadow: var(--shadow-elev);
+}
+.btn--primary:hover { transform: translateY(-2px); }
+.btn--primary:active { transform: translateY(0); opacity: .98; }
 
-.btn-secondary { background-color: var(--btn-secondary); color: white; }
-.btn-secondary:hover { background-color: var(--btn-secondary-hover); }
-
-.btn-link { 
-    background: none; 
-    color: var(--text-accent); 
-    padding: .5rem; 
+.btn--ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary-300);
+}
+.btn--secondary {
+    background: var(--muted-bg);
+    color: var(--text);
 }
 
 
@@ -480,7 +488,7 @@ body, html {
     align-items: center;
     gap: 1rem;
     position: relative;
-    background: linear-gradient(135deg, #3a6ea5 60%, #5c8fd1 100%);
+    background: linear-gradient(135deg, var(--color-primary) 60%, var(--color-primary-600) 100%);
     color: #fff;
     overflow: hidden;
 }
@@ -516,7 +524,7 @@ body, html {
     margin: 0.25rem 0;
 }
 
-#home-view .stats-row .btn-link {
+#home-view .stats-row .btn--ghost {
     font-size: 0.875rem;
     padding: 0.5rem 0.75rem;
 }
@@ -551,7 +559,7 @@ body, html {
     margin-top: auto; /* gruda no pé do container */
 }
 
-#home-view footer .btn-link {
+#home-view footer .btn--ghost {
     font-size: 0.85rem;
     padding: 0.375rem 0.5rem;
 }
@@ -1506,7 +1514,7 @@ footer {
     background: var(--bg-accent);
 }
 .quiz-button {
-    background: linear-gradient(135deg, #3a6ea5 60%, #5c8fd1 100%);
+    background: linear-gradient(135deg, var(--color-primary) 60%, var(--color-primary-600) 100%);
     color: #fff;
 }
 .quiz-button:hover {
@@ -1633,7 +1641,7 @@ footer {
 }
 
 .btn-quiz {
-    background: linear-gradient(135deg, #3a6ea5, #5c8fd1);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-600));
     color: white;
 }
 
@@ -2755,23 +2763,6 @@ footer {
     font-size: 1em;
     pointer-events: none;
     z-index: 2;
-}
-    background: #181a1b !important;
-    color: #e6eef6 !important;
-    border: 1.5px solid #333 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    caret-color: #e6eef6;
-    outline: none;
-    transition: border 0.2s, box-shadow 0.2s;
-}
-
-#memory-view select option {
-    background: #181a1b;
-    color: #e6eef6;
-}
 }
 
 /* === MEMORY GAME BOARD === */

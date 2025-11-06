@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teste - JW Quiz</title>
+    <link rel="stylesheet" href="./src/styles/colors.css">
+    <script src="JS/themeManager.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background: #f0f0f0;
+            background: var(--bg);
+            color: var(--text);
         }
         .test-btn {
             padding: 15px 30px;
@@ -17,18 +20,18 @@
             cursor: pointer;
             border: none;
             border-radius: 8px;
-            background: #3a6ea5;
-            color: white;
+            background: var(--color-primary);
+            color: var(--color-primary-contrast);
         }
         .test-btn:hover {
-            background: #2e5a8a;
+            background: var(--color-primary-600);
         }
         #status {
             margin-top: 20px;
             padding: 15px;
-            background: white;
+            background: var(--surface);
             border-radius: 8px;
-            border-left: 4px solid #3a6ea5;
+            border-left: 4px solid var(--color-primary);
         }
     </style>
 </head>
@@ -45,7 +48,7 @@
     <div id="status">
         <h3>Status:</h3>
         <p id="status-text">Aguardando testes...</p>
-        <pre id="console-log" style="background: #f5f5f5; padding: 10px; border-radius: 4px; max-height: 300px; overflow: auto;"></pre>
+        <pre id="console-log" style="background: var(--muted-bg); padding: 10px; border-radius: 4px; max-height: 300px; overflow: auto;"></pre>
     </div>
 
     <script src="JS/toast.js"></script>
