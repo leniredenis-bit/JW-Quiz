@@ -70,6 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await res.json();
             console.log('Perguntas carregadas com sucesso:', data.length);
             console.log('Primeira pergunta:', data[0]);
+            console.log('Última pergunta:', data[data.length - 1]);
+            console.log('Tags da primeira pergunta:', data[0].tags);
+            console.log('Dificuldade da primeira pergunta:', data[0].dificuldade);
             window.allQuestions = data;
             console.log('window.allQuestions definido:', window.allQuestions.length);
             console.log('Chamando populateFilters...');

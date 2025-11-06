@@ -62,9 +62,10 @@ def build(csv_path: Path, out_path: Path):
 
         # tags and dificuldade if present
         tags = []
-        if 'tags' in r and r['tags'].strip() != '':
+        tags_field = r.get('Tags') or r.get('tags') or ''
+        if tags_field.strip() != '':
             # try separators
-            raw = r['tags']
+            raw = tags_field
             for sep in ['|',';',';;',',']:
                 if sep in raw:
                     tags = [p.strip() for p in raw.split(sep) if p.strip()]
@@ -73,14 +74,23 @@ def build(csv_path: Path, out_path: Path):
                 tags = [raw.strip()]
 
         dificuldade = 2
-        if 'dificuldade' in r and r['dificuldade'].strip() != '':
-            try:
-                dificuldade = int(r['dificuldade'])
-            except Exception:
+        diff_field = r.get('Dificuldade') or r.get('dificuldade') or ''
+        if diff_field.strip() != '':
+            raw = diff_field.strip().lower()
+            if raw in ['básico', 'basico', '1']:
+                dificuldade = 1
+            elif raw in ['intermediário', 'intermediario', '2']:
+                dificuldade = 2
+            elif raw in ['avançado', 'avancado', '3']:
+                dificuldade = 3
+            else:
                 try:
-                    dificuldade = int(float(r['dificuldade']))
+                    dificuldade = int(raw)
                 except Exception:
-                    dificuldade = 2
+                    try:
+                        dificuldade = int(float(raw))
+                    except Exception:
+                        dificuldade = 2
 
         obj = {
             'id': str(rid),

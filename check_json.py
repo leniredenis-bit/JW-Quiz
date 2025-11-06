@@ -7,6 +7,7 @@ try:
     print(f"Total de perguntas: {len(data)}")
     if data:
         print(f"Primeira pergunta: {data[0]['pergunta'][:50]}...")
+        print(f"Último ID: {data[-1]['id']}")
         print(f"Propriedades: {list(data[0].keys())}")
         print(f"Tem 'pergunta': {'pergunta' in data[0]}")
         print(f"Tem 'opcoes': {'opcoes' in data[0]}")
