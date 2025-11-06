@@ -192,7 +192,7 @@
     --bg-primary: var(--bg);
     --bg-secondary: var(--surface);
     --bg-tertiary: var(--muted-bg);  /* Cinza azul neutro */
-    --bg-quaternary: #f7f9fb;
+    --bg-quaternary: var(--muted-bg);
     --bg-accent: var(--muted-bg);    /* Cinza azul neutro */
 
     --text-primary: var(--text);
@@ -215,13 +215,13 @@
 
     --correct-bg: var(--success);  /* Verde esperança */
     --correct-border: var(--success);
-    --correct-text: #155724;
+    --correct-text: var(--success);
     --wrong-bg: var(--danger);    /* Vermelho suave */
     --wrong-border: var(--danger);
-    --wrong-text: #721c24;
+    --wrong-text: var(--danger);
 
     --timer-bg: var(--muted-bg);    /* Cinza azul neutro */
-    --auto-next-bg: #e3f2fd;
+    --auto-next-bg: var(--muted-bg);
     --auto-next-border: var(--color-primary);  /* Azul divino */
     --auto-next-text: var(--color-primary);    /* Azul divino */
     --auto-next-text-strong: var(--color-primary-600);  /* Azul divino mais escuro */
@@ -240,7 +240,7 @@
     --bg-primary: var(--bg);
     --bg-secondary: var(--surface);
     --bg-tertiary: var(--muted-bg);  /* Cinza azulado mais claro para melhor contraste */
-    --bg-quaternary: #263238;  /* Mais claro para áreas de referência */
+    --bg-quaternary: var(--muted-bg);  /* Mais claro para áreas de referência */
     --bg-accent: var(--muted-bg);    /* Cinza azulado mais claro */
 
     --text-primary: var(--text);
@@ -263,13 +263,13 @@
 
     --correct-bg: var(--success);  /* Verde esperança escuro */
     --correct-border: var(--success);
-    --correct-text: #e8f5e8;
+    --correct-text: var(--success);
     --wrong-bg: var(--danger);    /* Vermelho suave escuro */
     --wrong-border: var(--danger);
-    --wrong-text: #ffebee;
+    --wrong-text: var(--danger);
 
     --timer-bg: var(--muted-bg);    /* Cinza azulado mais claro */
-    --auto-next-bg: #0d47a1;
+    --auto-next-bg: var(--muted-bg);
     --auto-next-border: var(--color-primary);  /* Azul divino escuro */
     --auto-next-text: var(--color-primary);    /* Azul divino escuro */
     --auto-next-text-strong: var(--color-primary-600);  /* Azul divino escuro mais claro */

@@ -7,15 +7,15 @@
 
 /* Tema Moderno Escuro para Welcome View */
 .welcome-modern {
-    --modern-bg: #0b0c0e;
-    --modern-card: #121316;
-    --modern-muted: #9aa3ad;
-    --modern-accent-blue: #4da6ff;
+    --modern-bg: var(--bg);
+    --modern-card: var(--surface);
+    --modern-muted: var(--text-muted);
+    --modern-accent-blue: var(--color-primary);
     --modern-accent-orange: #ff9a3d;
     --modern-radius: 14px;
     --modern-gap: 16px;
     --modern-btn-height: 56px;
-    --modern-text: #eef3f8;
+    --modern-text: var(--text);
     --modern-shadow: 0 8px 24px rgba(2,6,23,0.6);
     --modern-transition: 160ms;
 }
@@ -91,7 +91,7 @@
 
 .welcome-modern .memory-game-button {
     background: linear-gradient(90deg, var(--modern-accent-orange), #ff7a2b);
-    color: #1b1a1a;
+    color: var(--text);
 }
 
 /* Ícone do botão */
@@ -167,10 +167,10 @@
 
 /* Integração com tema claro (fallback) */
 [data-theme="light"] .welcome-modern {
-    --modern-bg: #f8f9fa;
-    --modern-card: #ffffff;
-    --modern-muted: #6c757d;
-    --modern-text: #212529;
+    --modern-bg: var(--bg);
+    --modern-card: var(--surface);
+    --modern-muted: var(--text-muted);
+    --modern-text: var(--text);
     --modern-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
