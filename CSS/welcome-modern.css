@@ -11,7 +11,7 @@
     --modern-card: var(--surface);
     --modern-muted: var(--text-muted);
     --modern-accent-blue: var(--color-primary);
-    --modern-accent-orange: #ff9a3d;
+    --modern-accent-orange: var(--modern-accent-orange);
     --modern-radius: 14px;
     --modern-gap: 16px;
     --modern-btn-height: 56px;
@@ -28,7 +28,7 @@
     flex-direction: column;
     min-height: 100vh;
     gap: 20px;
-    background: linear-gradient(180deg, #07080a 0%, #0f1113 100%);
+    background: linear-gradient(180deg, var(--modern-bg-dark) 0%, var(--modern-bg-dark-end) 100%);
     color: var(--modern-text);
     padding: 20px;
     border-radius: 0;
@@ -86,11 +86,11 @@
 
 /* Gradientes específicos para cada botão */
 .welcome-modern .quiz-button {
-    background: linear-gradient(90deg, var(--modern-accent-blue), #2f8fe6);
+    background: linear-gradient(90deg, var(--modern-accent-blue), var(--modern-accent-blue-light));
 }
 
 .welcome-modern .memory-game-button {
-    background: linear-gradient(90deg, var(--modern-accent-orange), #ff7a2b);
+    background: linear-gradient(90deg, var(--modern-accent-orange), var(--modern-accent-orange-light));
     color: var(--text);
 }
 
@@ -175,15 +175,15 @@
 }
 
 [data-theme="light"] .welcome-modern .main-container {
-    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(180deg, var(--modern-bg-light) 0%, var(--modern-bg-light-end) 100%);
 }
 
 [data-theme="light"] .welcome-modern .quiz-button {
-    background: linear-gradient(90deg, #3a6ea5, #5c8fd1);
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     color: white;
 }
 
 [data-theme="light"] .welcome-modern .memory-game-button {
-    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    background: linear-gradient(90deg, var(--memory-orange), var(--memory-orange-light));
     color: white;
 }

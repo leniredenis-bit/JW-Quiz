@@ -15,7 +15,35 @@
 
   /* Status */
   --success: #218838; /* verde (um pouco mais escuro que #28a745 para contraste) */
+  --success-bg: #d4edda;
+  --success-text: #155724;
+  --warning: #856404;
+  --warning-bg: #fff3cd;
+  --warning-text: #856404;
   --danger:  #c82333; /* vermelho (um pouco mais profundo que #dc3545) */
+  --danger-bg: #f8d7da;
+  --danger-text: #721c24;
+
+  /* Memory Game Colors */
+  --memory-orange: #ff6b35;
+  --memory-orange-light: #f7931e;
+
+  /* Modern Theme Colors */
+  --modern-accent-orange: #ff9a3d;
+  --modern-bg-dark: #07080a;
+  --modern-bg-dark-end: #0f1113;
+  --modern-accent-blue-light: #2f8fe6;
+  --modern-accent-orange-light: #ff7a2b;
+  --modern-bg-light: #ffffff;
+  --modern-bg-light-end: #f8f9fa;
+
+  /* Difficulty Colors */
+  --difficulty-easy: #4caf50;
+  --difficulty-easy-light: #66bb6a;
+  --difficulty-medium: #ff9800;
+  --difficulty-medium-light: #ffb74d;
+  --difficulty-hard: #f44336;
+  --difficulty-hard-light: #ef5350;
 
   /* Accessibility helpers */
   --focus-ring: rgba(43,108,176,0.18);
@@ -37,8 +65,27 @@ body[data-theme="dark"]{
   --shadow-elev: 0 8px 20px rgba(0,0,0,0.6);
 
   --success: #1f7a2f;
+  --success-bg: #1f4a24;
+  --success-text: #c8e6c9;
+  --warning: #f57c00;
+  --warning-bg: #4a2c00;
+  --warning-text: #ffe0b2;
   --danger:  #a42a2a;
-  --focus-ring: rgba(100,181,246,0.16);
+  --danger-bg: #4a1a1a;
+  --danger-text: #ffcdd2;
+
+  /* Memory Game Colors - Dark Theme */
+  --memory-orange: #ff8c42;
+  --memory-orange-light: #ffb366;
+
+  /* Modern Theme Colors - Dark Theme */
+  --modern-accent-orange: #ffb366;
+  --modern-bg-dark: #07080a;
+  --modern-bg-dark-end: #0f1113;
+  --modern-accent-blue-light: #4fa7ff;
+  --modern-accent-orange-light: #ff9a3d;
+  --modern-bg-light: #f8f9fa;
+  --modern-bg-light-end: #e9ecef;
 }
 
 /* Common utilities — exemplo de uso */

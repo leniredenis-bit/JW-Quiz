@@ -93,7 +93,7 @@
 }
 .explain-popup-content h4 {
     margin-top: 0;
-    color: var(--text-accent, #1565c0);
+    color: var(--text-accent);
     font-size: 1.2em;
     margin-bottom: 0.7em;
 }
@@ -505,11 +505,11 @@ body, html {
 }
 
 #home-view .buttons-row .btn:nth-child(2) {
-    background: linear-gradient(135deg, #6c757d 60%, #8a99a8 100%);
+    background: linear-gradient(135deg, var(--success), var(--success));
 }
 #home-view .buttons-row .btn:nth-child(3) {
-    background: linear-gradient(135deg, #fbb034 60%, #ffdd00 100%);
-    color: #5a3e00;
+    background: linear-gradient(135deg, var(--danger), var(--danger));
+    color: var(--text);
 }
 
 #home-view .buttons-row .btn:hover {
@@ -658,7 +658,7 @@ body, html {
 .timer-bar {
     flex: 1;
     height: 10px;
-    background: var(--timer-bg, #e3eafc);
+    background: var(--timer-bg, var(--muted-bg));
     border-radius: 6px;
     overflow: hidden;
     position: relative;
@@ -668,7 +668,7 @@ body, html {
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: var(--timer-bar-width, 100%);
-    background: var(--timer-bar-bg, linear-gradient(90deg, var(--primary-blue, #2196f3), var(--secondary-blue, #1565c0)));
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     border-radius: 6px;
     transform-origin: left center;
     transition: width 0.2s linear, background 0.3s linear;
@@ -839,7 +839,7 @@ body, html {
 .btn-icon-only.quiz-quit-btn {
     background: none;
     border: none;
-    color: #c0392b;
+    color: var(--danger);
     font-size: 0.4em;
     width: 22px;
     height: 22px;
@@ -856,7 +856,7 @@ body, html {
     justify-content: center;
 }
 .btn-icon-only.quiz-quit-btn:hover {
-    color: #e74c3c;
+    color: var(--danger);
 }
 .btn-icon-only.quiz-quit-btn svg {
     width: 18px;
@@ -866,7 +866,7 @@ body, html {
 /* Modal de confirmação para sair do quiz */
 #quit-modal h3 {
     margin-top: 0;
-    color: #c0392b;
+    color: var(--danger);
 }
 #quit-modal .modal-actions {
     display: flex;
@@ -1352,9 +1352,9 @@ footer {
     transition:width 0.3s ease;
 }
 
-.easy-fill { background:linear-gradient(90deg, #4caf50, #66bb6a); }
-.medium-fill { background:linear-gradient(90deg, #ff9800, #ffb74d); }
-.hard-fill { background:linear-gradient(90deg, #f44336, #ef5350); }
+.easy-fill { background:linear-gradient(90deg, var(--difficulty-easy), var(--difficulty-easy-light)); }
+.medium-fill { background:linear-gradient(90deg, var(--difficulty-medium), var(--difficulty-medium-light)); }
+.hard-fill { background:linear-gradient(90deg, var(--difficulty-hard), var(--difficulty-hard-light)); }
 
 .difficulty-rate {
     min-width:40px;
@@ -1518,14 +1518,14 @@ footer {
     color: #fff;
 }
 .quiz-button:hover {
-    background: linear-gradient(135deg, #5c8fd1 60%, #3a6ea5 100%);
+    background: linear-gradient(135deg, var(--color-primary) 60%, var(--color-primary-600) 100%);
 }
 .memory-game-button {
-    background: linear-gradient(135deg, #ff6b35 60%, #f7931e 100%);
+    background: linear-gradient(135deg, var(--memory-orange) 60%, var(--memory-orange-light) 100%);
     color: #fff;
 }
 .memory-game-button:hover {
-    background: linear-gradient(135deg, #f7931e 60%, #ff6b35 100%);
+    background: linear-gradient(135deg, var(--memory-orange-light) 60%, var(--memory-orange) 100%);
 }
 .button-icon {
     font-size: 2.2rem;
@@ -1646,7 +1646,7 @@ footer {
 }
 
 .btn-memory {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    background: linear-gradient(135deg, var(--memory-orange), var(--memory-orange-light));
     color: white;
 }
 
@@ -2452,7 +2452,7 @@ footer {
     border: none;
     border-radius: 16px;
     /* mesmo tema do botão "Jogo da Memória" da tela inicial */
-    background: linear-gradient(135deg, #ff6b35 60%, #f7931e 100%);
+    background: linear-gradient(135deg, var(--memory-orange) 60%, var(--memory-orange-light) 100%);
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -2731,21 +2731,21 @@ footer {
     max-width: 200px;
     padding-right: 2.2em;
     position: relative;
-    background: #181a1b !important;
-    color: #e6eef6 !important;
-    border: 1.5px solid #333 !important;
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    border: 1.5px solid var(--border) !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
-    caret-color: #e6eef6;
+    caret-color: var(--text);
     outline: none;
     transition: border 0.2s, box-shadow 0.2s;
 }
 
 #memory-view select option {
-    background: #181a1b;
-    color: #e6eef6;
+    background: var(--bg);
+    color: var(--text);
 }
 
 #memory-view .select-row {
@@ -2759,7 +2759,7 @@ footer {
     right: 0.8em;
     top: 50%;
     transform: translateY(-50%);
-    color: #e6eef6;
+    color: var(--text);
     font-size: 1em;
     pointer-events: none;
     z-index: 2;
@@ -2849,7 +2849,7 @@ footer {
 
     /* Estilo do checkmark */
     color: white; /* Branco para melhor contraste com o fundo verde */
-    background-color: var(--correct-border, #28a745); /* Fundo verde para destaque */
+    background-color: var(--correct-border); /* Fundo verde para destaque */
     font-size: 1rem; /* Tamanho reduzido */
     font-weight: bold;
 
@@ -3794,18 +3794,18 @@ footer {
 }
 
 .difficulty-easy {
-    background: #d4edda;
-    color: #155724;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .difficulty-medium {
-    background: #fff3cd;
-    color: #856404;
+    background: var(--warning-bg);
+    color: var(--warning-text);
 }
 
 .difficulty-hard {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--danger-bg);
+    color: var(--danger-text);
 }
 
 .question-options {
