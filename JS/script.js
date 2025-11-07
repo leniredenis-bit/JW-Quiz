@@ -295,6 +295,7 @@ function showMemoryGame() {
 window.showMemoryMenu = showMemoryMenu;
 window.showMemoryConfig = showMemoryConfig;
 window.showMemoryGame = showMemoryGame;
+window.hideAllMemorySubviews = hideAllMemorySubviews;
 
 /* ================================================
    GAME BOARD MANAGEMENT
