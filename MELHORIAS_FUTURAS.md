@@ -61,8 +61,21 @@ Este documento lista as melhorias planejadas para o JW Quiz, organizadas por pri
 ### Interface de Administração
 - ✅ Painel para visualizar todas as questões
 - ✅ Filtros por dificuldade e tags
-- ✅ Busca de texto
+- ✅ Busca de texto (com Enter e botão)
 - ✅ Estatísticas das questões
+- ✅ Editor inline de perguntas
+- ✅ Sistema de tags com contador de usos
+- ✅ Seleção múltipla para deletar tags
+- ✅ Função automática para limpar tags com < 10 usos
+- ✅ Backup automático antes de alterações
+- ✅ Paginação de resultados
+
+### Limpeza e Otimização
+- ✅ Remoção de código duplicado e obsoleto
+- ✅ Limpeza de arquivos de debug e teste
+- ✅ Organização da documentação em pasta docs/
+- ✅ Atualização do .gitignore
+- ✅ Otimização da base de dados (3.531 tags removidas)
 
 ## 📋 Planejadas
 
@@ -197,22 +210,22 @@ Este documento lista as melhorias planejadas para o JW Quiz, organizadas por pri
 
 ## 📊 Roadmap de Desenvolvimento
 
-### Versão 1.4.0 (Q1 2025) - "Gamificação Avançada"
+### Versão 1.5.0 (Q1 2026) - "Gamificação Avançada"
 - Sistema de níveis e XP
 - Recompensas diárias
 - Medalhas sazonais
 
-### Versão 1.5.0 (Q2 2025) - "Acessibilidade e Performance"
+### Versão 1.6.0 (Q2 2026) - "Acessibilidade e Performance"
 - Conformidade WCAG completa
 - Lazy loading e otimização
 - TypeScript migration
 
-### Versão 1.6.0 (Q3 2025) - "Social e Multiplayer"
+### Versão 1.7.0 (Q3 2026) - "Social e Multiplayer"
 - Multiplayer online básico
 - Compartilhamento social
 - Leaderboards
 
-### Versão 2.0.0 (Q4 2025) - "Plataforma Completa"
+### Versão 2.0.0 (Q4 2026) - "Plataforma Completa"
 - Backend próprio
 - Sincronização cross-device
 - API pública
@@ -233,10 +246,10 @@ Para sugerir novas melhorias ou reportar bugs:
 
 ## 🔄 Status do Desenvolvimento
 
-- **Última atualização**: 04-11-025
-- **Versão atual**: 1.3.0
-- **Próxima versão**: 1.4.0 (Gamificação Avançada)
-- **Status geral**: Projeto maduro com base sólida para expansões
+- **Última atualização**: 07-11-2025
+- **Versão atual**: 1.4.0
+- **Próxima versão**: 1.5.0 (Acessibilidade e Performance)
+- **Status geral**: ✅ Painel Admin completo, base de dados otimizada, código limpo e organizado
 
 ---
 
