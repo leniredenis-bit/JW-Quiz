@@ -315,6 +315,7 @@
         referenceArea.classList.add('hidden');
         nextBtn.disabled = true;
         nextBtn.classList.add('hidden'); // Esconde o botão "Próximo" até responder
+        nextBtn.style.display = 'none'; // Força esconder via CSS inline
 
         const q = questions[currentIndex];
         if (!q) {
@@ -386,9 +387,6 @@
                 (q.texto_biblico ? `<div><strong>Texto Bíblico (TNM):</strong><br>${q.texto_biblico}</div>` : '');
         }
         
-        // Mostra o botão "Próximo" imediatamente ao clicar (mesmo tempo que o botão explicação)
-        nextBtn.classList.remove('hidden');
-        
         // prevenir múltiplos cliques
         const allBtns = Array.from(optionsContainer.querySelectorAll('.option-btn'));
         if (allBtns.some(b => b.classList.contains('disabled'))) return;
@@ -424,6 +422,10 @@
                     playSound('wrong');
                 }
             });
+
+            // AGORA SIM mostra o botão "Próximo" após revelar cores
+            nextBtn.classList.remove('hidden');
+            nextBtn.style.display = ''; // Remove o display:none inline
 
             // Calcular pontos avançados
             let pointsEarned = 0;
@@ -619,15 +621,22 @@
         // Modal: confirmar saída
         const confirmQuitBtn = document.getElementById('confirm-quit-btn');
         if (confirmQuitBtn) confirmQuitBtn.addEventListener('click', () => {
+            // Fechar o modal PRIMEIRO
+            const modal = document.getElementById('quit-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('show');
+            }
+            
             // Se marcado "não perguntar novamente", salvar no localStorage
             const dontAsk = document.getElementById('dont-ask-again-quit');
             if (dontAsk && dontAsk.checked) {
                 localStorage.setItem('jwquiz_skip_quit_confirm', '1');
             }
+            
             stopTimer();
             stopAutoNextTimer();
             window.showView('home-view');
-            // Removido: window.location.reload();
         });
 
         // Modal: cancelar saída
@@ -646,10 +655,16 @@
             // Substitui handler do quitBtn para sair direto
             if (quitBtn) {
                 quitBtn.onclick = function () {
+                    // Fechar modal se estiver aberto
+                    const modal = document.getElementById('quit-modal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('show');
+                    }
+                    
                     stopTimer();
                     stopAutoNextTimer();
                     window.showView('home-view');
-                    // Removido: window.location.reload();
                 };
             }
         }
@@ -721,4 +736,346 @@
             renderQuestion();
         }, 80);
     };
+
+    // ===============================
+    // MODO COMBATE: Modo especial para 2 jogadores com mediador
+    // ===============================
+    let combatMode = {
+        active: false,
+        player1Score: 0,
+        player2Score: 0,
+        questions: [],
+        currentIndex: 0,
+        totalQuestions: 0
+    };
+
+    window.startCombatMode = function() {
+        console.log('Iniciando Modo Combate');
+        
+        // Selecionar perguntas aleatórias
+        const pool = window.allQuestions || [];
+        if (pool.length === 0) {
+            alert('Não há perguntas disponíveis.');
+            return;
+        }
+
+        combatMode.questions = shuffleArray(pool.slice()).slice(0, 10);
+        combatMode.currentIndex = 0;
+        combatMode.player1Score = 0;
+        combatMode.player2Score = 0;
+        combatMode.totalQuestions = combatMode.questions.length;
+        combatMode.active = true;
+
+        // Mostrar tela do quiz
+        window.showView('quiz-view');
+        
+        // Aguardar DOM e renderizar primeira pergunta
+        setTimeout(() => {
+            renderCombatQuestion();
+        }, 100);
+    };
+
+    function renderCombatQuestion() {
+        getDOMElements();
+
+        if (combatMode.currentIndex >= combatMode.totalQuestions) {
+            showCombatResults();
+            return;
+        }
+
+        const question = combatMode.questions[combatMode.currentIndex];
+        
+        console.log('Renderizando pergunta combate:', question);
+        
+        // Atualizar progresso
+        progressEl.textContent = `Pergunta ${combatMode.currentIndex + 1} de ${combatMode.totalQuestions}`;
+        
+        // Mostrar pergunta - CORRIGIDO
+        const questionText = question.question || question.pergunta || 'Pergunta sem texto';
+        questionTextEl.textContent = questionText;
+        questionTextEl.style.display = 'block';
+        
+        // Esconder ID da questão (não relevante para modo combate)
+        if (questionIdLabel) questionIdLabel.style.display = 'none';
+        
+        // Esconder timer (modo combate não tem tempo)
+        if (timerBarElem) timerBarElem.style.display = 'none';
+        if (timerText) timerText.style.display = 'none';
+        
+        // REMOVER opções de resposta (jogadores respondem mentalmente/verbalmente)
+        optionsContainer.innerHTML = '';
+        optionsContainer.style.display = 'none';
+        
+        // Esconder área de referência inicialmente
+        referenceArea.style.display = 'none';
+        
+        // ESCONDER botões padrão do quiz (next-btn, quit-btn, etc)
+        if (nextBtn) nextBtn.style.display = 'none';
+        
+        // MOSTRAR botão quit para voltar (modo combate)
+        if (quitBtn) quitBtn.style.display = 'block';
+        
+        // Esconder footer do quiz padrão
+        const quizFooter = document.querySelector('.quiz-footer');
+        if (quizFooter) quizFooter.style.display = 'none';
+        
+        // ESCONDER modal de quit se estiver aberto
+        const quitModal = document.getElementById('quit-modal');
+        if (quitModal) {
+            quitModal.classList.add('hidden');
+            quitModal.classList.remove('show');
+        }
+        
+        // Criar/atualizar contador de pontos no topo
+        createCombatScoreboard();
+        
+        // Criar botões de controle do mediador
+        createCombatControls();
+    }
+
+    function createCombatScoreboard() {
+        // Verificar se já existe
+        let scoreboard = document.getElementById('combat-scoreboard');
+        
+        if (!scoreboard) {
+            scoreboard = document.createElement('div');
+            scoreboard.id = 'combat-scoreboard';
+            scoreboard.className = 'combat-scoreboard';
+            
+            // Inserir no topo da quiz-card
+            const quizCard = document.querySelector('.quiz-card');
+            quizCard.insertBefore(scoreboard, quizCard.firstChild);
+        }
+        
+        // Atualizar conteúdo
+        scoreboard.innerHTML = `
+            <div class="combat-score-item player1">
+                <span class="player-label">Jogador 1</span>
+                <span class="player-score">${combatMode.player1Score}</span>
+            </div>
+            <div class="combat-score-divider">VS</div>
+            <div class="combat-score-item player2">
+                <span class="player-label">Jogador 2</span>
+                <span class="player-score">${combatMode.player2Score}</span>
+            </div>
+        `;
+    }
+
+    function createCombatControls() {
+        // Remover controles antigos se existirem
+        const oldControls = document.getElementById('combat-controls');
+        if (oldControls) oldControls.remove();
+        
+        // Criar container de controles
+        const controlsContainer = document.createElement('div');
+        controlsContainer.id = 'combat-controls';
+        controlsContainer.className = 'combat-controls';
+        
+        // Botões principais (sempre visíveis)
+        const mainButtons = document.createElement('div');
+        mainButtons.className = 'combat-main-buttons';
+        
+        // Botão "Ver Resposta" (agora unificado com explicação)
+        const showAnswerBtn = document.createElement('button');
+        showAnswerBtn.className = 'btn btn-primary combat-btn';
+        showAnswerBtn.innerHTML = '👁️ Ver Resposta';
+        showAnswerBtn.onclick = () => showCombatAnswer();
+        
+        // Botão "Próxima"
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn btn-primary combat-btn';
+        nextBtn.innerHTML = '➡️ Próxima';
+        nextBtn.onclick = () => nextCombatQuestion();
+        
+        mainButtons.appendChild(showAnswerBtn);
+        mainButtons.appendChild(nextBtn);
+        
+        // Botões de pontuação (layout horizontal como explicação/próxima)
+        const scoreButtons = document.createElement('div');
+        scoreButtons.className = 'combat-score-buttons';
+        scoreButtons.id = 'combat-score-buttons';
+        
+        const player1Btn = document.createElement('button');
+        player1Btn.className = 'btn btn-success combat-score-btn player1-btn';
+        player1Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 1</span>';
+        player1Btn.onclick = () => addPointPlayer(1);
+        player1Btn.id = 'player1-score-btn';
+        
+        const player2Btn = document.createElement('button');
+        player2Btn.className = 'btn btn-success combat-score-btn player2-btn';
+        player2Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 2</span>';
+        player2Btn.onclick = () => addPointPlayer(2);
+        player2Btn.id = 'player2-score-btn';
+        
+        scoreButtons.appendChild(player1Btn);
+        scoreButtons.appendChild(player2Btn);
+        
+        // Montar controles
+        controlsContainer.appendChild(mainButtons);
+        controlsContainer.appendChild(scoreButtons);
+        
+        // Inserir após o texto da pergunta
+        const quizCard = document.querySelector('.quiz-card');
+        const questionText = document.getElementById('question-text');
+        questionText.parentNode.insertBefore(controlsContainer, questionText.nextSibling);
+    }
+
+    function showCombatAnswer() {
+        const question = combatMode.questions[combatMode.currentIndex];
+        
+        // Mostrar área de referência com TODAS as informações
+        referenceArea.style.display = 'block';
+        
+        // Pegar a resposta correta (texto da opção correta)
+        const correctAnswer = question.options && question.options[question.correct] 
+            ? question.options[question.correct] 
+            : question.resposta_correta || 'Resposta não disponível';
+        
+        correctAnswerEl.innerHTML = `<strong>✅ Resposta Correta:</strong> ${correctAnswer}`;
+        
+        // LIMPAR CAMPOS PRIMEIRO
+        referenceTextEl.innerHTML = '';
+        biblicalTextEl.innerHTML = '';
+        
+        // Adicionar explicação se existir (NO CAMPO "Referência:")
+        if (question.explicacao) {
+            referenceTextEl.innerHTML = question.explicacao;
+        }
+        
+        // Adicionar TEXTO BÍBLICO E REFERÊNCIA JUNTOS (NO CAMPO "Texto Bíblico (TNM):")
+        let biblicalContent = '';
+        if (question.texto_biblico) {
+            biblicalContent += question.texto_biblico;
+        }
+        if (question.referencia) {
+            if (biblicalContent) biblicalContent += '<br><br>';
+            biblicalContent += `<strong>📖 ${question.referencia}</strong>`;
+        }
+        if (biblicalContent) {
+            biblicalTextEl.innerHTML = biblicalContent;
+        }
+        
+        // Feedback sonoro
+        playSound('correct');
+    }
+
+    function addPointPlayer(player) {
+        // Verificar se já foi marcado ponto nesta pergunta
+        if (combatMode.questions[combatMode.currentIndex].pointAwarded) {
+            return; // Ignorar se já foi marcado
+        }
+        
+        // Marcar que ponto foi atribuído nesta pergunta
+        combatMode.questions[combatMode.currentIndex].pointAwarded = true;
+        
+        if (player === 1) {
+            combatMode.player1Score++;
+            playSound('correct');
+        } else if (player === 2) {
+            combatMode.player2Score++;
+            playSound('correct');
+        }
+        
+        // Atualizar placar
+        createCombatScoreboard();
+        
+        // Desabilitar ambos os botões após marcar ponto
+        const player1Btn = document.getElementById('player1-score-btn');
+        const player2Btn = document.getElementById('player2-score-btn');
+        
+        if (player1Btn) {
+            player1Btn.disabled = true;
+            player1Btn.style.opacity = '0.5';
+            player1Btn.style.cursor = 'not-allowed';
+        }
+        if (player2Btn) {
+            player2Btn.disabled = true;
+            player2Btn.style.opacity = '0.5';
+            player2Btn.style.cursor = 'not-allowed';
+        }
+        
+        // Feedback visual no botão clicado
+        const btn = player === 1 ? player1Btn : player2Btn;
+        if (btn) {
+            btn.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 200);
+        }
+    }
+
+    function nextCombatQuestion() {
+        combatMode.currentIndex++;
+        
+        // Esconder área de referência
+        if (referenceArea) referenceArea.style.display = 'none';
+        
+        renderCombatQuestion();
+    }
+
+    function showCombatResults() {
+        // Determinar vencedor
+        let winner = '';
+        if (combatMode.player1Score > combatMode.player2Score) {
+            winner = '🏆 Vencedor: Jogador 1!';
+            playSound('victory');
+        } else if (combatMode.player2Score > combatMode.player1Score) {
+            winner = '🏆 Vencedor: Jogador 2!';
+            playSound('victory');
+        } else {
+            winner = '🤝 Empate!';
+            playSound('correct');
+        }
+        
+        // Criar tela de resultados
+        const quizCard = document.querySelector('.quiz-card');
+        quizCard.innerHTML = `
+            <div class="combat-results">
+                <h2>🎊 Fim da Partida!</h2>
+                <div class="combat-final-score">
+                    <div class="final-score-item ${combatMode.player1Score > combatMode.player2Score ? 'winner' : ''}">
+                        <span class="player-name">Jogador 1</span>
+                        <span class="player-final-score">${combatMode.player1Score}</span>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="final-score-item ${combatMode.player2Score > combatMode.player1Score ? 'winner' : ''}">
+                        <span class="player-name">Jogador 2</span>
+                        <span class="player-final-score">${combatMode.player2Score}</span>
+                    </div>
+                </div>
+                <h3 class="winner-announcement">${winner}</h3>
+                <div class="combat-results-actions">
+                    <button class="btn btn-primary" onclick="if(window.startCombatMode) window.startCombatMode();">🔄 Jogar Novamente</button>
+                    <button class="btn btn-secondary" onclick="window.showView('home-view'); if(window.combatMode) window.combatMode.active = false;">🏠 Voltar ao Menu</button>
+                </div>
+            </div>
+        `;
+        
+        // Desativar modo combate
+        combatMode.active = false;
+        
+        // Limpar estado
+        resetCombatMode();
+    }
+
+    function resetCombatMode() {
+        // Limpar scoreboard se existir
+        const scoreboard = document.getElementById('combat-scoreboard');
+        if (scoreboard) scoreboard.remove();
+        
+        // Limpar controles se existirem
+        const controls = document.getElementById('combat-controls');
+        if (controls) controls.remove();
+        
+        // Resetar estado
+        combatMode = {
+            active: false,
+            player1Score: 0,
+            player2Score: 0,
+            questions: [],
+            currentIndex: 0,
+            totalQuestions: 0
+        };
+    }
+
 })();

@@ -133,15 +133,21 @@
 
 #home-view #back-to-welcome.btn-icon-only {
     color: var(--btn-secondary);
+    border-color: var(--btn-secondary);
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
 }
 #home-view #back-to-welcome.btn-icon-only:hover {
     background: rgba(108,117,125,0.10); /* btn-secondary com opacidade */
     color: var(--btn-secondary-hover);
+    border-color: var(--btn-secondary-hover);
     box-shadow: 0 2px 8px var(--shadow-secondary);
 }
 #home-view #back-to-welcome.btn-icon-only:active {
     background: rgba(108,117,125,0.18);
     color: var(--btn-secondary);
+    border-color: var(--btn-secondary);
     box-shadow: 0 1px 4px var(--shadow-secondary);
 }
 
@@ -1589,7 +1595,7 @@ footer {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 1px solid var(--border-primary);
+    border: 2px solid var(--border-primary);
     background: var(--bg-secondary);
     color: var(--text-secondary);
     cursor: pointer;
@@ -1605,6 +1611,7 @@ footer {
     border-color: var(--border-accent);
     color: var(--text-primary);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .theme-icon {
@@ -3827,4 +3834,452 @@ footer {
    ══════════════════════════════════════════════════════════════════════════
    
    ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ⚔️ [MODO COMBATE] - Estilos para modo de 2 jogadores
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Placar de pontos no topo - Design melhorado */
+.combat-scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.combat-scoreboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.combat-score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.combat-score-item.player1 {
+    align-items: flex-start;
+    padding-left: 1rem;
+}
+
+.combat-score-item.player2 {
+    align-items: flex-end;
+    padding-right: 1rem;
+}
+
+.combat-score-divider {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    padding: 0 1.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.player-label {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.player-score {
+    font-size: 3rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+    line-height: 1;
+}
+
+/* Controles do mediador - Layout melhorado */
+.combat-controls {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Botões principais - Estilo similar ao quiz */
+.combat-main-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.combat-main-buttons .combat-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.combat-main-buttons .combat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.combat-main-buttons .combat-btn:active {
+    transform: translateY(0);
+}
+
+/* Botões de pontuação - Layout horizontal como explicação/próxima */
+.combat-score-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.combat-score-btn {
+    flex: 1 !important;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+}
+
+.combat-score-btn .btn-icon {
+    font-size: 1.8rem;
+}
+
+.combat-score-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.combat-score-btn:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.combat-score-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+.player1-btn {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    border-color: #357abd;
+    color: white;
+}
+
+.player1-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5ba3ff 0%, #4a90e2 100%);
+    border-color: #4a90e2;
+}
+
+.player2-btn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    border-color: #c0392b;
+    color: white;
+}
+
+.player2-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ff6b5a 0%, #e74c3c 100%);
+    border-color: #e74c3c;
+}
+
+/* Tela de resultados - Design aprimorado */
+.combat-results {
+    text-align: center;
+    padding: 2.5rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.combat-results h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    color: var(--text-primary);
+    font-weight: 800;
+}
+
+.combat-final-score {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 3rem 0;
+    padding: 2.5rem;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.final-score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-radius: 16px;
+    transition: all 0.4s ease;
+    min-width: 140px;
+}
+
+.final-score-item.winner {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    transform: scale(1.15);
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1.15);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.player-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.player-final-score {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.final-score-item.winner .player-name {
+    color: #8b7300;
+}
+
+.final-score-item.winner .player-final-score {
+    color: #d4af37;
+}
+
+.vs-text {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    margin: 0 1rem;
+}
+
+.winner-announcement {
+    font-size: 2.2rem;
+    margin: 2.5rem 0;
+    color: var(--color-primary);
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.combat-results-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.combat-results-actions .btn {
+    min-width: 200px;
+    padding: 1.2rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.combat-results-actions .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsividade para Tablet */
+@media (max-width: 768px) {
+    .combat-scoreboard {
+        padding: 1.2rem 1.5rem;
+    }
+    
+    .player-score {
+        font-size: 2.5rem;
+    }
+    
+    .combat-score-divider {
+        font-size: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    .combat-main-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .combat-main-buttons .combat-btn {
+        min-width: calc(50% - 0.25rem);
+    }
+    
+    .combat-final-score {
+        padding: 2rem;
+    }
+    
+    .player-final-score {
+        font-size: 3rem;
+    }
+}
+
+/* Responsividade para Mobile */
+@media (max-width: 600px) {
+    .combat-scoreboard {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .player-score {
+        font-size: 2rem;
+    }
+    
+    .player-label {
+        font-size: 0.85rem;
+    }
+    
+    .combat-score-divider {
+        font-size: 1.2rem;
+        padding: 0 0.5rem;
+    }
+    
+    .combat-main-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .combat-main-buttons .combat-btn {
+        width: 100%;
+        min-width: 100%;
+    }
+    
+    .combat-score-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .combat-score-btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .combat-score-btn .btn-icon {
+        font-size: 1.5rem;
+    }
+    
+    .combat-results {
+        padding: 1.5rem;
+    }
+    
+    .combat-results h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .combat-final-score {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .final-score-item {
+        width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .final-score-item.winner {
+        transform: scale(1.05);
+    }
+    
+    .player-name {
+        font-size: 1.2rem;
+    }
+    
+    .player-final-score {
+        font-size: 3rem;
+    }
+    
+    .vs-text {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    .winner-announcement {
+        font-size: 1.6rem;
+        margin: 1.5rem 0;
+    }
+    
+    .combat-results-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .combat-results-actions .btn {
+        width: 100%;
+        min-width: 100%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Modo escuro - Ajustes específicos para combate */
+[data-theme="dark"] .combat-scoreboard {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .combat-final-score {
+    background: var(--bg-tertiary);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .final-score-item:not(.winner) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 

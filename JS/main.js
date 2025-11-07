@@ -1,24 +1,39 @@
+// ===============================
+// Arquivo principal do app (main.js)
+// Comentários organizados por página e elemento de UI
+// Para facilitar a edição por iniciantes
+// ===============================
+
 // Aguardar DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
-    // Música de fundo: lógica do botão e slider na tela inicial
+
+    // ===============================
+    // HOME: Ícone e botão do som (🎵)
+    // music-toggle-btn: botão para ativar/desativar música
+    // music-icon: ícone visual do som (pode ser estilizado via CSS)
+    // music-volume-slider: slider para ajustar volume
+    // ===============================
     const musicBtn = document.getElementById('music-toggle-btn');
     const musicIcon = document.getElementById('music-icon');
     const musicSlider = document.getElementById('music-volume-slider');
     let musicSliderTimeout = null;
 
+    // Atualiza o ícone do som conforme ativado/desativado
+    // Dica: pode mudar cor, opacidade ou usar outro emoji
     function updateMusicIcon() {
         if (window.getMusicEnabled && !window.getMusicEnabled()) {
             musicIcon.textContent = '🎵';
-            musicIcon.style.opacity = '0.4';
-            musicIcon.style.textDecoration = 'line-through';
+            musicIcon.style.opacity = '0.4'; // Ícone apagado
+            musicIcon.style.textDecoration = 'line-through'; // Linha cortando
         } else {
             musicIcon.textContent = '🎵';
-            musicIcon.style.opacity = '1';
+            musicIcon.style.opacity = '1'; // Ícone normal
             musicIcon.style.textDecoration = 'none';
         }
     }
 
     if (musicBtn && musicIcon && musicSlider) {
+        // Clique no botão do som: ativa/desativa música e mostra slider
         musicBtn.addEventListener('click', function() {
             if (window.setMusicEnabled) {
                 const enabled = !window.getMusicEnabled();
@@ -32,16 +47,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 musicSlider.style.display = 'none';
             }, 3500);
         });
+        // Slider de volume: ajusta volume da música
         musicSlider.addEventListener('input', function() {
             if (window.setMusicVolume) {
                 window.setMusicVolume(Number(musicSlider.value));
             }
         });
-        // Ocultar slider ao sair do foco
+        // Oculta slider ao perder foco
         musicSlider.addEventListener('blur', function() {
             musicSlider.style.display = 'none';
         });
-        // Inicializar estado
+        // Inicializa ícone e valor do slider
         updateMusicIcon();
         musicSlider.value = window.getMusicVolume ? window.getMusicVolume() : 0.2;
     }
@@ -52,7 +68,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     console.log('DOM fully loaded, initializing app...');
 
-    // Views and containers
+    // ===============================
+    // HOME: Views e containers principais
+    // .view: cada "página" do app (home, quiz, admin, etc)
+    // home-view: página inicial
+    // tags-container: botões de filtro por tag
+    // difficulty-container: botões de filtro por dificuldade
+    // ===============================
     console.log('main.js loaded');
     const views = document.querySelectorAll('.view');
     const homeView = document.getElementById('home-view');
@@ -80,9 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.showView = showView;
 
-    // Carrega perguntas do JSON
+    // ===============================
+    // HOME: Carrega perguntas do arquivo DATA/perguntas.json
+    // Mostra overlay de loading enquanto carrega
+    // ===============================
     async function loadQuestions() {
-        // Mostrar loading overlay
+        // Mostrar loading overlay (tela de carregando)
         const loadingOverlay = document.getElementById('loading-overlay');
         if (loadingOverlay) {
             loadingOverlay.classList.remove('hidden');
@@ -131,7 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Popula filtros
+    // ===============================
+    // HOME: Popula filtros de tags e dificuldade
+    // Cria botões para cada tag e nível de dificuldade
+    // ===============================
     function populateFilters() {
         if (!tagsContainer || !difficultyContainer) {
             console.error('Containers not found!');
@@ -154,9 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const sortedTags = Array.from(tags).sort();
 
-        // Seleção reduzida solicitada: Bíblia, Crianças, Milagres (+ expandir)
+        // Seleção reduzida solicitada: Bíblia, Crianças, histórias Bíblicas (+ expandir)
         const norm = s => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-        const desired = ['biblia', 'criancas', 'milagres'];
+        const desired = ['biblia', 'criancas', 'historias biblicas'];
 
         // map real labels preserving original casing from dataset
         const byNorm = new Map(sortedTags.map(t => [norm(t), t]));
@@ -176,6 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tagsContainer.innerHTML = '';
         picked.forEach(tagName => {
+            // Cria botão de tag na home
+            // Dica: estilize .tag-btn no CSS para cor, borda, etc
             const btn = document.createElement('button');
             btn.className = 'tag-btn';
             btn.textContent = tagName.charAt(0).toUpperCase() + tagName.slice(1);
@@ -186,6 +216,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (hasMore) {
+            // Botão para mostrar todas as tags
+            // .show-more-btn pode ser estilizado para destaque
             const showMoreBtn = document.createElement('button');
             showMoreBtn.className = 'tag-btn show-more-btn';
             showMoreBtn.textContent = 'Mostrar Todas';
@@ -219,6 +251,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         difficulties.forEach(d => {
+            // Cria botão de dificuldade na home
+            // .difficulty-btn pode ser estilizado para cor, tamanho, etc
             const btn = document.createElement('button');
             btn.className = 'difficulty-btn';
             if (d === 1) btn.classList.add('difficulty-easy');
@@ -240,15 +274,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Botões principais
+    // ===============================
+    // HOME: Botões principais da tela inicial
+    // start-quick-quiz-btn: inicia quiz rápido
+    // start-study-mode-btn: modo estudo
+    // start-multiplayer-btn: modo multiplayer
+    // manage-content-btn: abre painel admin
+    // show-stats-btn: estatísticas
+    // legal-btn: botão para página de informações legais
+    // ===============================
     console.log('Adding event listeners');
     document.getElementById('start-quick-quiz-btn').addEventListener('click', () => {
-        console.log('Quick quiz button clicked');
+        // Botão "Quiz Rápido" (HOME)
+        // Dica: estilize #start-quick-quiz-btn no CSS para cor, tamanho, etc
         window.startQuiz({ type: 'random', value: 10 });
     });
     document.getElementById('start-study-mode-btn').addEventListener('click', () => {
-        console.log('Study mode button clicked');
+        // Botão "Modo Estudo" (HOME)
         window.startQuiz({ type: 'study', value: 10 });
+    });
+    document.getElementById('start-combat-mode-btn').addEventListener('click', () => {
+        // Botão "Modo Combate" (HOME) - Novo modo para 2 jogadores
+        if (window.startCombatMode) {
+            window.startCombatMode();
+        }
     });
     document.getElementById('start-multiplayer-btn').addEventListener('click', () => {
         console.log('Multiplayer button clicked');
@@ -270,7 +319,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Analytics avançado para análise de usuários
+    // ===============================
+    // ANALYTICS: sistema de estatísticas de uso
+    // ===============================
     window.analytics = {
         data: JSON.parse(localStorage.getItem('quiz_analytics') || '{}'),
         userId: localStorage.getItem('user_id') || generateUserId(),
@@ -467,7 +518,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Acessibilidade: Navegação por teclado
+    // ===============================
+    // ACESSIBILIDADE: navegação por teclado (Tab, ESC, setas)
+    // ===============================
     document.addEventListener('keydown', function(e) {
         // ESC para voltar ao menu principal
         if (e.key === 'Escape') {
@@ -516,7 +569,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
-    // Mapeamento de views para tracks de música
+    // ===============================
+    // HOME/QUIZ: Mapeamento de páginas para trilhas de música
+    // ===============================
     const VIEW_MUSIC_MAP = {
         'welcome-view': 'home',
         'home-view': 'quizHome',
@@ -546,13 +601,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicialização
     loadQuestions();
 
-    // Sistema de Tema Escuro/Claro - Agora gerenciado pelo themeManager.js
+    // ===============================
+    // TEMA: escuro/claro (gerenciado por themeManager.js)
+    // ===============================
     // A função initTheme foi removida pois o themeManager.js cuida da inicialização automática
 
     // Inicializar tema - Agora feito automaticamente pelo themeManager.js
     // initTheme(); // Removido - themeManager.js cuida disso
 
-    // Sistema de Estatísticas Pessoais
+    // ===============================
+    // STATS: tela de estatísticas pessoais
+    // ===============================
     function showStatsView() {
         showView('stats-view');
         loadAndDisplayStats();
@@ -752,7 +811,9 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // Registrar service worker para PWA
+    // ===============================
+    // PWA: registra service worker para funcionamento offline
+    // ===============================
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('Service Worker registrado'))
@@ -768,6 +829,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return shuffled.slice(0, Math.min(count, pool.length));
     }
 
+    // ===============================
+    // MULTIPLAYER: funções para partida em grupo
+    // ===============================
     function showGroupView() {
         showView('group-view');
         showGroupMenu();
@@ -1014,6 +1078,8 @@ document.addEventListener('DOMContentLoaded', function() {
         optionsContainer.innerHTML = '';
 
         question.options.forEach((option, index) => {
+            // Botões de resposta (QUIZ)
+            // .option-btn pode ser estilizado no CSS para cor, tamanho, etc
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.textContent = option;
@@ -1025,6 +1091,9 @@ document.addEventListener('DOMContentLoaded', function() {
         startGroupTimer();
 
         // Esconder elementos desnecessários
+        // reference-area: área de explicação/referência (QUIZ)
+        // next-btn: botão "Próxima" (QUIZ) - cor e alinhamento editáveis no CSS
+        // quit-btn: botão "Sair" (QUIZ)
         document.getElementById('reference-area').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         document.getElementById('quit-btn').style.display = 'none';
@@ -1034,6 +1103,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const state = window.groupQuizState;
         let timeLeft = state.timeLimit;
 
+        // timer-text: texto do cronômetro (QUIZ)
+        // timer-bar: barra de tempo (cor pode ser alterada no CSS)
         const timerElement = document.getElementById('timer-text');
         const timerBar = document.getElementById('timer-bar');
 
@@ -1211,7 +1282,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listeners para partida em grupo
+    // ===============================
+    // MULTIPLAYER: event listeners dos botões do multiplayer
+    // ===============================
     document.getElementById('start-multiplayer-btn').addEventListener('click', showGroupView);
     document.getElementById('back-from-group').addEventListener('click', () => showView('welcome-view'));
 
@@ -1267,6 +1340,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     */
 
+    // ===============================
+    // JOGO DA MEMÓRIA: implementado em script.js
+    // ===============================
     function showMemoryView() {
         console.log('showMemoryView called');
         showView('memory-view');
@@ -1467,6 +1543,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     */
 
+    // ===============================
+    // ANALYTICS: tela de estatísticas avançadas
+    // ===============================
     function showAnalyticsView() {
         showView('analytics-view');
         loadAndDisplayAnalytics();
@@ -1586,6 +1665,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.showAnalyticsView = showAnalyticsView;
 
+    // HOME: título da página inicial (pode abrir analytics ao dar duplo clique)
     document.getElementById('home-title').addEventListener('dblclick', () => {
         if (confirm('Acessar painel de analytics?')) {
             showAnalyticsView();
@@ -1596,10 +1676,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // O script.js gerencia completamente a navegação do memory game
     // NÃO adicionar event listeners aqui para evitar conflitos!
 
-    // Event listeners para a tela de boas-vindas
+    // ===============================
+    // WELCOME: botões da tela de boas-vindas
+    // ===============================
+    // ===============================
+    // WELCOME: botões da tela de boas-vindas
+    // ===============================
     const welcomeQuizBtn = document.getElementById('welcome-quiz-btn');
     if (welcomeQuizBtn) {
         welcomeQuizBtn.addEventListener('click', () => {
+            // Botão "Começar Quiz" na tela de boas-vindas
             showView('home-view');
         });
     }
@@ -1607,6 +1693,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeMemoryBtn = document.getElementById('welcome-memory-btn');
     if (welcomeMemoryBtn) {
         welcomeMemoryBtn.addEventListener('click', () => {
+            // Botão "Jogo da Memória" na tela de boas-vindas
             showView('memory-view');
             // Mostrar diretamente a tela de configuração
             setTimeout(() => {
@@ -1626,11 +1713,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeLegalBtn = document.getElementById('welcome-legal-btn');
     if (welcomeLegalBtn) {
         welcomeLegalBtn.addEventListener('click', () => {
+            // Botão de informações legais na tela de boas-vindas
             showView('legal-view');
         });
     }
 
-    // Event listener para o botão de voltar à tela inicial na tela do quiz
+    // ===============================
+    // QUIZ: botão para voltar à tela inicial
+    // ===============================
     const backToWelcomeBtn = document.getElementById('back-to-welcome');
     if (backToWelcomeBtn) {
         backToWelcomeBtn.addEventListener('click', () => {
@@ -1638,7 +1728,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Event listeners para o modal de fim de jogo
+    // ===============================
+    // QUIZ: botões do modal de fim de jogo ("Jogar Novamente", "Voltar ao Menu")
+    // ===============================
     document.getElementById('play-again-btn').addEventListener('click', () => {
         document.getElementById('end-game-modal').classList.add('hidden');
         // Reinicia um quiz com as mesmas configurações (simplificado por enquanto)
@@ -1653,10 +1745,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sempre mostrar tela de boas-vindas como página inicial
     showView('welcome-view');
 
-    // === FUNCIONALIDADES DA PÁGINA DE ADMIN ===
-    // MOVIDO PARA admin.js - A nova implementação está em JS/admin.js
-    // O código antigo foi removido para evitar conflitos
-    
+    // ===============================
+    // ADMIN: funções da página de administração (em admin.js)
+    // ===============================
     // Função para mostrar a página de admin
     function showAdminView() {
         showView('admin-view');
