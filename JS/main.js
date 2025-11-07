@@ -182,9 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const sortedTags = Array.from(tags).sort();
 
-        // Seleção reduzida solicitada: Bíblia, Crianças, histórias Bíblicas (+ expandir)
+        // Seleção ampliada: Tags populares para preencher 2 linhas (cerca de 6-8 tags)
         const norm = s => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-        const desired = ['biblia', 'criancas', 'historias biblicas'];
+        const desired = ['biblia', 'criancas', 'historias biblicas', 'jesus', 'profetas', 'apostolos', 'milagres', 'parabolas'];
 
         // map real labels preserving original casing from dataset
         const byNorm = new Map(sortedTags.map(t => [norm(t), t]));
@@ -192,11 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
         desired.forEach(key => {
             if (byNorm.has(key)) picked.push(byNorm.get(key));
         });
-        // fallback: se faltar alguma, completa com primeiras disponíveis
-        if (picked.length < 3) {
+        // fallback: se faltar alguma, completa com primeiras disponíveis até 8
+        if (picked.length < 8) {
             for (const t of sortedTags) {
                 if (!picked.includes(t)) picked.push(t);
-                if (picked.length >= 3) break;
+                if (picked.length >= 8) break;
             }
         }
 

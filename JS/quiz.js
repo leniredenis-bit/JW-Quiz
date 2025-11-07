@@ -881,10 +881,14 @@
         showAnswerBtn.innerHTML = '👁️ Ver Resposta';
         showAnswerBtn.onclick = () => showCombatAnswer();
         
-        // Botão "Próxima"
+        // Botão "Próxima" (DESABILITADO até atribuir ponto)
         const nextBtn = document.createElement('button');
         nextBtn.className = 'btn btn-primary combat-btn';
         nextBtn.innerHTML = '➡️ Próxima';
+        nextBtn.id = 'combat-next-btn';
+        nextBtn.disabled = true; // Começa desabilitado
+        nextBtn.style.opacity = '0.5';
+        nextBtn.style.cursor = 'not-allowed';
         nextBtn.onclick = () => nextCombatQuestion();
         
         mainButtons.appendChild(showAnswerBtn);
@@ -898,13 +902,13 @@
         const player1Btn = document.createElement('button');
         player1Btn.className = 'btn btn-success combat-score-btn player1-btn';
         player1Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 1</span>';
-        player1Btn.onclick = () => addPointPlayer(1);
+        player1Btn.onclick = () => togglePointPlayer(1);
         player1Btn.id = 'player1-score-btn';
         
         const player2Btn = document.createElement('button');
         player2Btn.className = 'btn btn-success combat-score-btn player2-btn';
         player2Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 2</span>';
-        player2Btn.onclick = () => addPointPlayer(2);
+        player2Btn.onclick = () => togglePointPlayer(2);
         player2Btn.id = 'player2-score-btn';
         
         scoreButtons.appendChild(player1Btn);
@@ -959,49 +963,97 @@
         playSound('correct');
     }
 
-    function addPointPlayer(player) {
-        // Verificar se já foi marcado ponto nesta pergunta
-        if (combatMode.questions[combatMode.currentIndex].pointAwarded) {
-            return; // Ignorar se já foi marcado
-        }
+    function togglePointPlayer(player) {
+        const currentQuestion = combatMode.questions[combatMode.currentIndex];
+        const player1Btn = document.getElementById('player1-score-btn');
+        const player2Btn = document.getElementById('player2-score-btn');
+        const nextBtn = document.getElementById('combat-next-btn');
         
-        // Marcar que ponto foi atribuído nesta pergunta
-        combatMode.questions[combatMode.currentIndex].pointAwarded = true;
-        
-        if (player === 1) {
-            combatMode.player1Score++;
-            playSound('correct');
-        } else if (player === 2) {
-            combatMode.player2Score++;
-            playSound('correct');
+        // Verificar se este jogador já tem o ponto marcado
+        if (currentQuestion.pointAwarded === player) {
+            // REMOVER PONTO (tocar novamente)
+            if (player === 1) {
+                combatMode.player1Score--;
+                player1Btn.classList.remove('active');
+                player1Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 1</span>';
+            } else if (player === 2) {
+                combatMode.player2Score--;
+                player2Btn.classList.remove('active');
+                player2Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 2</span>';
+            }
+            
+            // Remover flag de ponto atribuído
+            currentQuestion.pointAwarded = null;
+            
+            // Desabilitar botão "Próxima" novamente
+            nextBtn.disabled = true;
+            nextBtn.style.opacity = '0.5';
+            nextBtn.style.cursor = 'not-allowed';
+            
+            // Reabilitar ambos os botões
+            player1Btn.disabled = false;
+            player1Btn.style.opacity = '1';
+            player1Btn.style.cursor = 'pointer';
+            player2Btn.disabled = false;
+            player2Btn.style.opacity = '1';
+            player2Btn.style.cursor = 'pointer';
+            
+            playSound('wrong'); // Som de remoção
+            
+        } else {
+            // ADICIONAR PONTO
+            
+            // Se já havia ponto de outro jogador, remover primeiro
+            if (currentQuestion.pointAwarded) {
+                const otherPlayer = currentQuestion.pointAwarded;
+                if (otherPlayer === 1) {
+                    combatMode.player1Score--;
+                    player1Btn.classList.remove('active');
+                    player1Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 1</span>';
+                } else if (otherPlayer === 2) {
+                    combatMode.player2Score--;
+                    player2Btn.classList.remove('active');
+                    player2Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 2</span>';
+                }
+            }
+            
+            // Adicionar ponto ao jogador selecionado
+            if (player === 1) {
+                combatMode.player1Score++;
+                player1Btn.classList.add('active');
+                player1Btn.innerHTML = '<span class="btn-icon">✅</span><span>Ponto Marcado</span>';
+                player2Btn.classList.remove('active');
+                player2Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 2</span>';
+            } else if (player === 2) {
+                combatMode.player2Score++;
+                player2Btn.classList.add('active');
+                player2Btn.innerHTML = '<span class="btn-icon">✅</span><span>Ponto Marcado</span>';
+                player1Btn.classList.remove('active');
+                player1Btn.innerHTML = '<span class="btn-icon">👍</span><span>Ponto Jogador 1</span>';
+            }
+            
+            // Marcar que ponto foi atribuído nesta pergunta
+            currentQuestion.pointAwarded = player;
+            
+            // HABILITAR botão "Próxima"
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+            
+            playSound('correct'); // Som de adição
+            
+            // Feedback visual no botão clicado
+            const btn = player === 1 ? player1Btn : player2Btn;
+            if (btn) {
+                btn.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 200);
+            }
         }
         
         // Atualizar placar
         createCombatScoreboard();
-        
-        // Desabilitar ambos os botões após marcar ponto
-        const player1Btn = document.getElementById('player1-score-btn');
-        const player2Btn = document.getElementById('player2-score-btn');
-        
-        if (player1Btn) {
-            player1Btn.disabled = true;
-            player1Btn.style.opacity = '0.5';
-            player1Btn.style.cursor = 'not-allowed';
-        }
-        if (player2Btn) {
-            player2Btn.disabled = true;
-            player2Btn.style.opacity = '0.5';
-            player2Btn.style.cursor = 'not-allowed';
-        }
-        
-        // Feedback visual no botão clicado
-        const btn = player === 1 ? player1Btn : player2Btn;
-        if (btn) {
-            btn.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                btn.style.transform = 'scale(1)';
-            }, 200);
-        }
     }
 
     function nextCombatQuestion() {
@@ -1045,17 +1097,66 @@
                 </div>
                 <h3 class="winner-announcement">${winner}</h3>
                 <div class="combat-results-actions">
-                    <button class="btn btn-primary" onclick="if(window.startCombatMode) window.startCombatMode();">🔄 Jogar Novamente</button>
-                    <button class="btn btn-secondary" onclick="window.showView('home-view'); if(window.combatMode) window.combatMode.active = false;">🏠 Voltar ao Menu</button>
+                    <button id="combat-back-home" class="btn btn-secondary">🏠 Voltar ao Menu</button>
+                    <button id="combat-play-again" class="btn btn-primary">🔄 Jogar Novamente</button>
                 </div>
             </div>
         `;
         
+        // Adicionar event listeners aos botões
+        setTimeout(() => {
+            const playAgainBtn = document.getElementById('combat-play-again');
+            const backHomeBtn = document.getElementById('combat-back-home');
+            
+            if (playAgainBtn) {
+                playAgainBtn.addEventListener('click', () => {
+                    console.log('Jogar Novamente clicado - Reiniciando modo combate');
+                    
+                    // Limpar tela de resultados COMPLETAMENTE
+                    const quizCard = document.querySelector('.quiz-card');
+                    if (quizCard) {
+                        quizCard.innerHTML = ''; // Limpa tudo
+                    }
+                    
+                    // Resetar completamente antes de iniciar nova partida
+                    combatMode.active = false;
+                    combatMode.player1Score = 0;
+                    combatMode.player2Score = 0;
+                    combatMode.questions = [];
+                    combatMode.currentIndex = 0;
+                    combatMode.totalQuestions = 0;
+                    
+                    // Limpar scoreboard e controles
+                    const scoreboard = document.getElementById('combat-scoreboard');
+                    if (scoreboard) scoreboard.remove();
+                    const controls = document.getElementById('combat-controls');
+                    if (controls) controls.remove();
+                    
+                    // Iniciar nova partida
+                    if (window.startCombatMode) {
+                        window.startCombatMode();
+                    }
+                });
+            }
+            
+            if (backHomeBtn) {
+                backHomeBtn.addEventListener('click', () => {
+                    console.log('Voltar ao Menu clicado');
+                    
+                    // Limpar tela de resultados
+                    const quizCard = document.querySelector('.quiz-card');
+                    if (quizCard) {
+                        quizCard.innerHTML = '';
+                    }
+                    
+                    resetCombatMode();
+                    window.showView('home-view');
+                });
+            }
+        }, 100);
+        
         // Desativar modo combate
         combatMode.active = false;
-        
-        // Limpar estado
-        resetCombatMode();
     }
 
     function resetCombatMode() {

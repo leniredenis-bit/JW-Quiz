@@ -357,21 +357,25 @@ body, html {
    ╚═══════════════════════════════════════════════════════════════════════════╝ */
 
 #home-view {
-    min-height: 100vh;
+    height: 100vh; /* Altura exata da viewport */
+    max-height: 100vh; /* Garante que não ultrapasse */
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
     position: relative;
+    overflow: hidden; /* Sem scroll externo */
+    box-sizing: border-box;
 }
 
 #home-view .app-header {
     position: relative;
-    padding: 1rem 1rem 0.5rem;
+    padding: 0.625rem 1rem 0.375rem;
     text-align: center;
+    flex-shrink: 0; /* Não encolhe */
 }
 
 #home-view .app-header h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-accent);
     margin: 0;
@@ -382,25 +386,36 @@ body, html {
     max-width: 500px;
     margin: 0 auto;
     width: 100%;
-    padding: 0.75rem;
-    gap: 0.875rem;
-    flex: 1; /* ocupa o espaço disponível para empurrar o footer para o pé */
+    padding: 0.375rem 0.625rem 0.5rem;
+    flex: 1; /* Ocupa todo espaço disponível */
+    overflow-y: auto; /* Scroll INTERNO se necessário */
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Importante para flex funcionar corretamente */
+    box-sizing: border-box;
 }
 
 /* Bot\u00f5es principais - estilo hero */
 #home-view .buttons-row {
     flex-direction: column;
-    gap: 0.625rem;
-    margin-bottom: 0.625rem;
+    gap: 0.375rem;
+    margin-bottom: 0.375rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    flex-shrink: 0; /* Não encolhe */
 }
 
 
 /* --- Botões do menu principal (Quiz, Estudo, Grupo) --- */
 #home-view .buttons-row .btn {
     width: 100%;
-    padding: 1.2rem 1.5rem 1.2rem 2.8rem;
-    font-size: 1.15rem;
-    border-radius: 16px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.625rem 1rem 0.625rem 2.25rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
     box-shadow: 0 4px 16px rgba(58, 110, 165, 0.18);
     font-weight: 700;
     border: none;
@@ -416,13 +431,13 @@ body, html {
 
 #home-view .buttons-row .btn .btn-icon {
     position: absolute;
-    left: 1.2rem;
-    font-size: 1.4em;
+    left: 0.875rem;
+    font-size: 1.15em;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.6em;
-    height: 1.6em;
+    width: 1.35em;
+    height: 1.35em;
 }
 
 #home-view .buttons-row .btn:nth-child(2) {
@@ -453,46 +468,55 @@ body, html {
 /* Filter card - Design compacto e moderno */
 .filter-section {
     background-color: var(--bg-secondary);
-    padding: 0.875rem 0.75rem;
-    border-radius: 12px;
+    padding: 0.5rem 0.375rem;
+    border-radius: 10px;
     box-shadow: 0 3px 12px var(--shadow-primary);
     border: 1px solid var(--border-primary);
+    margin-bottom: 0.375rem;
+    flex-shrink: 0; /* Não encolhe */
 }
 
 .filter-section h2 { 
-    margin: 0 0 0.625rem 0; 
+    margin: 0 0 0.375rem 0; 
     text-align: center; 
     color: var(--text-primary); 
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
 }
 
 /* Footer do menu */
 #home-view footer {
     display: flex;
-    flex-direction: row; /* lado a lado */
-    gap: 0.75rem;
+    flex-direction: row;
+    gap: 0.375rem;
     align-items: center;
-    justify-content: center;
-    padding: 0.625rem 0 0.75rem;
-    position: relative;
-    z-index: 1;
-    margin-top: auto; /* gruda no pé do container */
+    justify-content: space-between;
+    padding: 0.375rem 0.625rem 0.5rem;
+    z-index: 10;
+    flex-shrink: 0; /* Não encolhe - SEMPRE visível */
+    background: var(--bg-primary);
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid var(--border-primary);
 }
 
 #home-view footer .btn--ghost {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     padding: 0.375rem 0.5rem;
+    white-space: nowrap; /* Evita quebra de texto */
 }
 
 /* Ícone redondo do botão Legal no footer da Home */
-#home-view #legal-btn.btn-icon-only {
-    width: 42px;
-    height: 42px;
+#home-view #legal-btn.btn-icon-only,
+#home-view #manage-content-btn.btn-icon-only {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 1px solid var(--border-primary);
     background: var(--bg-secondary);
     color: var(--text-secondary);
+    flex-shrink: 0; /* Não encolhe */
+    font-size: 0.95rem;
 }
 
 #home-view #legal-btn.btn-icon-only:hover {
@@ -519,26 +543,39 @@ body, html {
     transform: translateY(-2px);
 }
 
-.tags-container, .difficulty-container {
+.tags-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.5rem;
     margin-top: 0;
+    grid-auto-rows: 48px; /* Altura fixa para cada linha */
+    max-height: calc(2.1 * 48px); /* 2 linhas completas */
+    overflow: hidden; /* Esconde o que passar de 2 linhas */
+}
+
+.difficulty-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0;
+    grid-auto-rows: 48px; /* Altura fixa para cada linha */
+    max-height: 48px; /* 1 linha completa */
+    overflow: hidden; /* Esconde o que passar de 1 linha */
 }
 
 .tag-btn, .difficulty-btn {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
-    padding: 0.625rem 0.4rem;
-    border-radius: 10px;
-    font-size: 1.25rem;
+    padding: 0.375rem 0.25rem;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     border: 2px solid var(--border-primary);
     transition: all 0.25s ease;
     text-align: center;
-    min-width: 48px;
-    max-width: 80px;
+    min-width: 38px;
+    max-width: 70px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -555,6 +592,151 @@ body, html {
     color: white;
     border-color: var(--btn-primary);
     box-shadow: 0 4px 12px var(--shadow-accent);
+}
+
+/* ===================================
+   RESPONSIVIDADE - HOME VIEW
+   =================================== */
+
+/* Tablets e telas médias */
+@media (max-width: 768px) {
+    #home-view .app-header {
+        padding: 0.75rem 0.75rem 0.5rem;
+    }
+    
+    #home-view .app-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    #home-view .menu {
+        padding: 0.5rem;
+        gap: 0.75rem;
+    }
+    
+    #home-view .buttons-row {
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding: 0 0.25rem;
+    }
+    
+    #home-view .buttons-row .btn {
+        padding: 1rem 1.2rem 1rem 2.5rem;
+        font-size: 1.05rem;
+    }
+    
+    #home-view .buttons-row .btn .btn-icon {
+        left: 1rem;
+        font-size: 1.3em;
+    }
+    
+    .filter-section {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    #home-view footer {
+        padding: 0.625rem 0.75rem 1.25rem;
+        gap: 0.5rem;
+    }
+}
+
+/* Mobile - telas pequenas */
+@media (max-width: 600px) {
+    #home-view {
+        overflow-y: scroll; /* Força scroll para garantir acesso a todo conteúdo */
+    }
+    
+    #home-view .app-header {
+        padding: 0.5rem 0.5rem 0.25rem;
+    }
+    
+    #home-view .app-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    #home-view .menu {
+        padding: 0.5rem 0.25rem;
+        gap: 0.5rem;
+    }
+    
+    #home-view .buttons-row {
+        gap: 0.4rem;
+        margin-bottom: 0.4rem;
+        padding: 0;
+    }
+    
+    #home-view .buttons-row .btn {
+        padding: 0.9rem 1rem 0.9rem 2.2rem;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+    
+    #home-view .buttons-row .btn .btn-icon {
+        left: 0.8rem;
+        font-size: 1.2em;
+        width: 1.4em;
+        height: 1.4em;
+    }
+    
+    .filter-section {
+        padding: 0.625rem 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter-section h2 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .tags-container, .difficulty-container {
+        gap: 0.4rem;
+    }
+    
+    .tag-btn, .difficulty-btn {
+        padding: 0.5rem 0.3rem;
+        font-size: 1.1rem;
+        min-width: 40px;
+        max-width: 70px;
+    }
+    
+    #home-view footer {
+        padding: 0.5rem 0.5rem 1rem;
+        gap: 0.4rem;
+        flex-wrap: wrap; /* Permite quebra de linha se necessário */
+    }
+    
+    #home-view footer .btn--ghost {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    #home-view #legal-btn.btn-icon-only,
+    #home-view #manage-content-btn.btn-icon-only {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 380px) {
+    #home-view .app-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    #home-view .buttons-row .btn {
+        padding: 0.8rem 0.8rem 0.8rem 2rem;
+        font-size: 0.95rem;
+    }
+    
+    .tag-btn, .difficulty-btn {
+        font-size: 1rem;
+        padding: 0.45rem 0.25rem;
+    }
+    
+    #home-view footer .btn--ghost {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.5rem;
+    }
 }
 
 
@@ -3990,6 +4172,37 @@ footer {
     box-shadow: none !important;
 }
 
+/* Estados ativos dos botões de pontuação */
+.combat-score-btn.active {
+    background: linear-gradient(135deg, #4caf50, #45a049) !important;
+    border-color: #4caf50 !important;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5) !important;
+}
+
+.combat-score-btn.player1-btn.active {
+    background: linear-gradient(135deg, #2196f3, #1976d2) !important;
+    border-color: #2196f3 !important;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5) !important;
+}
+
+.combat-score-btn.player2-btn.active {
+    background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+    border-color: #f44336 !important;
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.5) !important;
+}
+
+/* Botão "Próxima" desabilitado no modo combate */
+#combat-next-btn:disabled {
+    background: linear-gradient(135deg, #9e9e9e, #757575) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+
+#combat-next-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
 .player1-btn {
     background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
     border-color: #357abd;
@@ -4115,19 +4328,33 @@ footer {
 
 .combat-results-actions {
     display: flex;
+    justify-content: space-between; /* Botões nas extremidades */
+    align-items: center;
     gap: 1.5rem;
-    justify-content: center;
     margin-top: 3rem;
+    width: 100%;
+    max-width: 600px; /* Largura máxima para não ficarem muito separados */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .combat-results-actions .btn {
-    min-width: 200px;
-    padding: 1.2rem 2.5rem;
-    font-size: 1.2rem;
+    min-width: 180px;
+    flex: 0 1 auto; /* Não cresce, mas pode encolher */
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+}
+
+.combat-results-actions .btn:first-child {
+    margin-right: auto; /* Empurra para esquerda */
+}
+
+.combat-results-actions .btn:last-child {
+    margin-left: auto; /* Empurra para direita */
 }
 
 .combat-results-actions .btn:hover {
@@ -4258,6 +4485,7 @@ footer {
     .combat-results-actions {
         flex-direction: column;
         gap: 1rem;
+        justify-content: center; /* Centraliza em mobile */
     }
     
     .combat-results-actions .btn {
@@ -4265,6 +4493,12 @@ footer {
         min-width: 100%;
         padding: 1rem 1.5rem;
         font-size: 1rem;
+        margin: 0 !important; /* Remove margens auto em mobile */
+    }
+    
+    .combat-results-actions .btn:first-child,
+    .combat-results-actions .btn:last-child {
+        margin: 0 !important; /* Remove margens auto em mobile */
     }
 }
 
