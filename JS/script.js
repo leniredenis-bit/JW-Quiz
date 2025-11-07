@@ -295,7 +295,6 @@ function showMemoryGame() {
 window.showMemoryMenu = showMemoryMenu;
 window.showMemoryConfig = showMemoryConfig;
 window.showMemoryGame = showMemoryGame;
-window.hideAllMemorySubviews = hideAllMemorySubviews;
 
 /* ================================================
    GAME BOARD MANAGEMENT
@@ -952,9 +951,24 @@ function setupNavigation() {
     // Event delegation for navigation buttons
     DOM.memoryView.addEventListener('click', function(e) {
         const button = e.target.closest('button');
-        if (!button) return;
+        if (!button || !button.id) return;
         
-        console.log('🔘 Button clicked:', button.id);
+        // Só executa handler se o id for exatamente um dos esperados
+        const validIds = [
+            'start-game',
+            'back-to-config',
+            'restart-game',
+            'game-home-btn',
+            'config-back-btn',
+            'back-from-memory'
+        ];
+        
+        if (!validIds.includes(button.id)) {
+            console.log('⚠️ Button clicked but not in valid handlers:', button.id);
+            return;
+        }
+        
+        console.log('🔘 Valid button clicked:', button.id);
         
         const handlers = {
             'start-game': () => {
@@ -1011,8 +1025,6 @@ function setupNavigation() {
         const handler = handlers[button.id];
         if (handler) {
             handler();
-        } else {
-            console.warn('⚠️ No handler for button:', button.id);
         }
     });
     

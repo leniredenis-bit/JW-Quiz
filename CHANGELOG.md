@@ -2,6 +2,65 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.4.0] - 2025-11-07
+
+### 🎨 Painel Administrativo
+- ✅ **Novo painel admin completo** para gerenciamento de perguntas
+  - Interface moderna e responsiva com tema claro/escuro
+  - Editor inline de perguntas com validação
+  - Sistema de filtros por dificuldade, tags e busca em tempo real
+  - Busca ativada por Enter e botão 🔍
+  - Paginação de resultados (10 por página)
+  - Salvamento de alterações com backup automático
+
+### 🏷️ Sistema de Tags
+- ✅ **Gerenciamento avançado de tags**
+  - Contador de usos de cada tag (ex: "Bíblia (45)")
+  - Seleção múltipla para deleção em massa
+  - Botões "Selecionar todas" / "Desmarcar todas"
+  - Função automática "Limpar tags < 10" para remover tags pouco usadas
+  - Visual feedback para tags selecionadas
+
+### 🗄️ Limpeza de Base de Dados
+- ✅ **Otimização massiva da base de dados**
+  - Removidas 3.531 tags com menos de 10 ocorrências
+  - Mantidas apenas 30 tags relevantes (10+ usos)
+  - 1.165 questões otimizadas
+  - Script Python automatizado: `clean_tags_less_than_10.py`
+  - Sistema de backup automático antes de alterações
+
+### 🐛 Correções Críticas
+- ✅ Corrigido carregamento do JSON (`perguntas_novo.json` → `perguntas.json`)
+- ✅ Corrigido mapeamento de campos PT/EN no editor (pergunta/opcoes/resposta_correta)
+- ✅ Implementado cache-busting para evitar versões antigas
+- ✅ Service Worker atualizado (v1 → v2-cleaned)
+- ✅ Headers `Cache-Control: no-cache` no fetch do JSON
+
+### 🎨 Melhorias de Design
+- ✅ Interface admin mais clean e profissional
+- ✅ Cards de estatísticas compactos
+- ✅ Tags com design neutro e bordas suaves
+- ✅ Botões menores e texto sem emojis excessivos
+- ✅ Sombras sutis e bordas discretas
+
+### 🧹 Limpeza de Código
+- ✅ Removidos arquivos duplicados e obsoletos:
+  - `perguntas_cleaned.json`, `perguntas_novo.json` (backups)
+  - `script.js.backup`
+  - `check_both.py`, `debug_tags.py`, `verify_cleanup.py`
+- ✅ Removidos arquivos de teste/desenvolvimento:
+  - `test-debug.html`, `theme-test.html`, `clear-cache.html`
+  - `debug-theme.js`, `fix-emergency.js`
+  - `check_json.py`, `debug_json.py`
+- ✅ Atualizado `.gitignore` para ignorar backups automáticos
+
+### 📚 Documentação
+- ✅ Criado `ADMIN_PANEL_README.md` com documentação completa
+- ✅ Documentação de uso, funcionalidades e arquitetura
+- ✅ Guia de troubleshooting
+
+---
+
 ## [Não Lançado] - 2025-11-03
 
 ### 📦 Backup Criado

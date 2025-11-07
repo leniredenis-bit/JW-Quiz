@@ -51,3 +51,18 @@ venv.bak/
 *.db
 *.sqlite
 *.sqlite3
+
+# Backups automáticos e arquivos temporários de dados
+*.backup.*
+*_novo.json
+*_cleaned.json
+*.bak
+*.bak.*
+
+# Arquivos de debug e teste
+test-*.html
+debug-*.js
+*-test.html
+check_*.py
+debug_*.py
+verify_*.py

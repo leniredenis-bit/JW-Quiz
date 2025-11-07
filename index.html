@@ -15,6 +15,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/welcome-modern.css">
+    <link rel="stylesheet" href="CSS/admin.css">
     <link rel="stylesheet" href="src/styles/colors.css">
     <script src="JS/audioManager.js"></script>
     <script src="JS/themeManager.js"></script>
@@ -70,67 +71,129 @@
 
         <!-- TELA DE ADMINISTRAÇÃO -->
         <section id="admin-view" class="view" role="main" aria-labelledby="admin-title">
-            <div class="quiz-card">
-                <header class="stats-header">
-                    <h2 id="admin-title">⚙️ Administração de Questões</h2>
-                    <button id="back-from-admin" class="btn btn-link" aria-label="Voltar ao menu principal">← Voltar</button>
+            <div class="max-w-7xl mx-auto p-4">
+                <!-- Header -->
+                <header class="admin-header">
+                    <h2 id="admin-title">⚙️ Admin Quiz Bíblico</h2>
+                    <div class="admin-header-actions">
+                        <button id="admin-theme-toggle" class="btn-icon-only" title="Alternar tema" aria-label="Alternar tema">
+                            <span class="theme-icon">☀️</span>
+                        </button>
+                        <button id="save-all-btn" class="btn btn-primary" aria-label="Salvar todas as alterações">
+                            💾 Salvar Tudo
+                        </button>
+                        <button id="back-from-admin" class="btn btn-secondary" aria-label="Voltar ao menu principal">← Voltar</button>
+                    </div>
                 </header>
 
-                <div class="admin-content">
-                    <!-- Estatísticas Rápidas -->
-                    <div class="admin-stats">
-                        <div class="stat-card">
-                            <div class="stat-value" id="total-questions-count">0</div>
-                            <div class="stat-label">Total de Questões</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="easy-questions-count">0</div>
-                            <div class="stat-label">Fáceis</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="medium-questions-count">0</div>
-                            <div class="stat-label">Médias</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="hard-questions-count">0</div>
-                            <div class="stat-label">Difíceis</div>
-                        </div>
+                <!-- Estatísticas Rápidas -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-questions-count">0</div>
+                        <div class="stat-label">Total de Questões</div>
                     </div>
-
-                    <!-- Filtros e Busca -->
-                    <div class="admin-filters">
-                        <div class="filter-row">
-                            <input type="text" id="search-input" placeholder="Buscar questões..." class="search-input">
-                            <select id="difficulty-filter" class="filter-select">
-                                <option value="">Todas as dificuldades</option>
-                                <option value="1">Fácil</option>
-                                <option value="2">Médio</option>
-                                <option value="3">Difícil</option>
-                            </select>
-                            <select id="tag-filter" class="filter-select">
-                                <option value="">Todas as tags</option>
-                                <!-- Tags serão populadas dinamicamente -->
-                            </select>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="easy-questions-count">0</div>
+                        <div class="stat-label">Fáceis</div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="medium-questions-count">0</div>
+                        <div class="stat-label">Médias</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="hard-questions-count">0</div>
+                        <div class="stat-label">Difíceis</div>
+                    </div>
+                </div>
 
-                    <!-- Lista de Questões com Paginação -->
-                    <div class="questions-list-container">
-                        <div id="questions-list" class="questions-list">
+                <!-- Gerenciamento Global de Tags -->
+                <section class="admin-tags-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h3 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1rem;">🏷️</span> 
+                            <span>Gerenciamento de Tags</span>
+                        </h3>
+                        <button 
+                            class="btn btn-danger" 
+                            onclick="window.adminPanel.deleteTagsWithLessThan10()"
+                            style="font-size: 0.8125rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem;"
+                            title="Remove todas as tags com menos de 10 ocorrências"
+                        >
+                            Limpar tags &lt; 10
+                        </button>
+                    </div>
+                    <div id="global-tags-container" class="tags-container-admin">
+                        <!-- Tags globais serão inseridas aqui -->
+                    </div>
+                </section>
+
+                <!-- Layout Principal -->
+                <main class="admin-main-grid">
+                    <!-- Coluna Esquerda: Lista e Filtros -->
+                    <div>
+                        <!-- Filtros -->
+                        <div class="admin-filters">
+                            <div class="filter-row" style="position: relative;">
+                                <input 
+                                    type="text" 
+                                    id="search-input" 
+                                    placeholder="🔍 Pesquisar por código, pergunta ou tags..." 
+                                    class="search-input-admin"
+                                    aria-label="Buscar questões"
+                                    style="padding-right: 3rem;"
+                                />
+                                <button 
+                                    id="search-btn" 
+                                    class="btn btn-primary"
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); padding: 0.5rem 1rem; border-radius: 0.5rem;"
+                                    aria-label="Buscar"
+                                    title="Buscar (Enter)"
+                                >
+                                    🔍
+                                </button>
+                            </div>
+                            <div class="filter-row" style="margin-top: 1rem;">
+                                <select id="difficulty-filter" class="filter-select" aria-label="Filtrar por dificuldade">
+                                    <option value="">Todas as dificuldades</option>
+                                    <option value="1">Fácil</option>
+                                    <option value="2">Médio</option>
+                                    <option value="3">Difícil</option>
+                                </select>
+                                <select id="tag-filter" class="filter-select" aria-label="Filtrar por tag">
+                                    <option value="">Todas as tags</option>
+                                    <!-- Tags serão populadas dinamicamente -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Contador -->
+                        <div style="padding: 1rem; color: var(--admin-text-secondary); font-size: 0.875rem;">
+                            <span id="questions-count-info">0 questões visíveis</span>
+                        </div>
+
+                        <!-- Lista de Questões -->
+                        <div class="questions-list-scrollable" id="questions-list">
                             <!-- Questões serão carregadas aqui -->
                         </div>
 
-                        <!-- Controles de Paginação -->
+                        <!-- Paginação -->
                         <div class="pagination-controls">
-                            <button id="prev-page" class="btn btn-secondary pagination-btn" disabled>← Anterior</button>
+                            <button id="prev-page" class="pagination-btn" disabled aria-label="Página anterior">← Anterior</button>
                             <span class="pagination-info">
                                 Página <span id="current-page">1</span> de <span id="total-pages">1</span>
-                                (<span id="showing-count">0</span> questões)
                             </span>
-                            <button id="next-page" class="btn btn-secondary pagination-btn" disabled>Próxima →</button>
+                            <button id="next-page" class="pagination-btn" disabled aria-label="Próxima página">Próxima →</button>
                         </div>
                     </div>
-                </div>
+
+                    <!-- Coluna Direita: Editor de Detalhes -->
+                    <div id="admin-editor-container">
+                        <!-- Editor ou estado vazio -->
+                        <div class="admin-empty-state">
+                            <p>Selecione uma pergunta na lista ao lado para começar a editar.</p>
+                        </div>
+                    </div>
+                </main>
             </div>
         </section>
 
@@ -825,6 +888,7 @@
     <script src="JS/quiz.js"></script>
     <script src="JS/achievements.js"></script>
     <script src="JS/main.js"></script>
+    <script src="JS/admin.js"></script>
     <script src="JS/unregister-sw.js"></script>
     <script src="JS/debug.js"></script>
     <script src="JS/script.js"></script>
